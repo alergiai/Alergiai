@@ -40,7 +40,10 @@ Note:
 - "severity": "unsafe" means the allergen is definitely present
 - "severity": "caution" means possible cross-contamination or similar allergens
 - Keep the response concise and focused solely on allergen identification
-- If you can't clearly see the ingredients or the image quality is poor, note that in the recommendation field
+- If you can't clearly see the ingredients or the image quality is poor:
+  * Provide specific suggestions for taking a better picture (e.g., "Try focusing directly on the ingredients list with better lighting" or "Position the camera closer to the text")
+  * Mention what parts of the image you can see and what parts are unclear
+  * If you can partially see some ingredients, list those in the ingredients field with a note about incomplete information
 `;
 
 // Server configuration

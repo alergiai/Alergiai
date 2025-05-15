@@ -41,7 +41,7 @@ export interface ScanResult {
   productName: string;
   imageUrl: string;
   base64Image: string;
-  isSafe: boolean;
+  isSafe: boolean | null;
   detectedAllergens: {
     name: string;
     found: string;
@@ -68,7 +68,7 @@ export type ScanAnalysisRequest = z.infer<typeof scanAnalysisSchema>;
 // Schema for the scan analysis response
 export const scanAnalysisResponseSchema = z.object({
   productName: z.string(),
-  isSafe: z.boolean(),
+  isSafe: z.boolean().nullable(),
   detectedAllergens: z.array(z.object({
     name: z.string(),
     found: z.string(),

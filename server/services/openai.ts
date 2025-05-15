@@ -86,14 +86,31 @@ export async function analyzeImage(base64Image: string, allergens: Allergen[]): 
     // Parse the response
     const result = JSON.parse(content) as ScanAnalysisResponse;
     
+    // Check if the ingredients are clearly visible
+    const isIngredientsUnclear = 
+      result.ingredients?.includes("cannot") || 
+      result.ingredients?.includes("unclear") || 
+      result.ingredients?.includes("not visible") ||
+      result.ingredients?.includes("poor quality") ||
+      result.ingredients === "Could not extract ingredients clearly" ||
+      !result.ingredients ||
+      result.ingredients.length < 10;
+    
     // Provide fallbacks for missing fields
     return {
-      productName: result.productName || "Unknown Product",
-      isSafe: result.isSafe ?? false,
+      productName: result.productName || "Unable to identify product",
+      // If ingredients are unclear, mark as "unclear" rather than safe/unsafe
+      isSafe: isIngredientsUnclear ? null : (result.isSafe ?? false),
       detectedAllergens: result.detectedAllergens || [],
-      ingredients: result.ingredients || "Could not extract ingredients clearly",
-      recommendation: result.recommendation || "Unable to provide a clear recommendation based on the image quality",
-      alternativeSuggestion: result.alternativeSuggestion || ""
+      ingredients: isIngredientsUnclear ? 
+        "Could not clearly identify all ingredients. Please take a clearer picture of the ingredients list." : 
+        result.ingredients,
+      recommendation: isIngredientsUnclear ? 
+        "Please retake a clearer photo of the ingredients list. For best results, ensure good lighting and focus directly on the text." : 
+        (result.recommendation || "No specific recommendation available."),
+      alternativeSuggestion: isIngredientsUnclear ? 
+        "Try holding the camera closer to the ingredients list and ensure good lighting." :
+        (result.alternativeSuggestion || "")
     };
   } catch (error: any) {
     console.error("Error analyzing image with OpenAI:", error);

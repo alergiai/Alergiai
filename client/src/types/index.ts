@@ -46,4 +46,4 @@ export type AllergenGroup =
   | ReligiousRestrictionsGroup 
   | CustomRestrictionsGroup;
 
-export type CameraStatus = 'inactive' | 'active' | 'loading' | 'result';
+export type CameraStatus = 'inactive' | 'active' | 'loading' | 'result' | 'retry';
