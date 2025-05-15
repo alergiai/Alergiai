@@ -88,13 +88,31 @@ export async function analyzeImage(base64Image: string, allergens: Allergen[]): 
     
     // Check if the ingredients are clearly visible
     const isIngredientsUnclear = 
-      result.ingredients?.includes("cannot") || 
-      result.ingredients?.includes("unclear") || 
-      result.ingredients?.includes("not visible") ||
-      result.ingredients?.includes("poor quality") ||
+      result.ingredients?.toLowerCase().includes("cannot") || 
+      result.ingredients?.toLowerCase().includes("unclear") || 
+      result.ingredients?.toLowerCase().includes("not visible") ||
+      result.ingredients?.toLowerCase().includes("poor quality") ||
+      result.ingredients?.toLowerCase().includes("poor image") ||
+      result.ingredients?.toLowerCase().includes("incomplete") ||
+      result.ingredients?.toLowerCase().includes("partial") ||
+      result.ingredients?.toLowerCase().includes("illegible") ||
+      result.ingredients?.toLowerCase().includes("blurry") ||
+      result.ingredients?.toLowerCase().includes("can't see") ||
+      result.ingredients?.toLowerCase().includes("can't read") ||
+      result.ingredients?.toLowerCase().includes("unable to read") ||
+      result.ingredients?.toLowerCase().includes("not able to") ||
+      result.productName?.toLowerCase().includes("unknown") ||
+      result.recommendation?.toLowerCase().includes("retake") ||
+      result.recommendation?.toLowerCase().includes("clearer") ||
+      result.recommendation?.toLowerCase().includes("better photo") ||
+      result.recommendation?.toLowerCase().includes("better picture") ||
+      result.recommendation?.toLowerCase().includes("better image") ||
+      result.recommendation?.toLowerCase().includes("unclear") ||
       result.ingredients === "Could not extract ingredients clearly" ||
       !result.ingredients ||
-      result.ingredients.length < 10;
+      result.ingredients.length < 15 ||
+      // Force unclear mode if we're getting a small number of ingredients with "safe" indication
+      (result.isSafe === true && result.detectedAllergens.length === 0 && result.ingredients.length < 50);
     
     // Provide fallbacks for missing fields
     return {
