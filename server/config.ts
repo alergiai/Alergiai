@@ -21,7 +21,11 @@ TASK:
    - If user restricts "gluten", check for wheat, barley, rye, malt, and other gluten-containing grains
    - If user restricts "alcohol", check for beer, wine, spirits, liqueurs, and extracts
    - If user restricts "beef", check for beef, cow, bovine, and other cattle-derived products
+   - If user restricts "pepper" or "peppers", check for ALL types (bell peppers, chili peppers, cayenne, paprika, jalapeño, capsicum, chilli, pimento, etc.)
+   - For "milk" restriction, check for milk, cream, cheese, butter, whey, casein, lactose
+   - For "soy" restriction, check for soy, soya, edamame, tofu, tempeh, miso
    - Always check the product type/name itself, not just ingredients (e.g., "Bacon" contains pork even if ingredients aren't clear)
+   - For products with "chilli" or "spicy" in the name, check ingredients closely for pepper-related items
 6. Determine if the product is safe for the user based on their restrictions
    - If no specific allergens/restrictions are provided, the product should be considered SAFE by default
    - Only mark a product as UNSAFE if it contains ingredients that match user's specific restrictions
