@@ -100,14 +100,38 @@ const Home = () => {
   // Handle saving result to history
   const handleSaveToHistory = () => {
     if (scanResult) {
-      const savedResult = addToHistory(scanResult);
+      try {
+        // Log for debugging
+        console.log('Saving scan result to history:', scanResult);
+        
+        // Add to history and get back the result with generated ID
+        const savedResult = addToHistory({...scanResult});
+        
+        // Debug - log the saved result with ID
+        console.log('Saved result with ID:', savedResult.id);
+        
+        toast({
+          title: 'Saved to History',
+          description: 'The scan has been saved to your history'
+        });
+        
+        // Navigate to the ScanResult detail page
+        setLocation(`/history`);
+      } catch (error) {
+        console.error('Error saving to history:', error);
+        toast({
+          title: 'Error Saving',
+          description: 'Could not save the scan to history',
+          variant: 'destructive'
+        });
+      }
+    } else {
+      console.error('No scan result to save');
       toast({
-        title: 'Saved to History',
-        description: 'The scan has been saved to your history'
+        title: 'Error Saving',
+        description: 'No scan result to save',
+        variant: 'destructive'
       });
-      
-      // Navigate to the ScanResult detail page
-      setLocation(`/result/${savedResult.id}`);
     }
   };
   
