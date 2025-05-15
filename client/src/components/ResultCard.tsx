@@ -40,30 +40,32 @@ const ResultCard: React.FC<ResultCardProps> = ({ result, onBack, onSave }) => {
         </button>
       </div>
       
-      <div className={`
-        ${isSafe ? 'bg-success-50 border-success-200' : 'bg-danger-50 border-danger-200'} 
-        border rounded-lg p-4 mb-4
-      `}>
-        <div className="flex items-center mb-2">
-          {isSafe ? (
-            <CheckCircle2 className="w-6 h-6 text-success-500 mr-2" />
-          ) : (
-            <AlertCircle className="w-6 h-6 text-danger-500 mr-2" />
-          )}
-          <h2 className={`
-            text-lg font-heading font-semibold 
-            ${isSafe ? 'text-success-700' : 'text-danger-700'}
-          `}>
-            {isSafe ? 'Safe to Consume' : 'Not Safe'}
-          </h2>
+      {isSafe !== null && (
+        <div className={`
+          ${isSafe ? 'bg-success-50 border-success-200' : 'bg-danger-50 border-danger-200'} 
+          border rounded-lg p-4 mb-4
+        `}>
+          <div className="flex items-center mb-2">
+            {isSafe ? (
+              <CheckCircle2 className="w-6 h-6 text-success-500 mr-2" />
+            ) : (
+              <AlertCircle className="w-6 h-6 text-danger-500 mr-2" />
+            )}
+            <h2 className={`
+              text-lg font-heading font-semibold 
+              ${isSafe ? 'text-success-700' : 'text-danger-700'}
+            `}>
+              {isSafe ? 'Safe to Consume' : 'Not Safe'}
+            </h2>
+          </div>
+          <p className={isSafe ? 'text-success-700' : 'text-danger-700'}>
+            {isSafe 
+              ? "This product does not contain any of your allergens or restrictions." 
+              : "This product contains ingredients that match your allergens or restrictions."
+            }
+          </p>
         </div>
-        <p className={isSafe ? 'text-success-700' : 'text-danger-700'}>
-          {isSafe 
-            ? "This product does not contain any of your allergens or restrictions." 
-            : "This product contains ingredients that match your allergens or restrictions."
-          }
-        </p>
-      </div>
+      )}
       
       <Card className="mb-4">
         <CardContent className="p-4 pt-4 flex items-start space-x-3">

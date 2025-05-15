@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button';
 import { Camera as CameraIcon, History, UserCog } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
@@ -58,7 +59,13 @@ const Home = () => {
       };
       
       setScanResult(result);
-      setCameraStatus('result');
+      
+      // If isSafe is null, it means the image was unclear and needs to be retaken
+      if (result.isSafe === null) {
+        setCameraStatus('retry');
+      } else {
+        setCameraStatus('result');
+      }
       
     } catch (error) {
       console.error('Error during image analysis:', error);
@@ -107,6 +114,35 @@ const Home = () => {
           </div>
           <h2 className="text-xl font-heading font-semibold mb-2">Analyzing Ingredients</h2>
           <p className="text-gray-600 text-center">Our AI is scanning the ingredients list and checking against your allergens...</p>
+        </div>
+      );
+    }
+    
+    if (cameraStatus === 'retry' && scanResult) {
+      return (
+        <div className="flex-1 flex flex-col items-center justify-center p-6">
+          <div className="w-20 h-20 rounded-full bg-warning-50 flex items-center justify-center mb-6">
+            <CameraIcon className="w-10 h-10 text-warning-500" />
+          </div>
+          <h2 className="text-xl font-heading font-semibold mb-2">Image Unclear</h2>
+          <p className="text-gray-600 text-center mb-4">{scanResult.recommendation}</p>
+          <p className="text-gray-600 text-center mb-6">{scanResult.alternativeSuggestion}</p>
+          
+          <div className="space-y-4 w-full">
+            <Button 
+              onClick={() => setCameraStatus('active')}
+              className="w-full py-6"
+            >
+              <CameraIcon className="mr-2 h-5 w-5" /> Retake Photo
+            </Button>
+            <Button 
+              variant="outline"
+              onClick={handleBackToScan}
+              className="w-full"
+            >
+              Cancel
+            </Button>
+          </div>
         </div>
       );
     }
