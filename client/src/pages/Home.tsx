@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Camera, History, UserCog } from 'lucide-react';
+import { Camera as CameraIcon, History, UserCog } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { useAllergens } from '@/hooks/useAllergens';
 import { useHistory } from '@/hooks/useHistory';
 import { ScanResult, CameraStatus, ScanAnalysisResponse } from '@/types';
 import Header from '@/components/Header';
-import Camera from '@/components/Camera';
+import CameraComponent from '@/components/Camera';
 import ResultCard from '@/components/ResultCard';
 import HistoryPage from './History';
 import AllergensPage from './Allergens';
@@ -122,7 +122,7 @@ const Home = () => {
     }
     
     return (
-      <Camera 
+      <CameraComponent 
         selectedAllergens={selectedAllergens}
         status={cameraStatus}
         onStatusChange={setCameraStatus}
@@ -142,7 +142,7 @@ const Home = () => {
             className="flex-1 py-3 data-[state=active]:border-b-2 data-[state=active]:border-primary-500 data-[state=active]:text-primary-500 rounded-none"
           >
             <div className="flex justify-center items-center gap-2">
-              <Camera className="h-4 w-4" />
+              <CameraIcon className="h-4 w-4" />
               <span>Scan</span>
             </div>
           </TabsTrigger>
