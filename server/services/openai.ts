@@ -41,7 +41,7 @@ function generatePrompt(allergens: Allergen[]): string {
   
   // If no allergens, specify that
   if (!allergenText) {
-    allergenText = "No specific allergens or restrictions provided. Please analyze all common allergens.";
+    allergenText = "No specific allergens or restrictions provided. In this case, the product should be considered SAFE by default unless there are clear warnings about common allergens.";
   }
   
   return PROMPT_TEMPLATE.replace('{{allergens}}', allergenText);
@@ -95,7 +95,7 @@ export async function analyzeImage(base64Image: string, allergens: Allergen[]): 
       recommendation: result.recommendation || "Unable to provide a clear recommendation based on the image quality",
       alternativeSuggestion: result.alternativeSuggestion || ""
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error analyzing image with OpenAI:", error);
     throw new Error(`Failed to analyze image: ${error.message || 'Unknown error'}`);
   }

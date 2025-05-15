@@ -17,6 +17,8 @@ TASK:
 3. Check if ANY of the user's allergens or restrictions are present in the ingredients
 4. Check for indirect/cross-reactive ingredients (e.g., casein contains milk protein)
 5. Determine if the product is safe for the user based on their restrictions
+   - If no specific allergens/restrictions are provided, the product should be considered SAFE by default
+   - Only mark a product as UNSAFE if it contains ingredients that match user's specific restrictions
 
 Your response must follow this JSON format strictly:
 {
