@@ -37,6 +37,13 @@ const Home = () => {
       // Extract the base64 part without the prefix for the API request
       const base64Image = imageData.split('base64,')[1];
       
+      if (!base64Image) {
+        throw new Error('Invalid image format');
+      }
+      
+      // Compress the image to reduce size if needed
+      // We're sending as-is for now since we want quality for analysis
+      
       // Send to API for analysis
       const response = await apiRequest('POST', '/api/analyze', {
         base64Image,
@@ -44,10 +51,12 @@ const Home = () => {
       });
       
       if (!response.ok) {
+        console.error('API Error:', response.status, response.statusText);
         throw new Error('Failed to analyze the image');
       }
       
       const analysisData: ScanAnalysisResponse = await response.json();
+      console.log('Analysis response:', analysisData);
       
       // Create scan result
       const result: ScanResult = {
@@ -62,6 +71,7 @@ const Home = () => {
       
       // If isSafe is null, it means the image was unclear and needs to be retaken
       if (result.isSafe === null) {
+        console.log('Image unclear - showing retry screen');
         setCameraStatus('retry');
       } else {
         setCameraStatus('result');
@@ -69,12 +79,14 @@ const Home = () => {
       
     } catch (error) {
       console.error('Error during image analysis:', error);
+      // For server errors, show retry screen instead of just error toast
+      setScanResult(null);
+      setCameraStatus('retry');
       toast({
         title: 'Analysis Failed',
-        description: 'Could not analyze the image. Please try again.',
+        description: 'Could not analyze the image. Please take a clearer photo.',
         variant: 'destructive'
       });
-      setCameraStatus('inactive');
     }
   };
   

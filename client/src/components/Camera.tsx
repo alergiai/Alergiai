@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import Webcam from 'react-webcam';
-import { Camera as CameraIcon, X } from 'lucide-react';
+import { Camera as CameraIcon, X, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Allergen } from '@/types';
 import { CameraStatus } from '@/types';
@@ -157,6 +157,62 @@ const Camera: React.FC<CameraProps> = ({
           </button>
         </div>
         
+        <div className="p-4 bg-white">
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="font-heading font-medium text-sm text-gray-500 mb-3">YOUR ALLERGENS & RESTRICTIONS</h3>
+            <AllergenList allergens={selectedAllergens} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (status === 'retry') {
+    return (
+      <div className="relative bg-white rounded-lg p-4 w-full max-w-lg mx-auto overflow-hidden">
+        <div className="bg-red-50 p-4 rounded-lg mb-4">
+          <div className="flex items-start">
+            <div className="flex-shrink-0">
+              <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-red-800">Unclear Image - Cannot Analyze</h3>
+              <div className="mt-2 text-sm text-red-700">
+                <p>We couldn't clearly read the ingredients list. For safety reasons, we cannot determine if this product is safe for you.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-yellow-50 p-4 rounded-lg mb-4">
+          <h4 className="font-medium text-yellow-800 mb-2">Tips for better results:</h4>
+          <ul className="text-sm text-yellow-700 space-y-1 ml-4 list-disc">
+            <li>Make sure the ingredients list is clearly visible</li>
+            <li>Hold the camera steady and avoid blurry images</li>
+            <li>Ensure good lighting on the packaging</li>
+            <li>Position the ingredients list within the guidebox</li>
+            <li>Try to capture the entire ingredients section</li>
+          </ul>
+        </div>
+
+        <div className="space-y-2 w-full mb-4">
+          <Button 
+            onClick={() => onStatusChange('active')}
+            className="w-full bg-primary-500 text-white hover:bg-primary-600"
+          >
+            <RefreshCw className="mr-2 h-4 w-4" /> Retake Photo
+          </Button>
+          <Button 
+            onClick={() => onStatusChange('inactive')}
+            variant="outline"
+            className="w-full"
+          >
+            Cancel Scan
+          </Button>
+        </div>
+
         <div className="p-4 bg-white">
           <div className="bg-gray-50 p-4 rounded-lg">
             <h3 className="font-heading font-medium text-sm text-gray-500 mb-3">YOUR ALLERGENS & RESTRICTIONS</h3>
