@@ -15,12 +15,18 @@ import HistoryPage from './History';
 import AllergensPage from './Allergens';
 
 const Home = () => {
-  const [, setLocation] = useLocation();
+  const [_, setLocation] = useLocation();
   const { toast } = useToast();
   const { getSelectedAllergens } = useAllergens();
   const { addToHistory } = useHistory();
   
-  const [activeTab, setActiveTab] = useState<string>('scan');
+  // Get the current path to set active tab
+  const [location] = useLocation();
+  const currentPath = location.split('/')[1]; // Get path segment after first slash
+  const initialTab = currentPath === 'history' ? 'history' : 
+                     currentPath === 'allergens' ? 'allergens' : 'scan';
+  
+  const [activeTab, setActiveTab] = useState<string>(initialTab);
   const [cameraStatus, setCameraStatus] = useState<CameraStatus>('inactive');
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);

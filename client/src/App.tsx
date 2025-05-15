@@ -11,6 +11,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/history" component={Home} />
+      <Route path="/allergens" component={Home} />
       <Route path="/result/:id" component={ScanResult} />
       <Route component={NotFound} />
     </Switch>
