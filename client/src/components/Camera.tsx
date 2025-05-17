@@ -81,17 +81,19 @@ const Camera: React.FC<CameraProps> = ({
 
   if (status === 'inactive') {
     return (
-      <SlideUp className="flex-1 flex flex-col items-center justify-center p-6 gap-6" duration={0.5}>
+      <SlideUp className="flex-1 flex flex-col items-center justify-center p-6 gap-6 bg-gradient-to-b from-blue-50 to-white" duration={0.5}>
         <Pop delay={0.1}>
-          <div className="w-48 h-48 rounded-full bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center shadow-lg">
-            <CameraIcon className="w-24 h-24 text-primary-500" />
+          <div className="w-56 h-56 rounded-full bg-gradient-to-br from-primary-200 to-primary-300 flex items-center justify-center shadow-xl">
+            <div className="w-48 h-48 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
+              <CameraIcon className="w-28 h-28 text-primary-600" />
+            </div>
           </div>
         </Pop>
-        <div className="text-center">
-          <h2 className="text-xl font-heading font-semibold mb-2 bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent">Scan Ingredients</h2>
-          <p className="text-gray-600 mb-6">Take a picture of the ingredients list on a food package to check for allergens</p>
+        <div className="text-center bg-white p-6 rounded-lg shadow-md border border-blue-100 w-full">
+          <h2 className="text-2xl font-heading font-bold mb-3 bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">Scan Ingredients</h2>
+          <p className="text-gray-700 mb-6">Take a picture of the ingredients list on a food package to check for allergens</p>
           <AnimatedButton 
-            className="w-full py-6 bg-primary-500 text-white hover:bg-primary-600 rounded-lg transition-all duration-200 shadow-md"
+            className="w-full py-6 bg-primary-500 text-white hover:bg-primary-600 rounded-lg transition-all duration-200 shadow-lg text-lg font-medium"
             onClick={handleActivateCamera}
           >
             <CameraIcon className="mr-2 h-5 w-5" /> Activate Camera
@@ -159,9 +161,9 @@ const Camera: React.FC<CameraProps> = ({
           </button>
         </div>
         
-        <SlideUp duration={0.4} delay={0.2} className="p-4 bg-white">
-          <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-            <h3 className="font-heading font-medium text-sm text-gray-500 mb-3">YOUR ALLERGENS & RESTRICTIONS</h3>
+        <SlideUp duration={0.4} delay={0.2} className="p-4 bg-blue-50 border-t border-blue-200">
+          <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
+            <h3 className="font-heading font-medium text-sm text-primary-700 mb-3">YOUR ALLERGENS & RESTRICTIONS</h3>
             <AllergenList allergens={selectedAllergens} />
           </div>
         </SlideUp>

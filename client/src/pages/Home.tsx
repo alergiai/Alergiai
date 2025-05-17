@@ -251,14 +251,14 @@ const Home = () => {
   };
   
   return (
-    <PageTransition className="max-w-md mx-auto bg-white min-h-screen flex flex-col">
+    <PageTransition className="max-w-md mx-auto bg-gray-100 min-h-screen flex flex-col">
       <Header />
       
       <Tabs defaultValue="scan" value={activeTab} onValueChange={handleTabChange} className="flex-1 flex flex-col">
-        <TabsList className="flex h-auto p-0 bg-white border-b border-gray-200">
+        <TabsList className="flex h-auto p-0 bg-white border-b border-gray-200 shadow-sm">
           <TabsTrigger 
             value="scan" 
-            className="flex-1 py-3 data-[state=active]:border-b-2 data-[state=active]:border-primary-500 data-[state=active]:text-primary-500 rounded-none transition-all duration-200"
+            className="flex-1 py-3 data-[state=active]:border-b-2 data-[state=active]:border-primary-500 data-[state=active]:text-primary-500 data-[state=active]:bg-primary-50 rounded-none transition-all duration-200"
           >
             <div className="flex justify-center items-center gap-2">
               <CameraIcon className="h-4 w-4" />
@@ -267,7 +267,7 @@ const Home = () => {
           </TabsTrigger>
           <TabsTrigger 
             value="history" 
-            className="flex-1 py-3 data-[state=active]:border-b-2 data-[state=active]:border-primary-500 data-[state=active]:text-primary-500 rounded-none transition-all duration-200"
+            className="flex-1 py-3 data-[state=active]:border-b-2 data-[state=active]:border-primary-500 data-[state=active]:text-primary-500 data-[state=active]:bg-primary-50 rounded-none transition-all duration-200"
           >
             <div className="flex justify-center items-center gap-2">
               <History className="h-4 w-4" />
@@ -276,7 +276,7 @@ const Home = () => {
           </TabsTrigger>
           <TabsTrigger 
             value="allergens" 
-            className="flex-1 py-3 data-[state=active]:border-b-2 data-[state=active]:border-primary-500 data-[state=active]:text-primary-500 rounded-none transition-all duration-200"
+            className="flex-1 py-3 data-[state=active]:border-b-2 data-[state=active]:border-primary-500 data-[state=active]:text-primary-500 data-[state=active]:bg-primary-50 rounded-none transition-all duration-200"
           >
             <div className="flex justify-center items-center gap-2">
               <UserCog className="h-4 w-4" />
