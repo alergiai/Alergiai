@@ -81,19 +81,19 @@ const Camera: React.FC<CameraProps> = ({
 
   if (status === 'inactive') {
     return (
-      <SlideUp className="flex-1 flex flex-col items-center justify-center p-6 gap-6 bg-gradient-to-b from-blue-50 to-white" duration={0.5}>
+      <SlideUp className="flex-1 flex flex-col items-center justify-center p-6 gap-6" duration={0.5}>
         <Pop delay={0.1}>
-          <div className="w-56 h-56 rounded-full bg-gradient-to-br from-primary-200 to-primary-300 flex items-center justify-center shadow-xl">
-            <div className="w-48 h-48 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center">
-              <CameraIcon className="w-28 h-28 text-primary-600" />
+          <div className="w-44 h-44 rounded-full bg-white flex items-center justify-center shadow-lg">
+            <div className="w-36 h-36 rounded-full border-[3px] border-primary-200 flex items-center justify-center">
+              <CameraIcon className="w-20 h-20 text-primary-600" />
             </div>
           </div>
         </Pop>
-        <div className="text-center bg-white p-6 rounded-lg shadow-md border border-blue-100 w-full">
-          <h2 className="text-2xl font-heading font-bold mb-3 bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">Scan Ingredients</h2>
-          <p className="text-gray-700 mb-6">Take a picture of the ingredients list on a food package to check for allergens</p>
+        <div className="text-center bg-white p-6 rounded-2xl shadow-lg w-full">
+          <h2 className="text-2xl font-bold mb-3 text-gray-900">Scan Ingredients</h2>
+          <p className="text-gray-600 mb-6">Take a picture of the ingredients list on a food package to check for allergens</p>
           <AnimatedButton 
-            className="w-full py-6 bg-primary-500 text-white hover:bg-primary-600 rounded-lg transition-all duration-200 shadow-lg text-lg font-medium"
+            className="w-full py-5 bg-primary text-white hover:bg-primary/90 rounded-xl transition-all duration-200 shadow-md text-lg font-medium"
             onClick={handleActivateCamera}
           >
             <CameraIcon className="mr-2 h-5 w-5" /> Activate Camera

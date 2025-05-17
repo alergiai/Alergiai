@@ -45,40 +45,51 @@ const ResultCard: React.FC<ResultCardProps> = ({ result, onBack, onSave }) => {
       
       {isSafe !== null && (
         <Pop duration={0.4}>
-          <div className={`
-            ${isSafe 
-              ? 'bg-emerald-600 text-white border-emerald-700' 
-              : 'bg-rose-600 text-white border-rose-700'} 
-            border-2 rounded-lg p-6 mb-6 shadow-lg
-          `}>
-            <div className="flex items-center mb-3">
-              {isSafe ? (
-                <CheckCircle2 className="w-8 h-8 text-white mr-3 animate-pulse-subtle" />
-              ) : (
-                <AlertCircle className="w-8 h-8 text-white mr-3 animate-pulse-subtle" />
-              )}
-              <h2 className="text-2xl font-bold text-white">
-                {isSafe ? 'SAFE TO CONSUME' : 'NOT SAFE'}
-              </h2>
+          <div className="bg-white rounded-2xl p-6 mb-5 shadow-lg">
+            <div className={`
+              ${isSafe 
+                ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
+                : 'bg-rose-50 border-rose-200 text-rose-800'} 
+              border rounded-xl p-4 mb-2
+            `}>
+              <div className="flex items-center">
+                <div className={`
+                  ${isSafe ? 'bg-emerald-500' : 'bg-rose-500'} 
+                  p-3 rounded-full mr-4
+                `}>
+                  {isSafe ? (
+                    <CheckCircle2 className="w-6 h-6 text-white" />
+                  ) : (
+                    <AlertCircle className="w-6 h-6 text-white" />
+                  )}
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold">
+                    {isSafe ? 'Safe to Consume' : 'Not Safe'}
+                  </h2>
+                  <p className={`text-base ${isSafe ? 'text-emerald-700' : 'text-rose-700'}`}>
+                    {isSafe 
+                      ? "No allergens or restrictions found" 
+                      : "Contains ingredients that match your restrictions"
+                    }
+                  </p>
+                </div>
+              </div>
             </div>
-            <p className="text-white text-lg ml-11">
+            <div className="text-gray-600 text-sm px-2">
               {isSafe 
-                ? "This product does not contain any of your allergens or restrictions." 
-                : "This product contains ingredients that match your allergens or restrictions."
+                ? "This product appears to be safe based on your specified allergens and dietary restrictions." 
+                : "This product contains ingredients that match your specified allergens or dietary restrictions."
               }
-            </p>
+            </div>
           </div>
         </Pop>
       )}
       
       <SlideUp duration={0.5} delay={0.1}>
-        <Card className="mb-5 shadow-lg overflow-hidden border-2 border-gray-300 bg-white">
-          <CardHeader className="p-4 bg-gray-100">
-            <CardTitle className="text-lg font-bold">Product Information</CardTitle>
-          </CardHeader>
-          
-          <CardContent className="p-4 pt-4 flex items-start space-x-3 bg-white">
-            <div className="w-18 h-18 bg-gray-100 rounded-md overflow-hidden shadow-md border border-gray-300">
+        <div className="bg-white rounded-2xl p-5 mb-5 shadow-lg">
+          <div className="flex items-start space-x-4 mb-4">
+            <div className="w-20 h-20 bg-gray-100 rounded-xl overflow-hidden shadow-sm">
               {result.imageUrl && (
                 <img 
                   src={result.imageUrl} 
@@ -89,88 +100,86 @@ const ResultCard: React.FC<ResultCardProps> = ({ result, onBack, onSave }) => {
             </div>
             
             <div>
-              <h3 className="text-lg font-bold text-gray-900">{productName}</h3>
+              <h3 className="text-xl font-bold text-gray-900">{productName}</h3>
               <p className="text-sm text-gray-500">
                 Scanned on {format(new Date(result.timestamp), 'MMMM d, yyyy')}
               </p>
             </div>
-          </CardContent>
+          </div>
           
           {detectedAllergens.length > 0 && (
-            <div className="mt-2">
-              <CardHeader className="p-3 border-t-2 border-b-2 border-gray-200 bg-rose-50">
-                <CardTitle className="text-rose-800 text-base font-bold">
-                  DETECTED ALLERGENS
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-4 bg-white">
-                <StaggeredList className="space-y-3" staggerDelay={0.1}>
-                  {detectedAllergens.map((allergen, index) => (
-                    <div key={index} className={`flex items-start p-3 rounded-lg border-l-4 ${
-                      allergen.severity === 'unsafe' ? 
-                        'border-l-rose-500 bg-rose-50' : 
-                        'border-l-amber-500 bg-amber-50'
-                    }`}>
-                      <div className="mr-3 mt-0.5">
+            <div className="mt-4 mb-5">
+              <h4 className="text-base font-bold text-gray-900 mb-3">Detected Allergens</h4>
+              <StaggeredList className="space-y-3" staggerDelay={0.1}>
+                {detectedAllergens.map((allergen, index) => (
+                  <div key={index} className="bg-white rounded-xl shadow-sm p-3 border border-gray-100">
+                    <div className="flex items-center">
+                      <div className={`${
+                        allergen.severity === 'unsafe' ? 
+                          'bg-rose-500' : 
+                          'bg-amber-500'
+                      } p-2 rounded-full mr-3`}>
                         {allergen.severity === 'unsafe' ? (
-                          <XCircle className="w-5 h-5 text-rose-600" />
+                          <XCircle className="w-4 h-4 text-white" />
                         ) : (
-                          <AlertTriangle className="w-5 h-5 text-amber-600" />
+                          <AlertTriangle className="w-4 h-4 text-white" />
                         )}
                       </div>
                       <div>
                         <h5 className="font-bold text-gray-900">
                           {allergen.severity === 'caution' ? `May contain ${allergen.name}` : allergen.name}
                         </h5>
-                        <p className="text-sm text-gray-700">Found in ingredients: <span className="font-medium">{allergen.found}</span></p>
+                        <p className="text-sm text-gray-700">Found in: <span className="font-medium">{allergen.found}</span></p>
                       </div>
                     </div>
-                  ))}
-                </StaggeredList>
-              </CardContent>
+                  </div>
+                ))}
+              </StaggeredList>
             </div>
           )}
           
-          <CardHeader className="p-3 border-t-2 border-b-2 border-gray-200 bg-gray-100">
-            <CardTitle className="text-gray-700 text-base font-bold">
-              FULL INGREDIENTS LIST
-            </CardTitle>
-          </CardHeader>
-          
-          <CardContent className="p-4 bg-white">
-            <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-lg border border-gray-200">
-              {ingredients}
-            </p>
-          </CardContent>
-        </Card>
+          <div className="mb-4">
+            <h4 className="text-base font-bold text-gray-900 mb-3">Full Ingredients List</h4>
+            <div className="bg-gray-50 p-4 rounded-xl">
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {ingredients}
+              </p>
+            </div>
+          </div>
+        </div>
       </SlideUp>
       
       <SlideUp duration={0.5} delay={0.2}>
-        <Card className="mb-6 shadow-lg overflow-hidden border-2 border-primary-300 bg-white">
-          <CardHeader className="p-3 bg-primary-100">
-            <CardTitle className="text-primary-800 text-base font-bold">AI RECOMMENDATION</CardTitle>
-          </CardHeader>
-          
-          <CardContent className="p-4 bg-white">
-            <p className="text-gray-700 mb-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <div className="bg-white rounded-2xl p-5 mb-5 shadow-lg">
+          <h4 className="text-base font-bold text-gray-900 mb-3">AI Recommendation</h4>
+          <div className="bg-gray-50 p-4 rounded-xl mb-4">
+            <p className="text-gray-700">
               {recommendation}
             </p>
-            {alternativeSuggestion && (
-              <FadeIn delay={0.3}>
-                <div className="bg-primary-100 p-4 rounded-lg border border-primary-300 shadow">
-                  <h5 className="font-bold text-primary-800 mb-2">Alternative Suggestions</h5>
-                  <p className="text-primary-700">{alternativeSuggestion}</p>
+          </div>
+          
+          {alternativeSuggestion && (
+            <FadeIn delay={0.3}>
+              <div className="bg-white rounded-xl border border-primary-200 p-4 shadow-sm">
+                <div className="flex items-center mb-2">
+                  <div className="bg-primary-100 p-2 rounded-full mr-2">
+                    <svg className="w-4 h-4 text-primary-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <h5 className="font-bold text-gray-900">Alternative Suggestions</h5>
                 </div>
-              </FadeIn>
-            )}
-          </CardContent>
-        </Card>
+                <p className="text-gray-700 pl-8">{alternativeSuggestion}</p>
+              </div>
+            </FadeIn>
+          )}
+        </div>
       </SlideUp>
       
       <FadeIn delay={0.3}>
         <AnimatedButton 
           onClick={onSave}
-          className="w-full bg-primary-500 hover:bg-primary-600 text-white py-3 rounded-lg shadow-md transition-all duration-200 flex items-center justify-center"
+          className="w-full bg-primary hover:bg-primary/90 text-white py-4 rounded-xl shadow-md transition-all duration-200 flex items-center justify-center text-lg font-medium"
         >
           <Save className="mr-2 h-5 w-5" /> Save to History
         </AnimatedButton>
