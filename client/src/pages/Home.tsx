@@ -151,52 +151,53 @@ const Home = () => {
   const renderScanContent = () => {
     if (cameraStatus === 'loading') {
       return (
-        <div className="flex-1 flex flex-col items-center justify-center p-6">
-          <div className="w-20 h-20 rounded-full bg-primary-50 flex items-center justify-center mb-6 animate-pulse">
+        <SlideUp className="flex-1 flex flex-col items-center justify-center p-6" duration={0.5}>
+          <div className="w-20 h-20 rounded-full bg-primary-50 flex items-center justify-center mb-6 animate-pulse shadow-lg">
             <div className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <h2 className="text-xl font-heading font-semibold mb-2">Analyzing Ingredients</h2>
+          <h2 className="text-xl font-heading font-semibold mb-2 bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent">Analyzing Ingredients</h2>
           <p className="text-gray-600 text-center">Our AI is scanning the ingredients list and checking against your allergens...</p>
-        </div>
+        </SlideUp>
       );
     }
     
     if (cameraStatus === 'retry' && scanResult) {
       return (
-        <div className="flex-1 flex flex-col items-center justify-center p-6">
-          <div className="w-20 h-20 rounded-full bg-warning-50 flex items-center justify-center mb-6">
+        <SlideUp className="flex-1 flex flex-col items-center justify-center p-6" duration={0.4}>
+          <div className="w-20 h-20 rounded-full bg-warning-50 flex items-center justify-center mb-6 shadow-lg">
             <CameraIcon className="w-10 h-10 text-warning-500" />
           </div>
-          <h2 className="text-xl font-heading font-semibold mb-2">Image Unclear</h2>
+          <h2 className="text-xl font-heading font-semibold mb-2 bg-gradient-to-r from-amber-500 to-amber-600 bg-clip-text text-transparent">Image Unclear</h2>
           <p className="text-gray-600 text-center mb-4">{scanResult.recommendation}</p>
           <p className="text-gray-600 text-center mb-6">{scanResult.alternativeSuggestion}</p>
           
           <div className="space-y-4 w-full">
-            <Button 
+            <AnimatedButton 
               onClick={() => setCameraStatus('active')}
-              className="w-full py-6"
+              className="w-full py-6 bg-primary-500 text-white hover:bg-primary-600 rounded-lg transition-all duration-200"
             >
               <CameraIcon className="mr-2 h-5 w-5" /> Retake Photo
-            </Button>
-            <Button 
-              variant="outline"
+            </AnimatedButton>
+            <AnimatedButton 
               onClick={handleBackToScan}
-              className="w-full"
+              className="w-full py-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200"
             >
               Cancel
-            </Button>
+            </AnimatedButton>
           </div>
-        </div>
+        </SlideUp>
       );
     }
     
     if (cameraStatus === 'result' && scanResult) {
       return (
-        <ResultCard 
-          result={scanResult} 
-          onBack={handleBackToScan} 
-          onSave={handleSaveToHistory} 
-        />
+        <SlideUp duration={0.5}>
+          <ResultCard 
+            result={scanResult} 
+            onBack={handleBackToScan} 
+            onSave={handleSaveToHistory} 
+          />
+        </SlideUp>
       );
     }
     

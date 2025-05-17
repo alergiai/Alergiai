@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Allergen } from '@/types';
 import { CameraStatus } from '@/types';
 import AllergenList from './AllergenList';
+import { FadeIn, SlideUp, AnimatedButton, Pop } from '@/components/ui/animations';
 
 interface CameraProps {
   selectedAllergens: Allergen[];
@@ -80,41 +81,42 @@ const Camera: React.FC<CameraProps> = ({
 
   if (status === 'inactive') {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-6 gap-6">
-        <div className="w-48 h-48 rounded-full bg-primary-50 flex items-center justify-center">
-          <CameraIcon className="w-24 h-24 text-primary-500" />
-        </div>
+      <SlideUp className="flex-1 flex flex-col items-center justify-center p-6 gap-6" duration={0.5}>
+        <Pop delay={0.1}>
+          <div className="w-48 h-48 rounded-full bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center shadow-lg">
+            <CameraIcon className="w-24 h-24 text-primary-500" />
+          </div>
+        </Pop>
         <div className="text-center">
-          <h2 className="text-xl font-heading font-semibold mb-2">Scan Ingredients</h2>
+          <h2 className="text-xl font-heading font-semibold mb-2 bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent">Scan Ingredients</h2>
           <p className="text-gray-600 mb-6">Take a picture of the ingredients list on a food package to check for allergens</p>
-          <Button 
-            className="w-full py-6"
+          <AnimatedButton 
+            className="w-full py-6 bg-primary-500 text-white hover:bg-primary-600 rounded-lg transition-all duration-200 shadow-md"
             onClick={handleActivateCamera}
           >
             <CameraIcon className="mr-2 h-5 w-5" /> Activate Camera
-          </Button>
+          </AnimatedButton>
         </div>
-      </div>
+      </SlideUp>
     );
   }
 
   if (status === 'active') {
     return (
-      <div className="flex-1 flex flex-col">
+      <FadeIn duration={0.4} className="flex-1 flex flex-col">
         <div className="relative aspect-[3/4] bg-black">
           {hasPermissions === false && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-white bg-black/90">
+            <FadeIn className="absolute inset-0 flex flex-col items-center justify-center p-4 text-white bg-black/90">
               <CameraIcon className="w-16 h-16 mb-4 text-gray-400" />
               <h3 className="text-xl font-semibold mb-2">Camera Access Required</h3>
               <p className="text-center text-gray-300 mb-4">{error || "Please allow camera access to scan ingredients"}</p>
-              <Button 
+              <AnimatedButton 
                 onClick={handleDeactivateCamera}
-                variant="outline"
-                className="bg-white text-black hover:bg-gray-100"
+                className="bg-white text-black hover:bg-gray-100 rounded-md px-4 py-2"
               >
                 Go Back
-              </Button>
-            </div>
+              </AnimatedButton>
+            </FadeIn>
           )}
           <Webcam
             audio={false}
@@ -131,8 +133,8 @@ const Camera: React.FC<CameraProps> = ({
           />
           
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-3/4 h-2/3 rounded-lg flex items-center justify-center border-2 border-dashed border-white bg-black/10">
-              <span className="text-white text-sm font-medium bg-black/50 px-3 py-1 rounded-full">
+            <div className="w-3/4 h-2/3 rounded-lg flex items-center justify-center border-2 border-dashed border-white bg-black/10 animate-pulse">
+              <span className="text-white text-sm font-medium bg-black/60 px-3 py-1 rounded-full backdrop-blur-sm shadow-lg">
                 Position ingredients list here
               </span>
             </div>
@@ -141,7 +143,7 @@ const Camera: React.FC<CameraProps> = ({
           <div className="absolute bottom-6 inset-x-0 flex justify-center">
             <button 
               type="button" 
-              className="w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center"
+              className="w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150"
               onClick={handleCaptureClick}
             >
               <div className="w-12 h-12 rounded-full border-2 border-gray-300"></div>
@@ -150,29 +152,29 @@ const Camera: React.FC<CameraProps> = ({
           
           <button 
             type="button" 
-            className="absolute top-4 left-4 p-2 rounded-full bg-black/50 text-white"
+            className="absolute top-4 left-4 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors duration-200"
             onClick={handleDeactivateCamera}
           >
             <X className="w-5 h-5" />
           </button>
         </div>
         
-        <div className="p-4 bg-white">
-          <div className="bg-gray-50 p-4 rounded-lg">
+        <SlideUp duration={0.4} delay={0.2} className="p-4 bg-white">
+          <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
             <h3 className="font-heading font-medium text-sm text-gray-500 mb-3">YOUR ALLERGENS & RESTRICTIONS</h3>
             <AllergenList allergens={selectedAllergens} />
           </div>
-        </div>
-      </div>
+        </SlideUp>
+      </FadeIn>
     );
   }
 
   if (status === 'retry') {
     return (
-      <div className="relative bg-white rounded-lg p-4 w-full max-w-lg mx-auto overflow-hidden">
-        <div className="bg-red-50 p-4 rounded-lg mb-4">
+      <SlideUp className="relative bg-white rounded-lg p-4 w-full max-w-lg mx-auto overflow-hidden shadow-lg" duration={0.4}>
+        <FadeIn className="bg-red-50 p-4 rounded-lg mb-4 shadow-sm">
           <div className="flex items-start">
-            <div className="flex-shrink-0">
+            <div className="flex-shrink-0 mt-1">
               <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
@@ -184,9 +186,9 @@ const Camera: React.FC<CameraProps> = ({
               </div>
             </div>
           </div>
-        </div>
+        </FadeIn>
 
-        <div className="bg-yellow-50 p-4 rounded-lg mb-4">
+        <SlideUp className="bg-yellow-50 p-4 rounded-lg mb-4 shadow-sm" delay={0.1}>
           <h4 className="font-medium text-yellow-800 mb-2">Tips for better results:</h4>
           <ul className="text-sm text-yellow-700 space-y-1 ml-4 list-disc">
             <li>Make sure the ingredients list is clearly visible</li>
@@ -195,31 +197,30 @@ const Camera: React.FC<CameraProps> = ({
             <li>Position the ingredients list within the guidebox</li>
             <li>Try to capture the entire ingredients section</li>
           </ul>
-        </div>
+        </SlideUp>
 
-        <div className="space-y-2 w-full mb-4">
-          <Button 
+        <FadeIn className="space-y-2 w-full mb-4" delay={0.2}>
+          <AnimatedButton 
             onClick={() => onStatusChange('active')}
-            className="w-full bg-primary-500 text-white hover:bg-primary-600"
+            className="w-full py-3 bg-primary-500 text-white hover:bg-primary-600 rounded-lg transition-all duration-200 shadow-md"
           >
-            <RefreshCw className="mr-2 h-4 w-4" /> Retake Photo
-          </Button>
-          <Button 
+            <RefreshCw className="mr-2 h-4 w-4 animate-spin-slow" /> Retake Photo
+          </AnimatedButton>
+          <AnimatedButton 
             onClick={() => onStatusChange('inactive')}
-            variant="outline"
-            className="w-full"
+            className="w-full py-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200"
           >
             Cancel Scan
-          </Button>
-        </div>
+          </AnimatedButton>
+        </FadeIn>
 
-        <div className="p-4 bg-white">
-          <div className="bg-gray-50 p-4 rounded-lg">
+        <SlideUp className="p-4 bg-white" delay={0.3}>
+          <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
             <h3 className="font-heading font-medium text-sm text-gray-500 mb-3">YOUR ALLERGENS & RESTRICTIONS</h3>
             <AllergenList allergens={selectedAllergens} />
           </div>
-        </div>
-      </div>
+        </SlideUp>
+      </SlideUp>
     );
   }
 
