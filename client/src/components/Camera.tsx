@@ -161,9 +161,9 @@ const Camera: React.FC<CameraProps> = ({
           </button>
         </div>
         
-        <SlideUp duration={0.4} delay={0.2} className="p-4 bg-blue-50 border-t border-blue-200">
-          <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200">
-            <h3 className="font-heading font-medium text-sm text-primary-700 mb-3">YOUR ALLERGENS & RESTRICTIONS</h3>
+        <SlideUp duration={0.4} delay={0.2} className="p-4">
+          <div className="bg-white p-5 rounded-2xl shadow-lg">
+            <h3 className="font-medium text-sm text-gray-800 mb-3">YOUR ALLERGENS & RESTRICTIONS</h3>
             <AllergenList allergens={selectedAllergens} />
           </div>
         </SlideUp>
@@ -173,55 +173,55 @@ const Camera: React.FC<CameraProps> = ({
 
   if (status === 'retry') {
     return (
-      <SlideUp className="relative bg-white rounded-lg p-4 w-full max-w-lg mx-auto overflow-hidden shadow-lg" duration={0.4}>
-        <FadeIn className="bg-red-50 p-4 rounded-lg mb-4 shadow-sm">
-          <div className="flex items-start">
-            <div className="flex-shrink-0 mt-1">
-              <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+      <SlideUp className="flex flex-col items-center justify-center p-6" duration={0.4}>
+        <div className="bg-white p-6 rounded-2xl shadow-lg mb-4 w-full">
+          <div className="flex items-center mb-4">
+            <div className="bg-rose-100 p-3 rounded-full mr-3">
+              <svg className="h-6 w-6 text-rose-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
             </div>
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">Unclear Image - Cannot Analyze</h3>
-              <div className="mt-2 text-sm text-red-700">
-                <p>We couldn't clearly read the ingredients list. For safety reasons, we cannot determine if this product is safe for you.</p>
-              </div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-900">Unclear Image</h3>
+              <p className="text-sm text-gray-600">We couldn't clearly read the ingredients list</p>
             </div>
           </div>
-        </FadeIn>
 
-        <SlideUp className="bg-yellow-50 p-4 rounded-lg mb-4 shadow-sm" delay={0.1}>
-          <h4 className="font-medium text-yellow-800 mb-2">Tips for better results:</h4>
-          <ul className="text-sm text-yellow-700 space-y-1 ml-4 list-disc">
-            <li>Make sure the ingredients list is clearly visible</li>
-            <li>Hold the camera steady and avoid blurry images</li>
-            <li>Ensure good lighting on the packaging</li>
-            <li>Position the ingredients list within the guidebox</li>
-            <li>Try to capture the entire ingredients section</li>
-          </ul>
-        </SlideUp>
-
-        <FadeIn className="space-y-2 w-full mb-4" delay={0.2}>
-          <AnimatedButton 
-            onClick={() => onStatusChange('active')}
-            className="w-full py-3 bg-primary-500 text-white hover:bg-primary-600 rounded-lg transition-all duration-200 shadow-md"
-          >
-            <RefreshCw className="mr-2 h-4 w-4 animate-spin-slow" /> Retake Photo
-          </AnimatedButton>
-          <AnimatedButton 
-            onClick={() => onStatusChange('inactive')}
-            className="w-full py-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200"
-          >
-            Cancel Scan
-          </AnimatedButton>
-        </FadeIn>
-
-        <SlideUp className="p-4 bg-white" delay={0.3}>
-          <div className="bg-gray-50 p-4 rounded-lg shadow-sm">
-            <h3 className="font-heading font-medium text-sm text-gray-500 mb-3">YOUR ALLERGENS & RESTRICTIONS</h3>
-            <AllergenList allergens={selectedAllergens} />
+          <div className="bg-amber-50 p-4 rounded-xl mb-4">
+            <p className="text-gray-700">For safety reasons, we cannot determine if this product is safe for you. Please try taking another photo.</p>
           </div>
-        </SlideUp>
+
+          <div className="bg-white p-4 rounded-xl mb-4 border border-gray-100">
+            <h4 className="font-medium text-gray-800 mb-2">Tips for better results:</h4>
+            <ul className="text-sm text-gray-700 space-y-1 ml-4 list-disc">
+              <li>Make sure the ingredients list is clearly visible</li>
+              <li>Hold the camera steady and avoid blurry images</li>
+              <li>Ensure good lighting on the packaging</li>
+              <li>Position the ingredients list within the guidebox</li>
+              <li>Try to capture the entire ingredients section</li>
+            </ul>
+          </div>
+
+          <div className="space-y-3 w-full">
+            <AnimatedButton 
+              onClick={() => onStatusChange('active')}
+              className="w-full py-4 bg-primary text-white hover:bg-primary/90 rounded-xl transition-all duration-200 font-medium"
+            >
+              <RefreshCw className="mr-2 h-4 w-4 animate-spin-slow" /> Retake Photo
+            </AnimatedButton>
+            <AnimatedButton 
+              onClick={() => onStatusChange('inactive')}
+              className="w-full py-3 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 rounded-xl transition-colors duration-200"
+            >
+              Cancel Scan
+            </AnimatedButton>
+          </div>
+        </div>
+
+        <div className="bg-white p-5 rounded-2xl shadow-lg w-full">
+          <h3 className="font-medium text-sm text-gray-800 mb-3">YOUR ALLERGENS & RESTRICTIONS</h3>
+          <AllergenList allergens={selectedAllergens} />
+        </div>
       </SlideUp>
     );
   }

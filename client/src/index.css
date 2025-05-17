@@ -31,7 +31,7 @@
 
   @layer base {
     body {
-      @apply bg-gradient-to-b from-slate-100 to-slate-50 min-h-screen;
+      @apply bg-gradient-to-b from-gray-50 to-slate-50 min-h-screen;
     }
   }
   .dark {

@@ -156,8 +156,8 @@ const Home = () => {
     if (cameraStatus === 'inactive') {
       return (
         <SlideUp className="flex-1 flex flex-col items-center justify-center p-6" duration={0.4}>
-          <div className="text-center mb-4">
-            <h1 className="text-2xl font-bold mb-3 bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
+          <div className="text-center mb-6">
+            <h1 className="text-2xl font-bold mb-3 text-gray-900">
               Scan Food Packaging
             </h1>
             <p className="text-gray-600">
@@ -167,23 +167,28 @@ const Home = () => {
           
           <button 
             onClick={handleStartCamera}
-            className="w-56 h-56 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center mb-8 shadow-lg cursor-pointer relative group"
+            className="w-44 h-44 bg-white rounded-full flex items-center justify-center mb-8 shadow-lg cursor-pointer relative group"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-primary-200 to-primary-300 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            <div className="relative z-10 flex flex-col items-center">
-              <CameraIcon className="w-24 h-24 text-primary-500 mb-2" />
-              <span className="text-primary-700 bg-white px-4 py-2 rounded-full shadow font-medium">
+            <div className="w-36 h-36 rounded-full border-[3px] border-primary-200 flex items-center justify-center">
+              <CameraIcon className="w-20 h-20 text-primary-600" />
+            </div>
+            <div className="absolute bottom-0 transform translate-y-1/2">
+              <span className="bg-white px-4 py-2 rounded-full shadow-md font-medium text-gray-800 border border-gray-100">
                 Tap to scan
               </span>
             </div>
           </button>
           
-          <AnimatedButton
-            onClick={handleStartCamera}
-            className="w-full bg-primary-500 text-white py-4 px-6 rounded-lg font-medium shadow-md hover:bg-primary-600 transition-colors text-center text-lg"
-          >
-            Start Camera
-          </AnimatedButton>
+          <div className="w-full">
+            <div className="bg-white p-6 rounded-2xl shadow-lg mb-4">
+              <AnimatedButton
+                onClick={handleStartCamera}
+                className="w-full bg-primary hover:bg-primary/90 text-white py-4 px-6 rounded-xl font-medium shadow-md transition-colors text-center text-lg"
+              >
+                Start Camera
+              </AnimatedButton>
+            </div>
+          </div>
         </SlideUp>
       );
     }
@@ -191,38 +196,52 @@ const Home = () => {
     if (cameraStatus === 'loading') {
       return (
         <SlideUp className="flex-1 flex flex-col items-center justify-center p-6" duration={0.5}>
-          <div className="w-20 h-20 rounded-full bg-primary-50 flex items-center justify-center mb-6 animate-pulse shadow-lg">
-            <div className="w-10 h-10 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div>
+          <div className="bg-white p-8 rounded-2xl shadow-lg mb-4 w-full flex flex-col items-center">
+            <div className="w-20 h-20 rounded-full bg-white flex items-center justify-center mb-6 shadow-md">
+              <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+            </div>
+            <h2 className="text-xl font-semibold mb-2 text-gray-900">Analyzing Ingredients</h2>
+            <p className="text-gray-600 text-center">Our AI is scanning the ingredients list and checking against your allergens...</p>
           </div>
-          <h2 className="text-xl font-heading font-semibold mb-2 bg-gradient-to-r from-primary-500 to-primary-700 bg-clip-text text-transparent">Analyzing Ingredients</h2>
-          <p className="text-gray-600 text-center">Our AI is scanning the ingredients list and checking against your allergens...</p>
         </SlideUp>
       );
     }
     
     if (cameraStatus === 'retry' && scanResult) {
       return (
-        <SlideUp className="flex-1 flex flex-col items-center justify-center p-6 bg-gray-50" duration={0.4}>
-          <div className="w-20 h-20 rounded-full bg-warning-50 flex items-center justify-center mb-6 shadow-lg">
-            <CameraIcon className="w-10 h-10 text-warning-500" />
-          </div>
-          <h2 className="text-xl font-heading font-semibold mb-2 bg-gradient-to-r from-amber-500 to-amber-600 bg-clip-text text-transparent">Image Unclear</h2>
-          <p className="text-gray-600 text-center mb-4">{scanResult.recommendation}</p>
-          <p className="text-gray-600 text-center mb-6">{scanResult.alternativeSuggestion}</p>
-          
-          <div className="space-y-4 w-full">
-            <AnimatedButton 
-              onClick={() => setCameraStatus('active')}
-              className="w-full py-6 bg-primary-500 text-white hover:bg-primary-600 rounded-lg transition-all duration-200 text-lg font-medium"
-            >
-              <CameraIcon className="mr-2 h-5 w-5" /> Retake Photo
-            </AnimatedButton>
-            <AnimatedButton 
-              onClick={handleBackToScan}
-              className="w-full py-2 border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200"
-            >
-              Cancel
-            </AnimatedButton>
+        <SlideUp className="flex-1 flex flex-col items-center justify-center p-6" duration={0.4}>
+          <div className="bg-white p-6 rounded-2xl shadow-lg mb-4 w-full">
+            <div className="flex items-center mb-4">
+              <div className="bg-amber-100 p-3 rounded-full mr-3">
+                <CameraIcon className="w-6 h-6 text-amber-500" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Image Unclear</h2>
+                <p className="text-sm text-gray-600">We couldn't process this image clearly</p>
+              </div>
+            </div>
+            
+            <div className="bg-amber-50 p-4 rounded-xl mb-4">
+              <p className="text-gray-700">{scanResult.recommendation}</p>
+              {scanResult.alternativeSuggestion && (
+                <p className="text-gray-700 mt-2">{scanResult.alternativeSuggestion}</p>
+              )}
+            </div>
+            
+            <div className="space-y-3 w-full">
+              <AnimatedButton 
+                onClick={() => setCameraStatus('active')}
+                className="w-full py-4 bg-primary text-white hover:bg-primary/90 rounded-xl transition-all duration-200 font-medium"
+              >
+                <CameraIcon className="mr-2 h-5 w-5" /> Retake Photo
+              </AnimatedButton>
+              <AnimatedButton 
+                onClick={handleBackToScan}
+                className="w-full py-3 border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 rounded-xl transition-colors duration-200"
+              >
+                Cancel
+              </AnimatedButton>
+            </div>
           </div>
         </SlideUp>
       );
