@@ -148,7 +148,46 @@ const Home = () => {
   };
   
   // Content based on camera status
+  const handleStartCamera = () => {
+    setCameraStatus('active');
+  };
+
   const renderScanContent = () => {
+    if (cameraStatus === 'inactive') {
+      return (
+        <SlideUp className="flex-1 flex flex-col items-center justify-center p-6" duration={0.4}>
+          <div className="text-center mb-4">
+            <h1 className="text-2xl font-bold mb-3 bg-gradient-to-r from-primary-600 to-primary-800 bg-clip-text text-transparent">
+              Scan Food Packaging
+            </h1>
+            <p className="text-gray-600">
+              Take a photo of ingredients list to check if a product is safe for you.
+            </p>
+          </div>
+          
+          <button 
+            onClick={handleStartCamera}
+            className="w-56 h-56 bg-gradient-to-br from-primary-100 to-primary-200 rounded-full flex items-center justify-center mb-8 shadow-lg cursor-pointer relative group"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-200 to-primary-300 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="relative z-10 flex flex-col items-center">
+              <CameraIcon className="w-24 h-24 text-primary-500 mb-2" />
+              <span className="text-primary-700 bg-white px-4 py-2 rounded-full shadow font-medium">
+                Tap to scan
+              </span>
+            </div>
+          </button>
+          
+          <AnimatedButton
+            onClick={handleStartCamera}
+            className="w-full bg-primary-500 text-white py-4 px-6 rounded-lg font-medium shadow-md hover:bg-primary-600 transition-colors text-center text-lg"
+          >
+            Start Camera
+          </AnimatedButton>
+        </SlideUp>
+      );
+    }
+    
     if (cameraStatus === 'loading') {
       return (
         <SlideUp className="flex-1 flex flex-col items-center justify-center p-6" duration={0.5}>
@@ -163,7 +202,7 @@ const Home = () => {
     
     if (cameraStatus === 'retry' && scanResult) {
       return (
-        <SlideUp className="flex-1 flex flex-col items-center justify-center p-6" duration={0.4}>
+        <SlideUp className="flex-1 flex flex-col items-center justify-center p-6 bg-gray-50" duration={0.4}>
           <div className="w-20 h-20 rounded-full bg-warning-50 flex items-center justify-center mb-6 shadow-lg">
             <CameraIcon className="w-10 h-10 text-warning-500" />
           </div>
@@ -174,7 +213,7 @@ const Home = () => {
           <div className="space-y-4 w-full">
             <AnimatedButton 
               onClick={() => setCameraStatus('active')}
-              className="w-full py-6 bg-primary-500 text-white hover:bg-primary-600 rounded-lg transition-all duration-200"
+              className="w-full py-6 bg-primary-500 text-white hover:bg-primary-600 rounded-lg transition-all duration-200 text-lg font-medium"
             >
               <CameraIcon className="mr-2 h-5 w-5" /> Retake Photo
             </AnimatedButton>
