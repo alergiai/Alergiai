@@ -20,9 +20,21 @@ export function useHistory() {
       debugLog('Loading history from localStorage', savedHistory ? 'found data' : 'no data found');
       
       if (savedHistory) {
-        const parsedHistory = JSON.parse(savedHistory);
-        debugLog('Parsed history items', parsedHistory.length);
-        setHistory(parsedHistory);
+        try {
+          const parsedHistory = JSON.parse(savedHistory);
+          if (Array.isArray(parsedHistory)) {
+            debugLog('Parsed history items', parsedHistory.length);
+            setHistory(parsedHistory);
+          } else {
+            // If not an array, initialize with empty array
+            debugLog('Saved history is not an array, resetting');
+            setHistory([]);
+          }
+        } catch (parseError) {
+          console.error('Error parsing saved history:', parseError);
+          // If JSON parsing fails, initialize with empty array
+          setHistory([]);
+        }
       }
       setIsLoaded(true);
     } catch (error) {

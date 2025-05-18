@@ -16,31 +16,57 @@ const ScanResultPage = () => {
   const [result, setResult] = useState<ScanResult | null>(null);
   
   useEffect(() => {
-    if (params.id) {
-      console.log('Looking for scan result with ID:', params.id);
-      
-      // Get the result from the history hook
-      const scanResult = getById(params.id);
-      
-      if (scanResult) {
-        console.log('Found scan result:', scanResult);
-        setResult(scanResult);
-      } else {
-        console.error('Scan result not found for ID:', params.id);
-        // Result not found, redirect to home
-        toast({
-          title: 'Not Found',
-          description: 'The scan result you are looking for could not be found.',
-          variant: 'destructive'
-        });
+    // This effect only runs on mount to prevent losing data
+    const fetchResult = () => {
+      if (params.id) {
+        console.log('Looking for scan result with ID:', params.id);
         
-        // Delay redirect slightly to allow toast to be seen
-        setTimeout(() => {
-          setLocation('/');
-        }, 500);
+        // Get the result from the history hook
+        const scanResult = getById(params.id);
+        
+        if (scanResult) {
+          console.log('Found scan result:', scanResult);
+          setResult(scanResult);
+        } else {
+          console.error('Scan result not found for ID:', params.id);
+          
+          // Try to find the result in localStorage directly
+          try {
+            const savedHistory = localStorage.getItem('scanHistory');
+            if (savedHistory) {
+              const parsedHistory = JSON.parse(savedHistory);
+              if (Array.isArray(parsedHistory)) {
+                const foundItem = parsedHistory.find(item => item.id === params.id);
+                if (foundItem) {
+                  console.log('Found result in localStorage directly');
+                  setResult(foundItem);
+                  return;
+                }
+              }
+            }
+          } catch (error) {
+            console.error('Error checking localStorage directly:', error);
+          }
+          
+          // Result not found, redirect to home
+          toast({
+            title: 'Not Found',
+            description: 'The scan result you are looking for could not be found.',
+            variant: 'destructive'
+          });
+          
+          // Delay redirect slightly to allow toast to be seen
+          setTimeout(() => {
+            setLocation('/');
+          }, 800);
+        }
       }
-    }
-  }, [params.id, getById, setLocation, toast]);
+    };
+    
+    fetchResult();
+    // Only run this effect once on component mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
   const handleBack = () => {
     // Go back to the history tab
