@@ -32,7 +32,8 @@ import {
   Wine,
   Beef,
   Beer,
-  Drumstick
+  Drumstick,
+  Atom
 } from 'lucide-react';
 import ShellfishIcon from '@/components/icons/ShellfishIcon';
 import { FadeIn, SlideUp, AnimatedContainer } from '@/components/ui/animations';
@@ -77,6 +78,7 @@ const Allergens = () => {
     if (name.includes('halal') || name.includes('kosher')) return Utensils;
     if (name.includes('pork') || name.includes('bacon')) return Drumstick; // Using drumstick icon for pork/bacon
     if (name.includes('beef') || name.includes('steak')) return Beef; // Using beef icon for beef/steak
+    if (name.includes('histamine')) return Atom; // Using atom icon for histamine sensitivity
     if (name.includes('alcohol') || name.includes('wine')) return Wine;
     if (name.includes('beer')) return Beer;
     if (name.includes('caffeine') || name.includes('coffee') || name.includes('energy')) return Coffee;
