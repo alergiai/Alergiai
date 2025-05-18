@@ -274,35 +274,39 @@ const Home = () => {
       <Header />
       
       <Tabs defaultValue="scan" value={activeTab} onValueChange={handleTabChange} className="flex-1 flex flex-col">
-        <TabsList className="flex h-auto p-4 bg-transparent">
-          <TabsTrigger 
-            value="scan" 
-            className="flex-1 py-3 data-[state=active]:font-medium data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none transition-all duration-200"
-          >
-            <div className="flex justify-center items-center gap-2">
-              <CameraIcon className="h-4 w-4" />
-              <span>Scan</span>
-            </div>
-          </TabsTrigger>
-          <TabsTrigger 
-            value="history" 
-            className="flex-1 py-3 data-[state=active]:font-medium data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none transition-all duration-200"
-          >
-            <div className="flex justify-center items-center gap-2">
-              <History className="h-4 w-4" />
-              <span>History</span>
-            </div>
-          </TabsTrigger>
-          <TabsTrigger 
-            value="allergens" 
-            className="flex-1 py-3 data-[state=active]:font-medium data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none transition-all duration-200"
-          >
-            <div className="flex justify-center items-center gap-2">
-              <UserCog className="h-4 w-4" />
-              <span>Allergens</span>
-            </div>
-          </TabsTrigger>
-        </TabsList>
+        <div className="p-4 pb-0">
+          <div className="bg-white rounded-2xl shadow-md p-2 flex justify-between">
+            <TabsList className="flex w-full bg-transparent border-0 p-0">
+              <TabsTrigger 
+                value="scan" 
+                className="flex-1 py-3 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-50 transition-all duration-200"
+              >
+                <div className="flex justify-center items-center gap-2">
+                  <CameraIcon className="h-4 w-4" />
+                  <span className="font-medium">Scan</span>
+                </div>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="history" 
+                className="flex-1 py-3 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-50 transition-all duration-200"
+              >
+                <div className="flex justify-center items-center gap-2">
+                  <History className="h-4 w-4" />
+                  <span className="font-medium">History</span>
+                </div>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="allergens" 
+                className="flex-1 py-3 rounded-xl data-[state=active]:bg-primary data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-50 transition-all duration-200"
+              >
+                <div className="flex justify-center items-center gap-2">
+                  <UserCog className="h-4 w-4" />
+                  <span className="font-medium">Allergens</span>
+                </div>
+              </TabsTrigger>
+            </TabsList>
+          </div>
+        </div>
         
         <div className="flex-1 flex flex-col">
           {activeTab === 'scan' && (
