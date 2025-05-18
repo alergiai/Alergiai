@@ -14,6 +14,7 @@ import ResultCard from '@/components/ResultCard';
 import HistoryPage from './History';
 import AllergensPage from './Allergens';
 import { PageTransition, FadeIn, SlideUp, AnimatedButton } from '@/components/ui/animations';
+import { v4 as uuidv4 } from 'uuid';
 
 const Home = () => {
   const [_, setLocation] = useLocation();
@@ -108,14 +109,23 @@ const Home = () => {
   const handleSaveToHistory = () => {
     if (scanResult) {
       try {
+        // Create a complete scan result with ID if it doesn't have one
+        const completeResult = {
+          ...scanResult,
+          id: scanResult.id || uuidv4()
+        };
+        
         // Log for debugging
-        console.log('Saving scan result to history:', scanResult);
+        console.log('Saving scan result to history:', completeResult);
         
         // Add to history and get back the result with generated ID
-        const savedResult = addToHistory({...scanResult});
+        const savedResult = addToHistory(completeResult);
         
         // Debug - log the saved result with ID
         console.log('Saved result with ID:', savedResult.id);
+        
+        // Set the current scanResult with the proper ID
+        setScanResult(savedResult);
         
         toast({
           title: 'Saved to History',
@@ -123,7 +133,9 @@ const Home = () => {
         });
         
         // Navigate to the ScanResult detail page
-        setLocation(`/result/${savedResult.id}`);
+        setTimeout(() => {
+          setLocation(`/result/${savedResult.id}`);
+        }, 300);
       } catch (error) {
         console.error('Error saving to history:', error);
         toast({

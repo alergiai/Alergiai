@@ -17,49 +17,68 @@ const ScanResultPage = () => {
   
   useEffect(() => {
     if (params.id) {
+      console.log('Looking for scan result with ID:', params.id);
+      
+      // Get the result from the history hook
       const scanResult = getById(params.id);
+      
       if (scanResult) {
+        console.log('Found scan result:', scanResult);
         setResult(scanResult);
       } else {
-        // Result not found, redirect to history
-        setLocation('/');
+        console.error('Scan result not found for ID:', params.id);
+        // Result not found, redirect to home
         toast({
           title: 'Not Found',
           description: 'The scan result you are looking for could not be found.',
           variant: 'destructive'
         });
+        
+        // Delay redirect slightly to allow toast to be seen
+        setTimeout(() => {
+          setLocation('/');
+        }, 500);
       }
     }
   }, [params.id, getById, setLocation, toast]);
   
   const handleBack = () => {
-    setLocation('/');
+    // Go back to the history tab
+    setLocation('/history');
   };
   
   const handleDelete = () => {
     if (result) {
+      console.log('Deleting scan result:', result.id);
+      
       removeFromHistory(result.id);
+      
       toast({
         title: 'Deleted',
         description: 'The scan result has been removed from history'
       });
-      setLocation('/');
+      
+      // Redirect to history tab
+      setLocation('/history');
     }
   };
   
   if (!result) {
     return (
-      <div className="max-w-md mx-auto bg-white min-h-screen flex flex-col">
+      <div className="max-w-md mx-auto min-h-screen flex flex-col bg-gradient-to-b from-white to-primary-50">
         <Header />
         <div className="flex-1 flex items-center justify-center">
-          <p>Loading...</p>
+          <div className="bg-white rounded-xl p-6 shadow-md">
+            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-gray-600 text-center">Loading scan result...</p>
+          </div>
         </div>
       </div>
     );
   }
   
   return (
-    <div className="max-w-md mx-auto bg-white min-h-screen flex flex-col">
+    <div className="max-w-md mx-auto min-h-screen flex flex-col bg-gradient-to-b from-white to-primary-50">
       <Header />
       
       <div className="flex-1 flex flex-col">
