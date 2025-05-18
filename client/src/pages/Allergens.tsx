@@ -74,7 +74,7 @@ const Allergens = () => {
     if (name.includes('nut') || name.includes('peanut') || name.includes('almond')) return Nut;
     if (name.includes('vegan') || name.includes('vegetarian')) return Salad;
     if (name.includes('halal') || name.includes('kosher')) return Utensils;
-    if (name.includes('pork') || name.includes('bacon')) return Beef; // Using Beef icon for bacon/pork
+    if (name.includes('pork') || name.includes('bacon')) return Beef; // Using steak icon for bacon/pork
     if (name.includes('alcohol') || name.includes('wine')) return Wine;
     if (name.includes('beer')) return Beer;
     if (name.includes('caffeine') || name.includes('coffee') || name.includes('energy')) return Coffee;
