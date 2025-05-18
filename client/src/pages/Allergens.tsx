@@ -98,7 +98,7 @@ const Allergens = () => {
               <h3 className="text-base font-medium text-gray-900 mb-3">{group.title}</h3>
               
               {group.category !== 'custom' ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 min-w-0">
                   {group.allergens.map(allergen => {
                     const IconComponent = getAllergenIcon(allergen.name);
                     return (
@@ -155,7 +155,7 @@ const Allergens = () => {
                   
                   {group.allergens.length > 0 && (
                     <div className="mt-4">
-                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 min-w-0">
                         {group.allergens.map(allergen => {
                           const IconComponent = getAllergenIcon(allergen.name);
                           return (
