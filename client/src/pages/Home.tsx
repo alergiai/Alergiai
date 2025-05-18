@@ -123,7 +123,7 @@ const Home = () => {
         });
         
         // Navigate to the ScanResult detail page
-        setLocation(`/history`);
+        setLocation(`/result/${savedResult.id}`);
       } catch (error) {
         console.error('Error saving to history:', error);
         toast({
