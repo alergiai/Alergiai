@@ -23,12 +23,15 @@ import {
   Fish, 
   Egg, 
   Cookie, 
-  Nut, 
+  Nut,
   Salad,
-  Beef, 
-  Banana, 
   Utensils, 
-  Candy
+  Banana, 
+  Candy,
+  Coffee,
+  Wine,
+  Crab,
+  Beef
 } from 'lucide-react';
 import { FadeIn, SlideUp, AnimatedContainer } from '@/components/ui/animations';
 
@@ -62,13 +65,16 @@ const Allergens = () => {
     const name = allergenName.toLowerCase();
     if (name.includes('gluten') || name.includes('wheat') || name.includes('grain')) return Wheat;
     if (name.includes('milk') || name.includes('dairy') || name.includes('lactose')) return Milk;
-    if (name.includes('fish') || name.includes('seafood') || name.includes('shellfish')) return Fish;
+    if (name.includes('fish')) return Fish;
+    if (name.includes('shellfish') || name.includes('oyster') || name.includes('prawn') || name.includes('crab')) return ShoppingBag;
     if (name.includes('egg')) return Egg;
     if (name.includes('soy')) return Salad;
-    if (name.includes('nut') || name.includes('peanut') || name.includes('almond')) return Nut;
+    if (name.includes('nut') || name.includes('peanut') || name.includes('almond')) return Apple;
     if (name.includes('vegan') || name.includes('vegetarian')) return Salad;
     if (name.includes('halal') || name.includes('kosher')) return Utensils;
-    if (name.includes('meat') || name.includes('beef') || name.includes('pork')) return Beef;
+    if (name.includes('pork') || name.includes('bacon')) return Beef; // Using Beef icon for bacon/pork
+    if (name.includes('alcohol') || name.includes('wine') || name.includes('beer')) return Wine;
+    if (name.includes('caffeine') || name.includes('coffee') || name.includes('energy')) return Coffee;
     if (name.includes('fruit')) return Banana;
     if (name.includes('sugar') || name.includes('sweet')) return Candy;
     return Cookie; // Default icon
