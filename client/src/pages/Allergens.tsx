@@ -156,22 +156,25 @@ const Allergens = () => {
                   {group.allergens.length > 0 && (
                     <div className="mt-4">
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                        {group.allergens.map(allergen => (
-                          <div 
-                            key={allergen.id} 
-                            className="flex items-center p-2 bg-primary-50 rounded-lg border border-primary-100"
-                          >
-                            <Cookie className="w-4 h-4 text-primary mr-2" />
-                            <span className="text-sm text-gray-800 flex-1 truncate">{allergen.name}</span>
-                            <button 
-                              type="button" 
-                              onClick={() => removeCustomAllergen(allergen.id)}
-                              className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-200"
+                        {group.allergens.map(allergen => {
+                          const IconComponent = getAllergenIcon(allergen.name);
+                          return (
+                            <div 
+                              key={allergen.id} 
+                              className="flex items-center p-2 bg-primary-50 rounded-lg border border-primary-100"
                             >
-                              <X className="h-3 w-3" />
-                            </button>
-                          </div>
-                        ))}
+                              <IconComponent className="w-4 h-4 text-primary mr-2" />
+                              <span className="text-sm text-gray-800 flex-1 truncate">{allergen.name}</span>
+                              <button 
+                                type="button" 
+                                onClick={() => removeCustomAllergen(allergen.id)}
+                                className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-200"
+                              >
+                                <X className="h-3 w-3" />
+                              </button>
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
