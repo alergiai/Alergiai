@@ -77,15 +77,25 @@ const ScanResultPage = () => {
     if (result) {
       console.log('Deleting scan result:', result.id);
       
+      // Remove the item from history
       removeFromHistory(result.id);
+      
+      // Force the localStorage update
+      localStorage.setItem('scanHistory', JSON.stringify(
+        JSON.parse(localStorage.getItem('scanHistory') || '[]')
+          .filter((item: any) => item.id !== result.id)
+      ));
       
       toast({
         title: 'Deleted',
         description: 'The scan result has been removed from history'
       });
       
-      // Redirect to history tab
-      setLocation('/history');
+      // Add a small delay before redirecting to ensure the state updates properly
+      setTimeout(() => {
+        // Redirect to history tab
+        setLocation('/history');
+      }, 300);
     }
   };
   
@@ -111,12 +121,7 @@ const ScanResultPage = () => {
         <ResultCard 
           result={result} 
           onBack={handleBack} 
-          onSave={() => {
-            toast({
-              title: 'Already Saved',
-              description: 'This scan is already in your history'
-            });
-          }} 
+          onSave={null} 
         />
         
         <div className="px-4 pb-6">

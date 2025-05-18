@@ -23,7 +23,7 @@ import { FadeIn, SlideUp, AnimatedButton, Pop, StaggeredList } from '@/component
 interface ResultCardProps {
   result: ScanResult;
   onBack: () => void;
-  onSave: () => void;
+  onSave: (() => void) | null;
 }
 
 const ResultCard: React.FC<ResultCardProps> = ({ result, onBack, onSave }) => {
@@ -176,14 +176,16 @@ const ResultCard: React.FC<ResultCardProps> = ({ result, onBack, onSave }) => {
         </div>
       </SlideUp>
       
-      <FadeIn delay={0.3}>
-        <AnimatedButton 
-          onClick={onSave}
-          className="w-full bg-primary hover:bg-primary/90 text-white py-4 rounded-xl shadow-md transition-all duration-200 flex items-center justify-center text-lg font-medium"
-        >
-          <Save className="mr-2 h-5 w-5" /> Save to History
-        </AnimatedButton>
-      </FadeIn>
+      {onSave && (
+        <FadeIn delay={0.3}>
+          <AnimatedButton 
+            onClick={onSave}
+            className="w-full bg-primary hover:bg-primary/90 text-white py-4 rounded-xl shadow-md transition-all duration-200 flex items-center justify-center text-lg font-medium"
+          >
+            <Save className="mr-2 h-5 w-5" /> Save to History
+          </AnimatedButton>
+        </FadeIn>
+      )}
     </div>
   );
 };
