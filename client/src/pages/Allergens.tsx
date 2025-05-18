@@ -30,11 +30,11 @@ import {
   Candy,
   Coffee,
   Wine,
-  Shell,
   Beef,
   Beer,
   Drumstick
 } from 'lucide-react';
+import { SpiralShell } from '@/components/icons/SpiralShell';
 import { FadeIn, SlideUp, AnimatedContainer } from '@/components/ui/animations';
 
 // Schema for custom allergen form
@@ -68,7 +68,7 @@ const Allergens = () => {
     if (name.includes('gluten') || name.includes('wheat') || name.includes('grain')) return Wheat;
     if (name.includes('milk') || name.includes('dairy') || name.includes('lactose')) return Milk;
     if (name.includes('fish')) return Fish;
-    if (name.includes('shellfish') || name.includes('oyster') || name.includes('prawn') || name.includes('crab')) return Shell;
+    if (name.includes('shellfish') || name.includes('oyster') || name.includes('prawn') || name.includes('crab')) return SpiralShell;
     if (name.includes('egg')) return Egg;
     if (name.includes('soy')) return Salad;
     if (name.includes('nut') || name.includes('peanut') || name.includes('almond')) return Nut;
