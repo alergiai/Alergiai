@@ -106,7 +106,7 @@ const Camera: React.FC<CameraProps> = ({
   if (status === 'active') {
     return (
       <FadeIn duration={0.4} className="flex-1 flex flex-col pb-4">
-        <div className="relative h-[70vh] bg-black rounded-xl overflow-hidden shadow-lg mx-4">
+        <div className="relative h-[77vh] bg-black rounded-xl overflow-hidden shadow-lg mx-4">
           {hasPermissions === false && (
             <FadeIn className="absolute inset-0 flex flex-col items-center justify-center p-4 text-white bg-black/90">
               <CameraIcon className="w-16 h-16 mb-4 text-gray-400" />
