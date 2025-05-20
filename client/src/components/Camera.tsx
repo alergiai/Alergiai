@@ -165,15 +165,15 @@ const Camera: React.FC<CameraProps> = ({
                 </Link>
               </div>
             ) : (
-              <div className="bg-black/50 backdrop-blur-sm rounded-lg p-2 shadow-lg">
+              <div className="bg-black/50 backdrop-blur-sm rounded-full px-3 py-2 shadow-lg">
                 <div className="flex items-center justify-between text-white">
                   <div className="flex items-center">
-                    <span className="text-xs font-medium mr-2">Looking out for:</span>
-                    <div className="flex flex-wrap gap-1">
+                    <span className="text-sm font-medium mr-2">Looking out for:</span>
+                    <div className="flex items-center space-x-1">
                       {selectedAllergens.slice(0, 3).map((allergen) => (
                         <span 
                           key={allergen.id}
-                          className="bg-primary/80 text-white text-xs py-0.5 px-2 rounded-full"
+                          className="bg-primary text-white text-sm py-1 px-3 rounded-full whitespace-nowrap"
                         >
                           {allergen.name}
                         </span>
@@ -181,7 +181,7 @@ const Camera: React.FC<CameraProps> = ({
                       {selectedAllergens.length > 3 && (
                         <button 
                           onClick={() => setShowAllAllergens(true)}
-                          className="bg-white/20 text-white text-xs py-0.5 px-2 rounded-full hover:bg-white/30 transition-colors"
+                          className="bg-gray-500/40 text-white text-sm py-1 px-3 rounded-full hover:bg-gray-500/60 transition-colors whitespace-nowrap"
                         >
                           +{selectedAllergens.length - 3} more
                         </button>
