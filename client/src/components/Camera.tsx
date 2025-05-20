@@ -165,12 +165,12 @@ const Camera: React.FC<CameraProps> = ({
                 </Link>
               </div>
             ) : (
-              <div className="bg-black/50 backdrop-blur-sm rounded-full px-3 py-2 shadow-lg">
+              <div className="bg-black/50 backdrop-blur-sm rounded-full px-3 py-2 shadow-lg max-w-full">
                 <div className="flex items-center justify-between text-white w-full">
-                  <div className="flex-1 flex items-center overflow-hidden">
+                  <div className="flex-1 flex items-center overflow-hidden mr-2">
                     <span className="text-sm font-medium mr-2 flex-shrink-0">Looking out for:</span>
-                    <div className="flex items-center space-x-1 overflow-x-auto no-scrollbar">
-                      {selectedAllergens.slice(0, 3).map((allergen) => (
+                    <div className="flex items-center space-x-1 overflow-x-auto no-scrollbar max-w-[70%]">
+                      {selectedAllergens.slice(0, 2).map((allergen) => (
                         <span 
                           key={allergen.id}
                           className="bg-primary text-white text-sm py-1 px-3 rounded-full whitespace-nowrap flex-shrink-0"
@@ -178,18 +178,18 @@ const Camera: React.FC<CameraProps> = ({
                           {allergen.name}
                         </span>
                       ))}
-                      {selectedAllergens.length > 3 && (
+                      {selectedAllergens.length > 2 && (
                         <button 
                           onClick={() => setShowAllAllergens(true)}
                           className="bg-gray-500/40 text-white text-sm py-1 px-3 rounded-full hover:bg-gray-500/60 transition-colors whitespace-nowrap flex-shrink-0"
                         >
-                          +{selectedAllergens.length - 3} more
+                          +{selectedAllergens.length - 2} more
                         </button>
                       )}
                     </div>
                   </div>
                   <Link href="/allergens" 
-                    className="ml-2 bg-primary rounded-full p-1.5 hover:bg-primary/90 transition-colors flex items-center justify-center flex-shrink-0"
+                    className="bg-primary rounded-full p-1.5 hover:bg-primary/90 transition-colors flex items-center justify-center flex-shrink-0"
                   >
                     <Plus className="h-4 w-4 text-white" />
                   </Link>
