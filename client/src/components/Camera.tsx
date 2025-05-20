@@ -1,5 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import Webcam from 'react-webcam';
+import { Link } from 'wouter';
 import { Camera as CameraIcon, X, RefreshCw, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Allergen } from '@/types';
@@ -157,15 +158,11 @@ const Camera: React.FC<CameraProps> = ({
                     </span>
                   ))}
                 </div>
-                <button 
-                  onClick={() => {
-                    setShowAllAllergens(false);
-                    onStatusChange('inactive');
-                  }}
+                <Link href="/allergens"
                   className="w-full text-center text-xs bg-white/30 text-white py-1.5 rounded-lg hover:bg-white/40 transition-colors flex items-center justify-center"
                 >
                   <Plus className="w-3 h-3 mr-1" /> Add Allergen
-                </button>
+                </Link>
               </div>
             ) : (
               <div className="bg-black/50 backdrop-blur-sm rounded-lg p-2 shadow-lg">
@@ -191,15 +188,11 @@ const Camera: React.FC<CameraProps> = ({
                       )}
                     </div>
                   </div>
-                  <button 
-                    onClick={() => {
-                      setShowAllAllergens(false);
-                      onStatusChange('inactive');
-                    }}
-                    className="ml-1 bg-primary/50 rounded-full p-1 hover:bg-primary/70 transition-colors"
+                  <Link href="/allergens" 
+                    className="ml-1 bg-primary/50 rounded-full p-1 hover:bg-primary/70 transition-colors flex items-center justify-center"
                   >
                     <Plus className="h-4 w-4 text-white" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             )}
