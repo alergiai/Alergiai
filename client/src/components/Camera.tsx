@@ -106,7 +106,7 @@ const Camera: React.FC<CameraProps> = ({
   if (status === 'active') {
     return (
       <FadeIn duration={0.4} className="flex-1 flex flex-col">
-        <div className="relative aspect-[3/4] bg-black rounded-2xl overflow-hidden mx-4 shadow-lg">
+        <div className="relative aspect-[4/5] bg-black rounded-2xl overflow-hidden mx-4 shadow-lg mb-2">
           {hasPermissions === false && (
             <FadeIn className="absolute inset-0 flex flex-col items-center justify-center p-4 text-white bg-black/90">
               <CameraIcon className="w-16 h-16 mb-4 text-gray-400" />
@@ -127,7 +127,7 @@ const Camera: React.FC<CameraProps> = ({
             videoConstraints={{
               deviceId: deviceId ? { exact: deviceId } : undefined,
               facingMode: "environment",
-              aspectRatio: 3/4
+              aspectRatio: 4/5
             }}
             className="w-full h-full object-cover"
             onUserMediaError={handleUserMediaError}
@@ -166,13 +166,33 @@ const Camera: React.FC<CameraProps> = ({
             </div>
           </div>
           
-          <div className="absolute bottom-6 inset-x-0 flex justify-center">
+          {/* Scanning tips overlay at the bottom */}
+          <div className="absolute bottom-0 inset-x-0">
+            <div className="bg-black/60 backdrop-blur-sm p-2 text-white">
+              <div className="flex items-center justify-center space-x-3 text-xs">
+                <div className="flex items-center">
+                  <div className="h-1 w-1 rounded-full bg-primary mr-1"></div>
+                  <span>Hold steady</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="h-1 w-1 rounded-full bg-primary mr-1"></div>
+                  <span>Good lighting</span>
+                </div>
+                <div className="flex items-center">
+                  <div className="h-1 w-1 rounded-full bg-primary mr-1"></div>
+                  <span>Clear image</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="absolute bottom-8 inset-x-0 flex justify-center">
             <button 
               type="button" 
-              className="w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150"
+              className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150"
               onClick={handleCaptureClick}
             >
-              <div className="w-12 h-12 rounded-full border-2 border-gray-300"></div>
+              <div className="w-10 h-10 rounded-full border-2 border-gray-300"></div>
             </button>
           </div>
           
@@ -184,31 +204,6 @@ const Camera: React.FC<CameraProps> = ({
             <X className="w-5 h-5" />
           </button>
         </div>
-        
-        <SlideUp duration={0.4} delay={0.2} className="p-4">
-          <div className="bg-white p-5 rounded-2xl shadow-lg">
-            <h3 className="text-lg font-semibold text-[#142e3a] mb-3">Scanning Tips</h3>
-            <div className="bg-gradient-to-r from-purple-50 to-white p-4 rounded-xl mb-4 border border-primary/20">
-              <p className="text-gray-700 text-sm leading-relaxed">
-                Scan the <span className="font-semibold text-primary">ingredients list</span> section on the packaging. The image must be <span className="font-semibold text-primary">clear and focused</span> for accurate results.
-              </p>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <div className="flex items-center">
-                <div className="h-1.5 w-1.5 rounded-full bg-primary mr-2"></div>
-                <p className="text-sm text-gray-700">Hold your phone steady</p>
-              </div>
-              <div className="flex items-center">
-                <div className="h-1.5 w-1.5 rounded-full bg-primary mr-2"></div>
-                <p className="text-sm text-gray-700">Ensure good lighting</p>
-              </div>
-              <div className="flex items-center">
-                <div className="h-1.5 w-1.5 rounded-full bg-primary mr-2"></div>
-                <p className="text-sm text-gray-700">Position text within the guide box</p>
-              </div>
-            </div>
-          </div>
-        </SlideUp>
       </FadeIn>
     );
   }
