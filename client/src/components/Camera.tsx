@@ -187,8 +187,17 @@ const Camera: React.FC<CameraProps> = ({
         
         <SlideUp duration={0.4} delay={0.2} className="p-4">
           <div className="bg-white p-5 rounded-2xl shadow-lg">
-            <h3 className="font-medium text-sm text-gray-800 mb-3">YOUR ALLERGENS & RESTRICTIONS</h3>
-            <AllergenList allergens={selectedAllergens} />
+            <h3 className="font-medium text-gray-800 mb-2">Important Scanning Tips</h3>
+            <div className="bg-amber-50 p-3 rounded-xl mb-3">
+              <p className="text-gray-700 text-sm">
+                <span className="font-semibold">Scan the ingredients list</span> section on the packaging for best results. Make sure the image is <span className="font-semibold text-rose-600">CLEAR and not blurry</span> for the scan to work effectively.
+              </p>
+            </div>
+            <ul className="text-sm text-gray-700 space-y-1 ml-4 list-disc">
+              <li>Hold your phone steady</li>
+              <li>Ensure good lighting</li>
+              <li>Position text within the guide box</li>
+            </ul>
           </div>
         </SlideUp>
       </FadeIn>
