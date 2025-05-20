@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import Webcam from 'react-webcam';
-import { Camera as CameraIcon, X, RefreshCw } from 'lucide-react';
+import { Camera as CameraIcon, X, RefreshCw, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Allergen } from '@/types';
 import { CameraStatus } from '@/types';
@@ -25,6 +25,7 @@ const Camera: React.FC<CameraProps> = ({
   const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
   const [hasPermissions, setHasPermissions] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showAllAllergens, setShowAllAllergens] = useState<boolean>(false);
 
   const handleDevices = useCallback((mediaDevices: MediaDeviceInfo[]) => {
     setDevices(mediaDevices.filter(({ kind }) => kind === "videoinput"));
@@ -134,27 +135,74 @@ const Camera: React.FC<CameraProps> = ({
           />
           
           {/* Allergen Overlay at the top */}
-          <div className="absolute top-4 inset-x-4">
-            <div className="bg-black/50 backdrop-blur-sm rounded-lg p-2 shadow-lg">
-              <div className="flex items-center text-white">
-                <span className="text-xs font-medium mr-2">Looking out for:</span>
-                <div className="flex flex-wrap gap-1">
-                  {selectedAllergens.slice(0, 3).map((allergen) => (
+          <div className="absolute top-4 inset-x-4 z-10">
+            {showAllAllergens ? (
+              <div className="bg-black/60 backdrop-blur-md rounded-lg p-4 shadow-lg">
+                <div className="flex items-center justify-between text-white mb-2">
+                  <h3 className="text-sm font-medium">Your Allergens & Restrictions</h3>
+                  <button 
+                    onClick={() => setShowAllAllergens(false)}
+                    className="text-xs bg-white/20 px-2 py-1 rounded-full hover:bg-white/30 transition-colors"
+                  >
+                    Hide List
+                  </button>
+                </div>
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {selectedAllergens.map((allergen) => (
                     <span 
                       key={allergen.id}
-                      className="bg-primary/80 text-white text-xs py-0.5 px-2 rounded-full"
+                      className="bg-primary/90 text-white text-xs py-0.5 px-2 rounded-full"
                     >
                       {allergen.name}
                     </span>
                   ))}
-                  {selectedAllergens.length > 3 && (
-                    <span className="bg-white/20 text-white text-xs py-0.5 px-2 rounded-full">
-                      +{selectedAllergens.length - 3} more
-                    </span>
-                  )}
+                </div>
+                <button 
+                  onClick={() => {
+                    setShowAllAllergens(false);
+                    onStatusChange('inactive');
+                  }}
+                  className="w-full text-center text-xs bg-white/30 text-white py-1.5 rounded-lg hover:bg-white/40 transition-colors flex items-center justify-center"
+                >
+                  <Plus className="w-3 h-3 mr-1" /> Add Allergen
+                </button>
+              </div>
+            ) : (
+              <div className="bg-black/50 backdrop-blur-sm rounded-lg p-2 shadow-lg">
+                <div className="flex items-center justify-between text-white">
+                  <div className="flex items-center">
+                    <span className="text-xs font-medium mr-2">Looking out for:</span>
+                    <div className="flex flex-wrap gap-1">
+                      {selectedAllergens.slice(0, 3).map((allergen) => (
+                        <span 
+                          key={allergen.id}
+                          className="bg-primary/80 text-white text-xs py-0.5 px-2 rounded-full"
+                        >
+                          {allergen.name}
+                        </span>
+                      ))}
+                      {selectedAllergens.length > 3 && (
+                        <button 
+                          onClick={() => setShowAllAllergens(true)}
+                          className="bg-white/20 text-white text-xs py-0.5 px-2 rounded-full hover:bg-white/30 transition-colors"
+                        >
+                          +{selectedAllergens.length - 3} more
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      setShowAllAllergens(false);
+                      onStatusChange('inactive');
+                    }}
+                    className="ml-1 bg-primary/50 rounded-full p-1 hover:bg-primary/70 transition-colors"
+                  >
+                    <Plus className="h-4 w-4 text-white" />
+                  </button>
                 </div>
               </div>
-            </div>
+            )}
           </div>
           
           <div className="absolute inset-0 flex items-center justify-center">
