@@ -106,7 +106,7 @@ const Camera: React.FC<CameraProps> = ({
   if (status === 'active') {
     return (
       <FadeIn duration={0.4} className="flex-1 flex flex-col pb-4">
-        <div className="relative flex-1 bg-black rounded-xl overflow-hidden shadow-lg mx-4">
+        <div className="relative h-[70vh] bg-black rounded-xl overflow-hidden shadow-lg mx-4">
           {hasPermissions === false && (
             <FadeIn className="absolute inset-0 flex flex-col items-center justify-center p-4 text-white bg-black/90">
               <CameraIcon className="w-16 h-16 mb-4 text-gray-400" />
@@ -184,10 +184,10 @@ const Camera: React.FC<CameraProps> = ({
           </button>
         </div>
         
-        {/* Tips Panel at Bottom */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white shadow-top rounded-t-xl">
-          <div className="px-4 pt-3 pb-4">
-            <h3 className="text-sm font-semibold text-[#142e3a] mb-3 text-center">Scanning Tips</h3>
+        {/* Tips Panel */}
+        <div className="bg-white rounded-xl shadow-md mx-4 mt-3">
+          <div className="px-4 pt-3 pb-3">
+            <h3 className="text-sm font-semibold text-[#142e3a] mb-2 text-center">Scanning Tips</h3>
             <div className="grid grid-cols-3 gap-3">
               <div className="flex flex-col items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 text-primary mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
