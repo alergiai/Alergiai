@@ -106,7 +106,7 @@ const Camera: React.FC<CameraProps> = ({
   if (status === 'active') {
     return (
       <FadeIn duration={0.4} className="flex-1 flex flex-col">
-        <div className="relative aspect-[3/4] bg-black">
+        <div className="relative aspect-[3/4] bg-black rounded-2xl overflow-hidden mx-4 shadow-lg">
           {hasPermissions === false && (
             <FadeIn className="absolute inset-0 flex flex-col items-center justify-center p-4 text-white bg-black/90">
               <CameraIcon className="w-16 h-16 mb-4 text-gray-400" />
@@ -133,6 +133,30 @@ const Camera: React.FC<CameraProps> = ({
             onUserMediaError={handleUserMediaError}
             onUserMedia={handleUserMedia}
           />
+          
+          {/* Allergen Overlay at the top */}
+          <div className="absolute top-4 inset-x-4">
+            <div className="bg-black/50 backdrop-blur-sm rounded-lg p-2 shadow-lg">
+              <div className="flex items-center text-white">
+                <span className="text-xs font-medium mr-2">Looking out for:</span>
+                <div className="flex flex-wrap gap-1">
+                  {selectedAllergens.slice(0, 3).map((allergen) => (
+                    <span 
+                      key={allergen.id}
+                      className="bg-primary/80 text-white text-xs py-0.5 px-2 rounded-full"
+                    >
+                      {allergen.name}
+                    </span>
+                  ))}
+                  {selectedAllergens.length > 3 && (
+                    <span className="bg-white/20 text-white text-xs py-0.5 px-2 rounded-full">
+                      +{selectedAllergens.length - 3} more
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
           
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="w-3/4 h-2/3 rounded-lg flex items-center justify-center border-2 border-dashed border-white bg-black/10 animate-pulse">
