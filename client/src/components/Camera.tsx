@@ -106,7 +106,7 @@ const Camera: React.FC<CameraProps> = ({
   if (status === 'active') {
     return (
       <FadeIn duration={0.4} className="flex-1 flex flex-col">
-        <div className="relative bg-black rounded-2xl overflow-hidden mx-4 shadow-lg flex-1">
+        <div className="relative aspect-[4/5] bg-black rounded-2xl overflow-hidden mx-4 shadow-lg mb-2">
           {hasPermissions === false && (
             <FadeIn className="absolute inset-0 flex flex-col items-center justify-center p-4 text-white bg-black/90">
               <CameraIcon className="w-16 h-16 mb-4 text-gray-400" />
@@ -127,7 +127,7 @@ const Camera: React.FC<CameraProps> = ({
             videoConstraints={{
               deviceId: deviceId ? { exact: deviceId } : undefined,
               facingMode: "environment",
-              aspectRatio: 16/9
+              aspectRatio: 4/5
             }}
             className="w-full h-full object-cover"
             onUserMediaError={handleUserMediaError}
@@ -168,54 +168,31 @@ const Camera: React.FC<CameraProps> = ({
           
           {/* Scanning tips overlay at the bottom */}
           <div className="absolute bottom-0 inset-x-0">
-            <div className="bg-black/60 backdrop-blur-sm p-3 text-white">
-              <div className="flex justify-between items-center">
+            <div className="bg-black/60 backdrop-blur-sm p-2 text-white">
+              <div className="flex items-center justify-center space-x-3 text-xs">
                 <div className="flex items-center">
-                  <div className="bg-primary/90 rounded-full w-5 h-5 flex items-center justify-center mr-2">
-                    <span className="text-xs font-bold">1</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-xs">Hold steady</span>
-                    <CameraIcon className="h-3 w-3 text-primary/90 mt-0.5" />
-                  </div>
+                  <div className="h-1 w-1 rounded-full bg-primary mr-1"></div>
+                  <span>Hold steady</span>
                 </div>
-                
                 <div className="flex items-center">
-                  <div className="bg-primary/90 rounded-full w-5 h-5 flex items-center justify-center mr-2">
-                    <span className="text-xs font-bold">2</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-xs">Good lighting</span>
-                    <svg className="h-3 w-3 text-primary/90 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="5" />
-                      <path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" />
-                    </svg>
-                  </div>
+                  <div className="h-1 w-1 rounded-full bg-primary mr-1"></div>
+                  <span>Good lighting</span>
                 </div>
-                
                 <div className="flex items-center">
-                  <div className="bg-primary/90 rounded-full w-5 h-5 flex items-center justify-center mr-2">
-                    <span className="text-xs font-bold">3</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-xs">Clear image</span>
-                    <svg className="h-3 w-3 text-primary/90 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                      <circle cx="12" cy="12" r="3" />
-                    </svg>
-                  </div>
+                  <div className="h-1 w-1 rounded-full bg-primary mr-1"></div>
+                  <span>Clear image</span>
                 </div>
               </div>
             </div>
           </div>
           
-          <div className="absolute bottom-24 inset-x-0 flex justify-center">
+          <div className="absolute bottom-8 inset-x-0 flex justify-center">
             <button 
               type="button" 
-              className="w-16 h-16 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150"
+              className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150"
               onClick={handleCaptureClick}
             >
-              <div className="w-12 h-12 rounded-full border-2 border-gray-300"></div>
+              <div className="w-10 h-10 rounded-full border-2 border-gray-300"></div>
             </button>
           </div>
           
