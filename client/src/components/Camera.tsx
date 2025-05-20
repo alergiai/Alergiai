@@ -105,8 +105,8 @@ const Camera: React.FC<CameraProps> = ({
 
   if (status === 'active') {
     return (
-      <FadeIn duration={0.4} className="flex-1 flex flex-col">
-        <div className="relative aspect-[4/5] bg-black rounded-2xl overflow-hidden mx-4 shadow-lg mb-2">
+      <FadeIn duration={0.4} className="flex-1 flex flex-col px-4">
+        <div className="relative aspect-[4/5] bg-black rounded-xl overflow-hidden shadow-lg">
           {hasPermissions === false && (
             <FadeIn className="absolute inset-0 flex flex-col items-center justify-center p-4 text-white bg-black/90">
               <CameraIcon className="w-16 h-16 mb-4 text-gray-400" />
@@ -166,26 +166,6 @@ const Camera: React.FC<CameraProps> = ({
             </div>
           </div>
           
-          {/* Scanning tips overlay at the bottom */}
-          <div className="absolute bottom-0 inset-x-0">
-            <div className="bg-black/60 backdrop-blur-sm p-2 text-white">
-              <div className="flex items-center justify-center space-x-3 text-xs">
-                <div className="flex items-center">
-                  <div className="h-1 w-1 rounded-full bg-primary mr-1"></div>
-                  <span>Hold steady</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="h-1 w-1 rounded-full bg-primary mr-1"></div>
-                  <span>Good lighting</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="h-1 w-1 rounded-full bg-primary mr-1"></div>
-                  <span>Clear image</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
           <div className="absolute bottom-8 inset-x-0 flex justify-center">
             <button 
               type="button" 
@@ -203,6 +183,39 @@ const Camera: React.FC<CameraProps> = ({
           >
             <X className="w-5 h-5" />
           </button>
+        </div>
+        
+        {/* Numbered Tips Grid */}
+        <div className="grid grid-cols-3 gap-2 mt-3">
+          <div className="bg-white rounded-xl p-2.5 flex flex-col items-center shadow-sm">
+            <div className="h-5 w-5 rounded-full bg-primary text-white flex items-center justify-center mb-1.5 text-xs font-bold">1</div>
+            <div className="flex flex-col items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7h3a5 5 0 010 10h-3m-6 0H6a5 5 0 010-10h3" />
+              </svg>
+              <span className="text-xs text-center text-gray-700 font-medium">Hold steady</span>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl p-2.5 flex flex-col items-center shadow-sm">
+            <div className="h-5 w-5 rounded-full bg-primary text-white flex items-center justify-center mb-1.5 text-xs font-bold">2</div>
+            <div className="flex flex-col items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+              <span className="text-xs text-center text-gray-700 font-medium">Good lighting</span>
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-xl p-2.5 flex flex-col items-center shadow-sm">
+            <div className="h-5 w-5 rounded-full bg-primary text-white flex items-center justify-center mb-1.5 text-xs font-bold">3</div>
+            <div className="flex flex-col items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+              <span className="text-xs text-center text-gray-700 font-medium">Clear focus</span>
+            </div>
+          </div>
         </div>
       </FadeIn>
     );
