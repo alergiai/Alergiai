@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import Webcam from 'react-webcam';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { Camera as CameraIcon, X, RefreshCw, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Allergen } from '@/types';
@@ -158,11 +158,12 @@ const Camera: React.FC<CameraProps> = ({
                     </span>
                   ))}
                 </div>
-                <Link href="/allergens"
-                  className="w-full text-center text-xs bg-white/30 text-white py-1.5 rounded-lg hover:bg-white/40 transition-colors flex items-center justify-center"
+                <button
+                  onClick={() => window.location.href = '/allergens'}
+                  className="w-full text-center text-xs bg-white/30 text-white py-2 rounded-lg hover:bg-white/40 transition-colors flex items-center justify-center"
                 >
-                  <Plus className="w-3 h-3 mr-1" /> Add Allergen
-                </Link>
+                  <Plus className="w-4 h-4 mr-1" /> Add Allergen
+                </button>
               </div>
             ) : (
               <div className="bg-black/50 backdrop-blur-sm rounded-full px-3 py-2 shadow-lg max-w-full">
@@ -188,11 +189,12 @@ const Camera: React.FC<CameraProps> = ({
                       )}
                     </div>
                   </div>
-                  <Link href="/allergens" 
-                    className="bg-primary rounded-full p-1.5 hover:bg-primary/90 transition-colors flex items-center justify-center flex-shrink-0"
+                  <button
+                    onClick={() => window.location.href = '/allergens'}
+                    className="bg-primary rounded-full p-2 hover:bg-primary/90 transition-colors flex items-center justify-center flex-shrink-0 min-w-[36px] min-h-[36px]"
                   >
-                    <Plus className="h-4 w-4 text-white" />
-                  </Link>
+                    <Plus className="h-5 w-5 text-white" />
+                  </button>
                 </div>
               </div>
             )}
