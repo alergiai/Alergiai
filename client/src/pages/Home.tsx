@@ -26,10 +26,11 @@ function compressImage(dataUrl: string, callback: (compressedDataUrl: string) =>
     // Create a canvas to resize the image
     const canvas = document.createElement('canvas');
     
-    // Calculate new dimensions (max 1200px width/height to stay within API limits)
+    // Calculate new dimensions (max 800px width/height to stay within API limits)
+    // This is a more conservative value to ensure the file isn't too large
     let width = img.width;
     let height = img.height;
-    const maxSize = 1200;
+    const maxSize = 800;
     
     if (width > maxSize || height > maxSize) {
       if (width > height) {
@@ -41,16 +42,27 @@ function compressImage(dataUrl: string, callback: (compressedDataUrl: string) =>
       }
     }
     
-    // Set canvas dimensions
-    canvas.width = width;
-    canvas.height = height;
+    // Set canvas dimensions - ensure they're not too small
+    canvas.width = Math.max(width, 400);
+    canvas.height = Math.max(height, 400);
     
-    // Draw the resized image
+    // Draw the resized image with a white background to handle transparency
     const ctx = canvas.getContext('2d');
-    ctx?.drawImage(img, 0, 0, width, height);
+    if (ctx) {
+      // Fill with white background first (for images with transparency)
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Center the image if we've enforced minimum dimensions
+      const offsetX = (canvas.width - width) / 2;
+      const offsetY = (canvas.height - height) / 2;
+      
+      // Draw the actual image
+      ctx.drawImage(img, offsetX, offsetY, width, height);
+    }
     
-    // Get compressed data URL (JPEG at 85% quality)
-    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+    // Get compressed data URL (JPEG at 75% quality for smaller size)
+    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.75);
     
     // Pass back the compressed image
     callback(compressedDataUrl);
@@ -263,18 +275,46 @@ const Home = () => {
                       
                       reader.onload = (event) => {
                         if (event.target && typeof event.target.result === 'string') {
-                          // Get base64 image data
-                          const base64Image = event.target.result.split(',')[1];
-                          
-                          // Compress the image if it's too large (OpenAI has size limits)
-                          // Using the compressImage function defined at the top of the file
-                          compressImage(event.target.result as string, (compressedDataUrl: string) => {
-                            // Extract the base64 part after compression
-                            const compressedBase64 = compressedDataUrl.split(',')[1];
+                          try {
+                            // Display a loading indicator
+                            toast({
+                              title: 'Processing image',
+                              description: 'Compressing and preparing for analysis...'
+                            });
                             
-                            // Pass the compressed image data to the analysis handler
-                            handleCapture(compressedBase64);
-                          });
+                            // The full dataURL with prefix (e.g., data:image/jpeg;base64,)
+                            const dataUrl = event.target.result;
+                            
+                            // Compress the image if it's too large (OpenAI has size limits)
+                            compressImage(dataUrl, (compressedDataUrl: string) => {
+                              try {
+                                console.log('Image processed, size reduction:', 
+                                  Math.round((dataUrl.length - compressedDataUrl.length) / dataUrl.length * 100) + '%');
+                                
+                                // Extract the base64 part after compression (without the prefix)
+                                const compressedBase64 = compressedDataUrl.split(',')[1];
+                                
+                                // Pass the compressed image data to the analysis handler
+                                handleCapture(compressedBase64);
+                              } catch (error) {
+                                console.error('Error processing compressed image:', error);
+                                setCameraStatus('inactive');
+                                toast({
+                                  title: 'Processing Error',
+                                  description: 'Error processing the image after compression.',
+                                  variant: 'destructive'
+                                });
+                              }
+                            });
+                          } catch (error) {
+                            console.error('Error in image upload processing:', error);
+                            setCameraStatus('inactive');
+                            toast({
+                              title: 'Processing Error',
+                              description: 'Could not process the uploaded image.',
+                              variant: 'destructive'
+                            });
+                          }
                         }
                       };
                       
