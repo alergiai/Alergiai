@@ -267,68 +267,53 @@ const Home = () => {
                   className="hidden" 
                   onChange={(e) => {
                     if (e.target.files && e.target.files.length > 0) {
-                      const file = e.target.files[0];
-                      const reader = new FileReader();
-                      
-                      // Display loading state
-                      setCameraStatus('loading');
-                      
-                      reader.onload = (event) => {
-                        if (event.target && typeof event.target.result === 'string') {
-                          try {
-                            // Display a loading indicator
-                            toast({
-                              title: 'Processing image',
-                              description: 'Compressing and preparing for analysis...'
-                            });
-                            
-                            // The full dataURL with prefix (e.g., data:image/jpeg;base64,)
-                            const dataUrl = event.target.result;
-                            
-                            // Compress the image if it's too large (OpenAI has size limits)
-                            compressImage(dataUrl, (compressedDataUrl: string) => {
-                              try {
-                                console.log('Image processed, size reduction:', 
-                                  Math.round((dataUrl.length - compressedDataUrl.length) / dataUrl.length * 100) + '%');
-                                
-                                // Extract the base64 part after compression (without the prefix)
-                                const compressedBase64 = compressedDataUrl.split(',')[1];
-                                
-                                // Pass the compressed image data to the analysis handler
-                                handleCapture(compressedBase64);
-                              } catch (error) {
-                                console.error('Error processing compressed image:', error);
-                                setCameraStatus('inactive');
-                                toast({
-                                  title: 'Processing Error',
-                                  description: 'Error processing the image after compression.',
-                                  variant: 'destructive'
-                                });
-                              }
-                            });
-                          } catch (error) {
-                            console.error('Error in image upload processing:', error);
-                            setCameraStatus('inactive');
-                            toast({
-                              title: 'Processing Error',
-                              description: 'Could not process the uploaded image.',
-                              variant: 'destructive'
-                            });
-                          }
-                        }
-                      };
-                      
-                      reader.onerror = () => {
-                        console.error("Failed to read uploaded file");
+                      try {
+                        // Show loading state
+                        setCameraStatus('loading');
+                        toast({
+                          title: 'Processing image',
+                          description: 'Preparing your image for analysis...'
+                        });
+                        
+                        // Create a local reference to the file
+                        const file = e.target.files[0];
+                        
+                        // Use the direct camera result handler
+                        // But convert the file to a simple data URL first
+                        const reader = new FileReader();
+                        
+                        reader.onload = () => {
+                          const dataUrl = reader.result as string;
+                          // Format is data:image/jpeg;base64,BASE64_DATA
+                          
+                          // Extract the base64 part (after the comma)
+                          const base64Data = dataUrl.split(',')[1];
+                          
+                          // Pass to the handler
+                          handleCapture(base64Data);
+                        };
+                        
+                        reader.onerror = () => {
+                          console.error("Failed to read file");
+                          setCameraStatus('inactive');
+                          toast({
+                            title: 'Upload Error',
+                            description: 'Could not read the selected image file.',
+                            variant: 'destructive'
+                          });
+                        };
+                        
+                        // Start reading the file
+                        reader.readAsDataURL(file);
+                      } catch (error) {
+                        console.error("File selection error:", error);
                         setCameraStatus('inactive');
                         toast({
-                          title: 'Upload Failed',
-                          description: 'Could not read the uploaded file. Please try again.',
+                          title: 'Upload Error',
+                          description: 'There was a problem with the selected file.',
                           variant: 'destructive'
                         });
-                      };
-                      
-                      reader.readAsDataURL(file);
+                      }
                     }
                   }} 
                 />
