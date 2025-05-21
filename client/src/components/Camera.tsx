@@ -259,7 +259,49 @@ const Camera: React.FC<CameraProps> = ({
             </div>
           </div>
           
-          <div className="absolute bottom-8 inset-x-0 flex justify-center">
+          <div className="absolute bottom-8 inset-x-0 flex justify-center items-center space-x-6">
+            {/* Gallery upload button */}
+            <button 
+              type="button" 
+              className="w-12 h-12 rounded-full bg-black/40 shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150"
+              onClick={() => {
+                // Create file input
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.style.display = 'none';
+                
+                input.onchange = (e) => {
+                  const target = e.target as HTMLInputElement;
+                  if (target.files && target.files.length > 0) {
+                    const file = target.files[0];
+                    const reader = new FileReader();
+                    
+                    reader.onload = (event) => {
+                      if (event.target && typeof event.target.result === 'string') {
+                        const base64Image = event.target.result.split(',')[1];
+                        onCapture(base64Image);
+                      }
+                    };
+                    
+                    reader.readAsDataURL(file);
+                  }
+                };
+                
+                // Add to DOM, click, and remove
+                document.body.appendChild(input);
+                input.click();
+                setTimeout(() => document.body.removeChild(input), 5000);
+              }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <circle cx="8.5" cy="8.5" r="1.5" />
+                <polyline points="21 15 16 10 5 21" />
+              </svg>
+            </button>
+            
+            {/* Camera capture button */}
             <button 
               type="button" 
               className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150"
