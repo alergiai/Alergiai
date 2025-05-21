@@ -54,13 +54,17 @@ function enhanceAllergenDetection(
             });
             
             // Mark as unsafe if we're confident this is a direct allergen match
-            if (
-              // Direct matches for pepper/capsicum
-              (allergenName.toLowerCase().includes('pepper') && 
-               relatedIngredient.toLowerCase().includes('capsicum')) ||
-              // Other very strong relationships can be added here
-              false
-            ) {
+            let shouldMarkUnsafe = false;
+            
+            // Direct matches for pepper/capsicum
+            if (allergenName.toLowerCase().includes('pepper') && 
+                relatedIngredient.toLowerCase().includes('capsicum')) {
+              shouldMarkUnsafe = true;
+            }
+            
+            // Other very strong relationships can be added here as needed
+            
+            if (shouldMarkUnsafe) {
               isSafe = false;
             }
           }

@@ -32,6 +32,33 @@ const Camera: React.FC<CameraProps> = ({
     setDevices(mediaDevices.filter(({ kind }) => kind === "videoinput"));
   }, []);
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      
+      // Display loading state
+      onStatusChange('loading');
+      
+      reader.onload = (event) => {
+        if (event.target && typeof event.target.result === 'string') {
+          // Get base64 image data
+          const base64Image = event.target.result.split(',')[1];
+          
+          // Pass the image data to the parent component
+          onCapture(base64Image);
+        }
+      };
+      
+      reader.onerror = () => {
+        setError("Failed to read uploaded file. Please try again.");
+        onStatusChange('inactive');
+      };
+      
+      reader.readAsDataURL(file);
+    }
+  };
+
   useEffect(() => {
     if (status === 'active') {
       navigator.mediaDevices.enumerateDevices()
@@ -94,12 +121,36 @@ const Camera: React.FC<CameraProps> = ({
         <div className="text-center bg-white p-6 rounded-2xl shadow-lg w-full">
           <h2 className="text-2xl font-bold mb-3 text-gray-900">Scan Ingredients</h2>
           <p className="text-gray-600 mb-6">Take a picture of the ingredients list on a food package to check for allergens</p>
-          <AnimatedButton 
-            className="w-full py-5 bg-primary text-white hover:bg-primary/90 rounded-xl transition-all duration-200 shadow-md text-lg font-medium"
-            onClick={handleActivateCamera}
-          >
-            <CameraIcon className="mr-2 h-5 w-5" /> Activate Camera
-          </AnimatedButton>
+          <div className="space-y-3">
+            <AnimatedButton 
+              className="w-full py-4 bg-primary text-white hover:bg-primary/90 rounded-xl transition-all duration-200 shadow-md text-lg font-medium"
+              onClick={handleActivateCamera}
+            >
+              <CameraIcon className="mr-2 h-5 w-5" /> Take Photo
+            </AnimatedButton>
+            <div className="relative">
+              <input 
+                id="photo-upload" 
+                type="file" 
+                accept="image/*" 
+                className="hidden" 
+                onChange={handleFileUpload} 
+              />
+              <AnimatedButton 
+                className="w-full py-4 bg-white text-gray-800 border border-gray-200 hover:bg-gray-50 rounded-xl transition-all duration-200 shadow-md text-lg font-medium"
+                onClick={() => {
+                  // Create a safe reference to the input element
+                  const fileInput = document.getElementById('photo-upload') as HTMLInputElement;
+                  if (fileInput) fileInput.click();
+                }}
+              >
+                <svg className="mr-2 h-5 w-5 inline" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 16L8.586 11.414C8.96106 11.0391 9.46967 10.8284 10 10.8284C10.5303 10.8284 11.0389 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9611 12.0391 16.4697 11.8284 17 11.8284C17.5303 11.8284 18.0389 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C18.5304 20 19.0391 19.7893 19.4142 19.4142C19.7893 19.0391 20 18.5304 20 18V6C20 5.46957 19.7893 4.96086 19.4142 4.58579C19.0391 4.21071 18.5304 4 18 4H6C5.46957 4 4.96086 4.21071 4.58579 4.58579C4.21071 4.96086 4 5.46957 4 6V18C4 18.5304 4.21071 19.0391 4.58579 19.4142C4.96086 19.7893 5.46957 20 6 20Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                Upload from Gallery
+              </AnimatedButton>
+            </div>
+          </div>
         </div>
       </SlideUp>
     );
