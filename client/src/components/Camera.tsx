@@ -160,7 +160,7 @@ const Camera: React.FC<CameraProps> = ({
                 </div>
                 <button
                   onClick={() => window.location.href = '/allergens'}
-                  className="w-full text-center text-xs bg-white/30 text-white py-2 rounded-lg hover:bg-white/40 transition-colors flex items-center justify-center"
+                  className="w-full text-center text-sm bg-white/30 text-white py-2 rounded-lg hover:bg-white/40 active:bg-white/50 active:scale-95 transition-all duration-150 flex items-center justify-center shadow-md"
                 >
                   <Plus className="w-4 h-4 mr-1" /> Add Allergen
                 </button>
@@ -191,7 +191,7 @@ const Camera: React.FC<CameraProps> = ({
                   </div>
                   <button
                     onClick={() => window.location.href = '/allergens'}
-                    className="bg-primary rounded-full p-2 hover:bg-primary/90 transition-colors flex items-center justify-center flex-shrink-0 min-w-[36px] min-h-[36px]"
+                    className="bg-primary rounded-full p-2 hover:bg-primary/90 active:bg-primary/80 active:scale-90 transition-all duration-150 flex items-center justify-center flex-shrink-0 min-w-[36px] min-h-[36px] shadow-lg"
                   >
                     <Plus className="h-5 w-5 text-white" />
                   </button>
