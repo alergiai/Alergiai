@@ -82,6 +82,16 @@ const ResultCard: React.FC<ResultCardProps> = ({ result, onBack, onSave }) => {
                 : "This product contains ingredients that match your specified allergens or dietary restrictions."
               }
             </div>
+            
+            <div className={`mt-4 ${isSafe ? 'bg-amber-50 border-amber-200' : 'bg-gray-50 border-gray-200'} border rounded-xl p-4`}>
+              <div className="flex items-start">
+                <AlertTriangle className={`w-5 h-5 ${isSafe ? 'text-amber-500' : 'text-gray-500'} mt-0.5 mr-2 flex-shrink-0`} />
+                <div className={`text-sm ${isSafe ? 'text-amber-800 font-medium' : 'text-gray-700'}`}>
+                  <p className="font-bold mb-1">Important Safety Warning</p>
+                  <p>AI can make mistakes. YOU are responsible for verifying this information. If food safety is crucial for your health, always double-check the ingredients yourself or consult a medical professional.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </Pop>
       )}
