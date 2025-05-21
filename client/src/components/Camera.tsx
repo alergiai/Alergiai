@@ -259,11 +259,22 @@ const Camera: React.FC<CameraProps> = ({
             </div>
           </div>
           
-          <div className="absolute bottom-8 inset-x-0 flex justify-center items-center space-x-6">
-            {/* Gallery upload button */}
+          <div className="absolute bottom-8 inset-x-0">
+            {/* Center container for camera button */}
+            <div className="flex justify-center">
+              <button 
+                type="button" 
+                className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150"
+                onClick={handleCaptureClick}
+              >
+                <div className="w-10 h-10 rounded-full border-2 border-gray-300"></div>
+              </button>
+            </div>
+            
+            {/* Gallery button positioned to the side */}
             <button 
               type="button" 
-              className="w-12 h-12 rounded-full bg-black/40 shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150"
+              className="absolute left-1/4 bottom-0 w-12 h-12 rounded-full bg-black/40 shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150"
               onClick={() => {
                 // Create file input
                 const input = document.createElement('input');
@@ -299,15 +310,6 @@ const Camera: React.FC<CameraProps> = ({
                 <circle cx="8.5" cy="8.5" r="1.5" />
                 <polyline points="21 15 16 10 5 21" />
               </svg>
-            </button>
-            
-            {/* Camera capture button */}
-            <button 
-              type="button" 
-              className="w-14 h-14 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform duration-150"
-              onClick={handleCaptureClick}
-            >
-              <div className="w-10 h-10 rounded-full border-2 border-gray-300"></div>
             </button>
           </div>
           
