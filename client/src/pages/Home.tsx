@@ -96,20 +96,39 @@ const Home = () => {
   
   // Handle camera capture
   const handleCapture = async (imageData: string) => {
+    console.log('⏳ handleCapture: Starting process with image data');
+    
     setCapturedImage(imageData);
     setCameraStatus('loading');
     
     try {
-      // Base64 image data is already formatted as data:image/jpeg;base64,xyz...
-      // Extract the base64 part without the prefix for the API request
-      const base64Image = imageData.split('base64,')[1];
+      // Check if we have valid image data
+      if (!imageData) {
+        console.error('❌ handleCapture: No image data provided');
+        throw new Error('No image data provided');
+      }
+      
+      console.log('✅ handleCapture: Image data received, length:', imageData.length);
+      
+      // For direct calls from the camera, the data is already formatted
+      // For file uploads, we need to check the format
+      let base64Image = imageData;
+      
+      // Check if the image data contains the base64 prefix
+      if (imageData.includes('base64,')) {
+        console.log('⏳ handleCapture: Image has base64 prefix, extracting...');
+        base64Image = imageData.split('base64,')[1];
+      }
       
       if (!base64Image) {
+        console.error('❌ handleCapture: Invalid image format after extraction');
         throw new Error('Invalid image format');
       }
       
-      // Compress the image to reduce size if needed
-      // We're sending as-is for now since we want quality for analysis
+      console.log('✅ handleCapture: Base64 image prepared for API, length:', base64Image.length);
+      console.log('⏳ handleCapture: Selected allergens count:', selectedAllergens.length);
+      
+      console.log('⏳ handleCapture: Sending API request to analyze image...');
       
       // Send to API for analysis
       const response = await apiRequest('POST', '/api/analyze', {
@@ -118,12 +137,14 @@ const Home = () => {
       });
       
       if (!response.ok) {
-        console.error('API Error:', response.status, response.statusText);
-        throw new Error('Failed to analyze the image');
+        console.error('❌ handleCapture: API Error:', response.status, response.statusText);
+        throw new Error(`Failed to analyze the image: Server returned ${response.status}`);
       }
       
+      console.log('✅ handleCapture: API request successful, parsing response...');
+      
       const analysisData: ScanAnalysisResponse = await response.json();
-      console.log('Analysis response:', analysisData);
+      console.log('✅ handleCapture: Analysis response:', analysisData);
       
       // Create scan result
       const result: ScanResult = {
@@ -134,24 +155,45 @@ const Home = () => {
         ...analysisData
       };
       
+      console.log('✅ handleCapture: Scan result created:', {
+        productName: result.productName,
+        isSafe: result.isSafe,
+        detectedAllergens: result.detectedAllergens.length
+      });
+      
       setScanResult(result);
       
       // If isSafe is null, it means the image was unclear and needs to be retaken
       if (result.isSafe === null) {
-        console.log('Image unclear - showing retry screen');
+        console.log('⚠️ handleCapture: Image unclear - showing retry screen');
         setCameraStatus('retry');
       } else {
+        console.log('✅ handleCapture: Analysis complete - showing results');
         setCameraStatus('result');
       }
       
     } catch (error) {
-      console.error('Error during image analysis:', error);
+      console.error('❌ handleCapture: Error during image analysis:', error);
+      
       // For server errors, show retry screen instead of just error toast
-      setScanResult(null);
+      setScanResult({
+        id: '',
+        timestamp: Date.now(),
+        productName: 'Error Analyzing Image',
+        imageUrl: '',
+        base64Image: '',
+        isSafe: null,
+        detectedAllergens: [],
+        ingredients: 'Could not process the image analysis properly.',
+        recommendation: 'Please try a different image or ensure your image is clear and well-lit.',
+        alternativeSuggestion: 'If the problem persists, try using the camera to take a photo directly.'
+      });
+      
       setCameraStatus('retry');
+      
       toast({
         title: 'Analysis Failed',
-        description: 'Could not analyze the image. Please take a clearer photo.',
+        description: 'Could not analyze the image. Please try again with a clearer photo.',
         variant: 'destructive'
       });
     }
