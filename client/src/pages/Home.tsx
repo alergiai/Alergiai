@@ -16,6 +16,53 @@ import AllergensPage from './Allergens';
 import { PageTransition, FadeIn, SlideUp, AnimatedButton } from '@/components/ui/animations';
 import { v4 as uuidv4 } from 'uuid';
 
+// Function to compress images for API compatibility
+function compressImage(dataUrl: string, callback: (compressedDataUrl: string) => void) {
+  // Create an image element
+  const img = new Image();
+  img.src = dataUrl;
+  
+  img.onload = () => {
+    // Create a canvas to resize the image
+    const canvas = document.createElement('canvas');
+    
+    // Calculate new dimensions (max 1200px width/height to stay within API limits)
+    let width = img.width;
+    let height = img.height;
+    const maxSize = 1200;
+    
+    if (width > maxSize || height > maxSize) {
+      if (width > height) {
+        height = Math.round((height * maxSize) / width);
+        width = maxSize;
+      } else {
+        width = Math.round((width * maxSize) / height);
+        height = maxSize;
+      }
+    }
+    
+    // Set canvas dimensions
+    canvas.width = width;
+    canvas.height = height;
+    
+    // Draw the resized image
+    const ctx = canvas.getContext('2d');
+    ctx?.drawImage(img, 0, 0, width, height);
+    
+    // Get compressed data URL (JPEG at 85% quality)
+    const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+    
+    // Pass back the compressed image
+    callback(compressedDataUrl);
+  };
+  
+  img.onerror = () => {
+    console.error('Error loading image for compression');
+    // Fall back to the original if compression fails
+    callback(dataUrl);
+  };
+}
+
 const Home = () => {
   const [_, setLocation] = useLocation();
   const { toast } = useToast();
@@ -219,8 +266,15 @@ const Home = () => {
                           // Get base64 image data
                           const base64Image = event.target.result.split(',')[1];
                           
-                          // Pass the image data to the analysis handler
-                          handleCapture(base64Image);
+                          // Compress the image if it's too large (OpenAI has size limits)
+                          // Using the compressImage function defined at the top of the file
+                          compressImage(event.target.result as string, (compressedDataUrl: string) => {
+                            // Extract the base64 part after compression
+                            const compressedBase64 = compressedDataUrl.split(',')[1];
+                            
+                            // Pass the compressed image data to the analysis handler
+                            handleCapture(compressedBase64);
+                          });
                         }
                       };
                       
