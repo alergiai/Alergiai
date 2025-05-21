@@ -193,12 +193,62 @@ const Home = () => {
           
           <div className="w-full">
             <div className="bg-white p-6 rounded-2xl shadow-lg mb-4">
-              <AnimatedButton
-                onClick={handleStartCamera}
-                className="w-full bg-primary hover:bg-primary/90 text-white py-4 px-6 rounded-xl font-medium shadow-md transition-colors text-center text-lg"
-              >
-                Start Camera
-              </AnimatedButton>
+              <div className="space-y-3">
+                <AnimatedButton
+                  onClick={handleStartCamera}
+                  className="w-full bg-primary hover:bg-primary/90 text-white py-4 px-6 rounded-xl font-medium shadow-md transition-colors text-center text-lg"
+                >
+                  <CameraIcon className="mr-2 h-5 w-5 inline" /> Take Photo
+                </AnimatedButton>
+                
+                <input 
+                  id="home-photo-upload" 
+                  type="file" 
+                  accept="image/*" 
+                  className="hidden" 
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      const file = e.target.files[0];
+                      const reader = new FileReader();
+                      
+                      // Display loading state
+                      setCameraStatus('loading');
+                      
+                      reader.onload = (event) => {
+                        if (event.target && typeof event.target.result === 'string') {
+                          // Get base64 image data
+                          const base64Image = event.target.result.split(',')[1];
+                          
+                          // Pass the image data to the analysis handler
+                          handleCapture(base64Image);
+                        }
+                      };
+                      
+                      reader.onerror = () => {
+                        console.error("Failed to read uploaded file");
+                        setCameraStatus('inactive');
+                        toast({
+                          title: 'Upload Failed',
+                          description: 'Could not read the uploaded file. Please try again.',
+                          variant: 'destructive'
+                        });
+                      };
+                      
+                      reader.readAsDataURL(file);
+                    }
+                  }} 
+                />
+                
+                <AnimatedButton
+                  onClick={() => document.getElementById('home-photo-upload')?.click()}
+                  className="w-full bg-white text-gray-800 border border-gray-200 hover:bg-gray-50 py-4 px-6 rounded-xl font-medium shadow-md transition-colors text-center text-lg"
+                >
+                  <svg className="mr-2 h-5 w-5 inline" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M4 16L8.586 11.414C8.96106 11.0391 9.46967 10.8284 10 10.8284C10.5303 10.8284 11.0389 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9611 12.0391 16.4697 11.8284 17 11.8284C17.5303 11.8284 18.0389 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C18.5304 20 19.0391 19.7893 19.4142 19.4142C19.7893 19.0391 20 18.5304 20 18V6C20 5.46957 19.7893 4.96086 19.4142 4.58579C19.0391 4.21071 18.5304 4 18 4H6C5.46957 4 4.96086 4.21071 4.58579 4.58579C4.21071 4.96086 4 5.46957 4 6V18C4 18.5304 4.21071 19.0391 4.58579 19.4142C4.96086 19.7893 5.46957 20 6 20Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Upload from Gallery
+                </AnimatedButton>
+              </div>
             </div>
           </div>
         </SlideUp>
