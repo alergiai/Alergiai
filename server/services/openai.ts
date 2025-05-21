@@ -2,6 +2,95 @@ import OpenAI from "openai";
 import { OPENAI_MODEL, PROMPT_TEMPLATE } from "../config";
 import { Allergen, ScanAnalysisResponse } from "@shared/schema";
 
+/**
+ * Map of allergens to their related ingredients that could cause reactions
+ */
+const ALLERGEN_RELATED_INGREDIENTS: Record<string, string[]> = {
+  "Pepper": ["capsicum", "capsaicin", "paprika", "chili", "chilli", "cayenne", "jalapeño", "pimento", "bell pepper", "red pepper", "green pepper", "capsicum extract", "pepper extract", "pepper oleoresin"],
+  "Peppers": ["capsicum", "capsaicin", "paprika", "chili", "chilli", "cayenne", "jalapeño", "pimento", "bell pepper", "red pepper", "green pepper", "capsicum extract", "pepper extract", "pepper oleoresin"],
+  "Milk": ["dairy", "lactose", "whey", "casein", "butter", "cream", "cheese", "yogurt", "buttermilk", "curd"],
+  "Dairy": ["milk", "lactose", "whey", "casein", "butter", "cream", "cheese", "yogurt", "buttermilk", "curd"],
+  "Wheat": ["gluten", "flour", "bread", "pasta", "bulgur", "semolina", "couscous", "bran", "starch"],
+  "Gluten": ["wheat", "barley", "rye", "malt", "oats", "beer", "spelt", "triticale", "kamut"]
+};
+
+/**
+ * Enhance allergen detection by checking for related ingredients
+ * that might not have been caught by the initial AI analysis
+ */
+function enhanceAllergenDetection(
+  result: ScanAnalysisResponse, 
+  userAllergens: Allergen[]
+): ScanAnalysisResponse {
+  // If no ingredients or already marked unsafe, return as is
+  if (!result.ingredients || result.isSafe === false) {
+    return result;
+  }
+  
+  const ingredients = result.ingredients.toLowerCase();
+  const detectedAllergens = [...result.detectedAllergens];
+  let isSafe = result.isSafe;
+  
+  // Check each user allergen against our related ingredients map
+  for (const allergen of userAllergens) {
+    const allergenName = allergen.name;
+    const relatedIngredients = ALLERGEN_RELATED_INGREDIENTS[allergenName];
+    
+    if (relatedIngredients) {
+      // Check if any related ingredients are in the ingredients list
+      for (const relatedIngredient of relatedIngredients) {
+        if (ingredients.includes(relatedIngredient.toLowerCase())) {
+          // Check if this related ingredient is already detected
+          const alreadyDetected = detectedAllergens.some(
+            detected => detected.found.toLowerCase().includes(relatedIngredient.toLowerCase())
+          );
+          
+          if (!alreadyDetected) {
+            // Add this as a caution (may contain) allergen
+            detectedAllergens.push({
+              name: allergenName,
+              found: `${relatedIngredient} (may be related to ${allergenName})`,
+              severity: 'caution'
+            });
+            
+            // Mark as unsafe if we're confident this is a direct allergen match
+            if (
+              // Direct matches for pepper/capsicum
+              (allergenName.toLowerCase().includes('pepper') && 
+               relatedIngredient.toLowerCase().includes('capsicum')) ||
+              // Other very strong relationships can be added here
+              false
+            ) {
+              isSafe = false;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // Update recommendation if needed
+  let recommendation = result.recommendation;
+  if (detectedAllergens.length > result.detectedAllergens.length) {
+    const cautionAllergens = detectedAllergens
+      .filter(a => a.severity === 'caution')
+      .map(a => a.name)
+      .join(', ');
+      
+    recommendation = 
+      `This product may contain ingredients related to your allergens (${cautionAllergens}). ` +
+      `While these might not be direct matches, we recommend caution. ` + 
+      (result.recommendation || '');
+  }
+  
+  return {
+    ...result,
+    isSafe,
+    detectedAllergens,
+    recommendation
+  };
+}
+
 // Initialize OpenAI client
 const openai = new OpenAI({ 
   apiKey: process.env.OPENAI_API_KEY || '' 
@@ -114,21 +203,24 @@ export async function analyzeImage(base64Image: string, allergens: Allergen[]): 
       // Force unclear mode if we're getting a small number of ingredients with "safe" indication
       (result.isSafe === true && result.detectedAllergens.length === 0 && result.ingredients.length < 50);
     
+    // Check for ingredients that might be related to user's allergens
+    const enhancedResult = enhanceAllergenDetection(result, allergens);
+    
     // Provide fallbacks for missing fields
     return {
-      productName: result.productName || "Unable to identify product",
+      productName: enhancedResult.productName || "Unable to identify product",
       // If ingredients are unclear, mark as "unclear" rather than safe/unsafe
-      isSafe: isIngredientsUnclear ? null : (result.isSafe ?? false),
-      detectedAllergens: result.detectedAllergens || [],
+      isSafe: isIngredientsUnclear ? null : (enhancedResult.isSafe ?? false),
+      detectedAllergens: enhancedResult.detectedAllergens || [],
       ingredients: isIngredientsUnclear ? 
         "Could not clearly identify all ingredients. Please take a clearer picture of the ingredients list." : 
-        result.ingredients,
+        enhancedResult.ingredients,
       recommendation: isIngredientsUnclear ? 
         "Please retake a clearer photo of the ingredients list. For best results, ensure good lighting and focus directly on the text." : 
-        (result.recommendation || "No specific recommendation available."),
+        (enhancedResult.recommendation || "No specific recommendation available."),
       alternativeSuggestion: isIngredientsUnclear ? 
         "Try holding the camera closer to the ingredients list and ensure good lighting." :
-        (result.alternativeSuggestion || "")
+        (enhancedResult.alternativeSuggestion || "")
     };
   } catch (error: any) {
     console.error("Error analyzing image with OpenAI:", error);
