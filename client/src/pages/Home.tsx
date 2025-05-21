@@ -147,10 +147,16 @@ const Home = () => {
       console.log('✅ handleCapture: Analysis response:', analysisData);
       
       // Create scan result
+      // Make sure we set the imageUrl properly for display 
+      // If it's a full base64 with prefix, use as-is, otherwise add the prefix
+      const imageUrl = imageData.includes('data:image') 
+        ? imageData 
+        : `data:image/jpeg;base64,${imageData}`;
+        
       const result: ScanResult = {
         id: '',  // Will be assigned when saved to history
         timestamp: Date.now(),
-        imageUrl: imageData,
+        imageUrl: imageUrl,
         base64Image,
         ...analysisData
       };
