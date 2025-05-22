@@ -131,8 +131,10 @@ const Home = () => {
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   
-  // Get selected allergens for allergen detection
-  const selectedAllergens = useAllergens().getSelectedAllergens();
+  // Get all the allergen functionality
+  const allergensFunctions = useAllergens();
+  // Get the selected allergens for scanning
+  const selectedAllergens = allergensFunctions.getSelectedAllergens();
   
   // Handle camera capture
   const handleCapture = async (imageData: string) => {

@@ -22,16 +22,70 @@ function enhanceAllergenDetection(
   result: ScanAnalysisResponse, 
   userAllergens: Allergen[]
 ): ScanAnalysisResponse {
-  // If no ingredients or already marked unsafe, return as is
-  if (!result.ingredients || result.isSafe === false) {
+  // If no ingredients list was found, return as is
+  if (!result.ingredients) {
     return result;
   }
+  
+  console.log('Enhancing allergen detection with user allergens:', 
+    userAllergens.map(a => a.name).join(', '));
   
   const ingredients = result.ingredients.toLowerCase();
   const detectedAllergens = [...result.detectedAllergens];
   let isSafe = result.isSafe;
   
-  // Check each user allergen against our related ingredients map
+  // First check for direct matches of allergen names in ingredients
+  for (const allergen of userAllergens) {
+    const allergenNameLower = allergen.name.toLowerCase();
+    
+    // Direct check for allergen name in ingredients
+    if (ingredients.includes(allergenNameLower)) {
+      console.log(`Found direct match for allergen: ${allergen.name}`);
+      
+      // Only add if not already detected
+      const alreadyDetected = detectedAllergens.some(
+        detected => detected.name.toLowerCase() === allergenNameLower
+      );
+      
+      if (!alreadyDetected) {
+        detectedAllergens.push({
+          name: allergen.name,
+          found: allergen.name,
+          severity: 'unsafe'
+        });
+        
+        // Mark as unsafe since we found a direct match
+        isSafe = false;
+      }
+    }
+  }
+  
+  // First check if any allergen names directly appear in the ingredients
+  for (const allergen of userAllergens) {
+    const allergenNameLower = allergen.name.toLowerCase();
+    
+    // Direct check for allergen name in ingredients
+    if (ingredients.includes(allergenNameLower)) {
+      // Only add if not already detected
+      const alreadyDetected = detectedAllergens.some(
+        detected => detected.name.toLowerCase() === allergenNameLower
+      );
+      
+      if (!alreadyDetected) {
+        console.log(`Direct match found for allergen: ${allergen.name}`);
+        detectedAllergens.push({
+          name: allergen.name,
+          found: allergen.name,
+          severity: 'unsafe'
+        });
+        
+        // Mark as unsafe since we found a direct match
+        isSafe = false;
+      }
+    }
+  }
+  
+  // Then check each user allergen against our related ingredients map
   for (const allergen of userAllergens) {
     const allergenName = allergen.name;
     const relatedIngredients = ALLERGEN_RELATED_INGREDIENTS[allergenName];
@@ -46,6 +100,7 @@ function enhanceAllergenDetection(
           );
           
           if (!alreadyDetected) {
+            console.log(`Related ingredient match found: ${relatedIngredient} related to ${allergenName}`);
             // Add this as a caution (may contain) allergen
             detectedAllergens.push({
               name: allergenName,
@@ -53,20 +108,8 @@ function enhanceAllergenDetection(
               severity: 'caution'
             });
             
-            // Mark as unsafe if we're confident this is a direct allergen match
-            let shouldMarkUnsafe = false;
-            
-            // Direct matches for pepper/capsicum
-            if (allergenName.toLowerCase().includes('pepper') && 
-                relatedIngredient.toLowerCase().includes('capsicum')) {
-              shouldMarkUnsafe = true;
-            }
-            
-            // Other very strong relationships can be added here as needed
-            
-            if (shouldMarkUnsafe) {
-              isSafe = false;
-            }
+            // Mark as unsafe since we found a related ingredient
+            isSafe = false;
           }
         }
       }
@@ -75,16 +118,39 @@ function enhanceAllergenDetection(
   
   // Update recommendation if needed
   let recommendation = result.recommendation;
+  
+  // If we found more allergens than the AI initially detected
   if (detectedAllergens.length > result.detectedAllergens.length) {
-    const cautionAllergens = detectedAllergens
-      .filter(a => a.severity === 'caution')
-      .map(a => a.name)
-      .join(', ');
+    // Get newly detected allergens
+    const newDetections = detectedAllergens.slice(result.detectedAllergens.length);
+    
+    const unsafeAllergens = newDetections
+      .filter(a => a.severity === 'unsafe')
+      .map(a => a.name);
       
-    recommendation = 
-      `This product may contain ingredients related to your allergens (${cautionAllergens}). ` +
-      `While these might not be direct matches, we recommend caution. ` + 
-      (result.recommendation || '');
+    const cautionAllergens = newDetections
+      .filter(a => a.severity === 'caution')
+      .map(a => a.name);
+    
+    // Build appropriate warning message
+    let warningMessage = '';
+    
+    if (unsafeAllergens.length > 0) {
+      warningMessage += `CAUTION: This product contains your specified allergens (${unsafeAllergens.join(', ')}). `;
+      // Force unsafe status
+      isSafe = false;
+    }
+    
+    if (cautionAllergens.length > 0) {
+      warningMessage += `This product may contain ingredients related to your restrictions (${cautionAllergens.join(', ')}). ` +
+        `While these might not be direct matches, we recommend caution. `;
+      // Mark as potentially unsafe
+      if (isSafe === true) {
+        isSafe = false;
+      }
+    }
+    
+    recommendation = warningMessage + (result.recommendation || '');
   }
   
   return {

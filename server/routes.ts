@@ -26,6 +26,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: 'Missing or invalid image data' });
       }
       
+      // Log the allergens being processed
+      console.log(`Processing scan with ${allergens.length} selected allergens:`, 
+        allergens.map(a => a.name).join(', '));
+      
       // Analyze the image using OpenAI
       const analysisResult = await analyzeImage(base64Image, allergens);
       
