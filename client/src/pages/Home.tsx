@@ -255,23 +255,33 @@ const Home = () => {
   const handleSaveToHistory = () => {
     if (scanResult) {
       try {
-        // Create a complete scan result with ID if it doesn't have one
-        const completeResult = {
+        // Get the source image (either imageUrl or base64Image)
+        const imageSource = scanResult.imageUrl || 
+          (scanResult.base64Image ? 
+            (scanResult.base64Image.includes('data:') ? 
+              scanResult.base64Image : 
+              `data:image/jpeg;base64,${scanResult.base64Image}`) 
+            : '');
+        
+        // Create a storage-efficient version with a tiny thumbnail
+        const storageEfficientResult = {
           ...scanResult,
-          id: scanResult.id || uuidv4()
+          id: scanResult.id || uuidv4(),
+          // Replace large base64Image with tiny thumbnail
+          base64Image: createStorageThumbnail(imageSource)
         };
         
-        // Log for debugging
-        console.log('Saving scan result to history:', completeResult);
+        console.log('Saving scan result to history with thumbnail');
         
         // Add to history and get back the result with generated ID
-        const savedResult = addToHistory(completeResult);
+        const savedResult = addToHistory(storageEfficientResult);
         
-        // Debug - log the saved result with ID
-        console.log('Saved result with ID:', savedResult.id);
-        
-        // Set the current scanResult with the proper ID
-        setScanResult(savedResult);
+        // Set the current scanResult with the proper ID but keep the full image
+        setScanResult({
+          ...savedResult,
+          // Keep the original image for display in the current session
+          base64Image: scanResult.base64Image
+        });
         
         toast({
           title: 'Saved to History',
@@ -285,8 +295,8 @@ const Home = () => {
       } catch (error) {
         console.error('Error saving to history:', error);
         toast({
-          title: 'Error Saving',
-          description: 'Could not save the scan to history',
+          title: 'Storage Limit Reached',
+          description: 'Could not save to history due to storage limits. Try clearing some old scans.',
           variant: 'destructive'
         });
       }
