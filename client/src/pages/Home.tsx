@@ -7,7 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { useAllergens } from '@/hooks/useAllergens';
 import { useHistory } from '@/hooks/useHistory';
-import { ScanResult, CameraStatus, ScanAnalysisResponse } from '@/types';
+import { ScanResult, CameraStatus, ScanAnalysisResponse, Allergen } from '@/types';
 import Header from '@/components/Header';
 import CameraComponent from '@/components/Camera';
 import ResultCard from '@/components/ResultCard';
@@ -131,14 +131,8 @@ const Home = () => {
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   
-  // Get selected allergens with refresh capability
-  const [selectedAllergens, setSelectedAllergens] = useState<Allergen[]>([]);
-  
-  // Update selected allergens whenever activeTab changes
-  useEffect(() => {
-    setSelectedAllergens(getSelectedAllergens());
-    console.log('Updated selected allergens:', getSelectedAllergens().length);
-  }, [activeTab, getSelectedAllergens]);
+  // Get selected allergens for allergen detection
+  const selectedAllergens = useAllergens().getSelectedAllergens();
   
   // Handle camera capture
   const handleCapture = async (imageData: string) => {
