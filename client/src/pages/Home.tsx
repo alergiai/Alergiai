@@ -131,7 +131,14 @@ const Home = () => {
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   
-  const selectedAllergens = getSelectedAllergens();
+  // Get selected allergens with refresh capability
+  const [selectedAllergens, setSelectedAllergens] = useState<Allergen[]>([]);
+  
+  // Update selected allergens whenever activeTab changes
+  useEffect(() => {
+    setSelectedAllergens(getSelectedAllergens());
+    console.log('Updated selected allergens:', getSelectedAllergens().length);
+  }, [activeTab, getSelectedAllergens]);
   
   // Handle camera capture
   const handleCapture = async (imageData: string) => {
