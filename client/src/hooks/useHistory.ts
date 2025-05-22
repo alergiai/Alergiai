@@ -56,21 +56,39 @@ export function useHistory() {
     // Check if result already has an ID or generate a new one
     const newId = 'id' in scanResult && scanResult.id ? scanResult.id : uuidv4();
     
+    // Create a lightweight version of the scan result to save storage space
+    // by removing the base64 image data which is very large
     const newScanResult: ScanResult = {
       ...(scanResult as any),
-      id: newId
+      id: newId,
+      // Store a placeholder instead of the full base64 image
+      base64Image: '' // Don't store the large base64 image in localStorage
     };
     
     debugLog('Adding item to history', newScanResult);
     
-    // Update history state with new item at the beginning
-    setHistory(prev => {
-      // Remove duplicates if this item was already in history
-      const filteredHistory = prev.filter(item => item.id !== newId);
-      return [newScanResult, ...filteredHistory];
-    });
+    try {
+      // Update history state with new item at the beginning
+      setHistory(prev => {
+        // Remove duplicates if this item was already in history
+        const filteredHistory = prev.filter(item => item.id !== newId);
+        return [newScanResult, ...filteredHistory];
+      });
+    } catch (error) {
+      console.error('Error saving to history:', error);
+      // If localStorage is full, try removing older items
+      setHistory(prev => {
+        // Keep only the 5 most recent items to save space
+        const reducedHistory = prev.slice(0, 5);
+        return [newScanResult, ...reducedHistory];
+      });
+    }
     
-    return newScanResult;
+    // Return the original scan result with the image for immediate use
+    return {
+      ...newScanResult,
+      base64Image: (scanResult as any).base64Image
+    };
   };
 
   // Get a specific scan result by ID
