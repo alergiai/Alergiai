@@ -93,10 +93,16 @@ const Allergens = () => {
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-xl font-bold">Your Allergens & Restrictions</h2>
           <Button 
-            onClick={() => window.history.back()}
-            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 font-medium shadow-md"
+            type="button" 
+            className="px-6 py-2 bg-primary hover:bg-primary/90 font-medium shadow-md"
+            onClick={() => {
+              toast({
+                title: 'Preferences Saved',
+                description: 'Your allergen preferences have been updated'
+              });
+            }}
           >
-            ✓ Done
+            Save Preferences
           </Button>
         </div>
         
@@ -196,19 +202,6 @@ const Allergens = () => {
               )}
             </FadeIn>
           ))}
-          
-          <Button 
-            type="button" 
-            className="w-full mt-4 py-4 bg-primary hover:bg-primary/90 rounded-xl"
-            onClick={() => {
-              toast({
-                title: 'Preferences Saved',
-                description: 'Your allergen preferences have been updated'
-              });
-            }}
-          >
-            Save Preferences
-          </Button>
         </div>
       </SlideUp>
     </div>
