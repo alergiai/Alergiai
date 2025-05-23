@@ -331,37 +331,78 @@ const Home = () => {
     if (cameraStatus === 'inactive') {
       return (
         <SlideUp className="flex-1 flex flex-col items-center justify-center p-6" duration={0.4}>
-          <div className="text-center mb-6">
-            <h1 className="text-2xl font-bold mb-3 text-gray-900">
-              Scan Food Packaging
-            </h1>
-            <p className="text-gray-600">
-              Take a photo of ingredients list to check if a product is safe for you.
+          {/* Hero Section */}
+          <div className="text-center mb-8">
+            <div className="mb-4">
+              <div className="text-6xl mb-2">🔍🥫</div>
+              <h1 className="text-3xl font-bold mb-2 text-gray-900">
+                Alergi.AI
+              </h1>
+              <div className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent text-lg font-semibold">
+                AI-Powered Food Safety Scanner
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 rounded-2xl p-4 mb-6 max-w-sm mx-auto">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                  <span className="text-sm font-medium text-gray-700">How it works:</span>
+                </div>
+              </div>
+              <div className="space-y-2 text-sm text-gray-600">
+                <div className="flex items-center space-x-3">
+                  <span className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                  <span>📸 Take photo of ingredients list</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                  <span>🤖 AI analyzes for your allergens</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <span className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                  <span>✅ Get instant safety results</span>
+                </div>
+              </div>
+            </div>
+            
+            <p className="text-gray-600 text-base leading-relaxed">
+              Stop squinting at tiny ingredient lists! Just snap a photo and let AI tell you if it's safe for your allergies and dietary restrictions.
             </p>
           </div>
           
-          <button 
-            onClick={handleStartCamera}
-            className="w-44 h-44 bg-white rounded-full flex items-center justify-center mb-8 shadow-lg cursor-pointer relative group"
-          >
-            <div className="w-36 h-36 rounded-full border-[3px] border-primary-200 flex items-center justify-center">
-              <CameraIcon className="w-20 h-20 text-primary-600" />
-            </div>
-            <div className="absolute bottom-0 transform translate-y-1/2">
-              <span className="bg-white px-4 py-2 rounded-full shadow-md font-medium text-gray-800 border border-gray-100">
-                Tap to scan
+          {/* Main Scan Button */}
+          <div className="relative mb-8">
+            <button 
+              onClick={handleStartCamera}
+              className="w-48 h-48 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center shadow-xl cursor-pointer relative group transform transition-all duration-300 hover:scale-105 active:scale-95"
+            >
+              <div className="w-40 h-40 rounded-full border-4 border-white/30 flex items-center justify-center relative">
+                <CameraIcon className="w-16 h-16 text-white" />
+                <div className="absolute inset-0 rounded-full bg-white/10 animate-pulse"></div>
+              </div>
+            </button>
+            <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2">
+              <span className="bg-white px-6 py-3 rounded-full shadow-lg font-bold text-primary text-lg border-2 border-primary/20">
+                🚀 Start Scanning
               </span>
             </div>
-          </button>
+          </div>
           
-          <div className="w-full">
-            <div className="bg-white p-6 rounded-2xl shadow-lg mb-4">
+          <div className="w-full max-w-md">
+            {/* Quick Action Cards */}
+            <div className="bg-white rounded-2xl shadow-lg p-6 mb-4">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">Quick Actions</h3>
               <div className="space-y-3">
                 <AnimatedButton
                   onClick={handleStartCamera}
-                  className="w-full bg-primary hover:bg-primary/90 text-white py-4 px-6 rounded-xl font-medium shadow-md transition-colors text-center text-lg"
+                  className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white py-4 px-6 rounded-xl font-medium shadow-md transition-all text-center text-lg group"
                 >
-                  <CameraIcon className="mr-2 h-5 w-5 inline" /> Take Photo
+                  <div className="flex items-center justify-center space-x-3">
+                    <CameraIcon className="h-6 w-6" />
+                    <span>📸 Scan Ingredients</span>
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">→</div>
+                  </div>
                 </AnimatedButton>
                 
                 <input 
@@ -424,13 +465,43 @@ const Home = () => {
                 
                 <AnimatedButton
                   onClick={() => document.getElementById('home-photo-upload')?.click()}
-                  className="w-full bg-white text-gray-800 border border-gray-200 hover:bg-gray-50 py-4 px-6 rounded-xl font-medium shadow-md transition-colors text-center text-lg"
+                  className="w-full bg-white hover:bg-gray-50 text-gray-700 py-4 px-6 rounded-xl font-medium shadow-md border border-gray-200 transition-all text-center text-lg group"
                 >
-                  <svg className="mr-2 h-5 w-5 inline" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M4 16L8.586 11.414C8.96106 11.0391 9.46967 10.8284 10 10.8284C10.5303 10.8284 11.0389 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9611 12.0391 16.4697 11.8284 17 11.8284C17.5303 11.8284 18.0389 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C18.5304 20 19.0391 19.7893 19.4142 19.4142C19.7893 19.0391 20 18.5304 20 18V6C20 5.46957 19.7893 4.96086 19.4142 4.58579C19.0391 4.21071 18.5304 4 18 4H6C5.46957 4 4.96086 4.21071 4.58579 4.58579C4.21071 4.96086 4 5.46957 4 6V18C4 18.5304 4.21071 19.0391 4.58579 19.4142C4.96086 19.7893 5.46957 20 6 20Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                  Upload from Gallery
+                  <div className="flex items-center justify-center space-x-3">
+                    <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M4 16L8.586 11.414C8.96106 11.0391 9.46967 10.8284 10 10.8284C10.5303 10.8284 11.0389 11.0391 11.414 11.414L16 16M14 14L15.586 12.414C15.9611 12.0391 16.4697 11.8284 17 11.8284C17.5303 11.8284 18.0389 12.0391 18.414 12.414L20 14M14 8H14.01M6 20H18C18.5304 20 19.0391 19.7893 19.4142 19.4142C19.7893 19.0391 20 18.5304 20 18V6C20 5.46957 19.7893 4.96086 19.4142 4.58579C19.0391 4.21071 18.5304 4 18 4H6C5.46957 4 4.96086 4.21071 4.58579 4.58579C4.21071 4.96086 4 5.46957 4 6V18C4 18.5304 4.21071 19.0391 4.58579 19.4142C4.96086 19.7893 5.46957 20 6 20Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <span>📱 Upload from Gallery</span>
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">→</div>
+                  </div>
                 </AnimatedButton>
+              </div>
+            </div>
+            
+            {/* Feature Highlights */}
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6 border border-blue-100 mt-4">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 text-center">✨ What Makes Us Special</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <div className="text-3xl mb-2">⚡</div>
+                  <div className="text-sm font-medium text-gray-700">Instant Results</div>
+                  <div className="text-xs text-gray-500">AI analysis in seconds</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl mb-2">🎯</div>
+                  <div className="text-sm font-medium text-gray-700">Highly Accurate</div>
+                  <div className="text-xs text-gray-500">GPT-4 Vision powered</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl mb-2">🛡️</div>
+                  <div className="text-sm font-medium text-gray-700">Safety First</div>
+                  <div className="text-xs text-gray-500">Warns about risks</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl mb-2">⚙️</div>
+                  <div className="text-sm font-medium text-gray-700">Customizable</div>
+                  <div className="text-xs text-gray-500">Your specific needs</div>
+                </div>
               </div>
             </div>
           </div>
