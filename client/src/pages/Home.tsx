@@ -131,8 +131,14 @@ const Home = () => {
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   
-  // Get selected allergens for scanning
+  // Get selected allergens for scanning - force refresh when component re-renders
+  const [refreshKey, setRefreshKey] = useState(0);
   const selectedAllergens = allergenHook.getSelectedAllergens();
+  
+  // Force refresh when coming back to this page
+  useEffect(() => {
+    setRefreshKey(prev => prev + 1);
+  }, [location]);
   
   // Handle camera capture
   const handleCapture = async (imageData: string) => {
