@@ -117,7 +117,7 @@ function compressImage(dataUrl: string, callback: (compressedDataUrl: string) =>
 const Home = () => {
   const [_, setLocation] = useLocation();
   const { toast } = useToast();
-  const { getSelectedAllergens } = useAllergens();
+  const allergenHook = useAllergens();
   const { addToHistory } = useHistory();
   
   // Get the current path to set active tab
@@ -131,10 +131,8 @@ const Home = () => {
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   
-  // Get all the allergen functionality
-  const allergensFunctions = useAllergens();
-  // Get the selected allergens for scanning
-  const selectedAllergens = allergensFunctions.getSelectedAllergens();
+  // Get selected allergens for scanning
+  const selectedAllergens = allergenHook.getSelectedAllergens();
   
   // Handle camera capture
   const handleCapture = async (imageData: string) => {
