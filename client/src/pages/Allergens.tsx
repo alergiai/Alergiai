@@ -90,7 +90,15 @@ const Allergens = () => {
   return (
     <div className="flex-1 p-4">
       <SlideUp duration={0.3} className="bg-white rounded-2xl shadow-lg p-6 mb-4">
-        <h2 className="text-xl font-bold mb-5">Your Allergens & Restrictions</h2>
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="text-xl font-bold">Your Allergens & Restrictions</h2>
+          <Button 
+            onClick={() => window.history.back()}
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 font-medium shadow-md"
+          >
+            ✓ Done
+          </Button>
+        </div>
         
         <div className="space-y-6">
           {allergenGroups.map((group, groupIndex) => (
