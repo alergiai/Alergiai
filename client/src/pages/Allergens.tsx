@@ -202,6 +202,19 @@ const Allergens = () => {
               )}
             </FadeIn>
           ))}
+          
+          <Button 
+            type="button" 
+            className="w-full mt-6 py-4 bg-primary hover:bg-primary/90 rounded-xl font-medium shadow-md"
+            onClick={() => {
+              toast({
+                title: 'Preferences Saved',
+                description: 'Your allergen preferences have been updated'
+              });
+            }}
+          >
+            Save Preferences
+          </Button>
         </div>
       </SlideUp>
     </div>
