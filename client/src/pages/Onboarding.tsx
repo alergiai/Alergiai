@@ -99,11 +99,8 @@ const Onboarding = () => {
                 <img 
                   src={logoPath} 
                   alt="Alergi.AI" 
-                  className="h-16 mx-auto mb-4"
+                  className="h-20 mx-auto"
                 />
-                <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
-                  <Utensils className="w-10 h-10 text-white" />
-                </div>
               </div>
               <h1 className="text-3xl font-bold text-gray-900">Welcome to Alergi.AI</h1>
               <p className="text-lg text-gray-600 leading-relaxed">
