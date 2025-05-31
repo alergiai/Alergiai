@@ -16,7 +16,7 @@ import {
   AlertTriangle,
   Sparkles,
 } from "lucide-react";
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import { useAllergens } from "@/hooks/useAllergens";
 import { Allergen, AllergenCategory } from "@/types";
 import { FadeIn, SlideUp, Pop } from "@/components/ui/animations";
@@ -152,7 +152,7 @@ const Onboarding = () => {
           <FadeIn>
             <div className="text-center space-y-6">
               <div className="mb-8">
-                <Logo size="lg" className="justify-center" />
+                <Header />
               </div>
               <p className="text-lg text-gray-600 leading-relaxed">
                 Your AI-powered food safety companion that scans ingredients and
@@ -230,7 +230,7 @@ const Onboarding = () => {
         return (
           <FadeIn>
             <div className="text-center space-y-8">
-              <div className="w-16 h-16 bg-gradient-to-br from-red-400 to-red-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto shadow-lg">
                 <AlertTriangle className="w-8 h-8 text-white" />
               </div>
               <div>
@@ -252,7 +252,7 @@ const Onboarding = () => {
               <div className="space-y-4">
                 <Button
                   onClick={() => handleStruggleResponse(true)}
-                  className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-4 font-semibold"
+                  className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white py-4 font-semibold"
                 >
                   Yes, it's frustrating and time-consuming
                 </Button>
@@ -273,7 +273,7 @@ const Onboarding = () => {
           <FadeIn>
             <div className="space-y-6">
               <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
@@ -291,8 +291,8 @@ const Onboarding = () => {
                       <Card
                         className={`cursor-pointer transition-all hover:shadow-lg border-2 ${
                           data.features.includes(feature.id)
-                            ? "border-purple-500 bg-purple-50 shadow-md"
-                            : "border-gray-200 hover:border-purple-300"
+                            ? "border-primary bg-primary/5 shadow-md"
+                            : "border-gray-200 hover:border-primary/30"
                         }`}
                         onClick={() => handleFeatureToggle(feature.id)}
                       >
@@ -307,7 +307,7 @@ const Onboarding = () => {
                           </p>
                           <Checkbox
                             checked={data.features.includes(feature.id)}
-                            className="data-[state=checked]:bg-purple-600 data-[state=checked]:border-purple-600"
+                            className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                           />
                         </CardContent>
                       </Card>
@@ -440,7 +440,7 @@ const Onboarding = () => {
           <FadeIn>
             <div className="text-center space-y-6">
               <div className="mb-4">
-                <Logo size="md" className="justify-center mb-4" />
+                <Header />
                 <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto shadow-lg">
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
