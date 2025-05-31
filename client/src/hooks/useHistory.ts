@@ -46,8 +46,23 @@ export function useHistory() {
   // Save history to localStorage whenever it changes
   useEffect(() => {
     if (isLoaded) {
-      debugLog('Saving history to localStorage', history.length + ' items');
-      localStorage.setItem('scanHistory', JSON.stringify(history));
+      try {
+        debugLog('Saving history to localStorage', history.length + ' items');
+        localStorage.setItem('scanHistory', JSON.stringify(history));
+      } catch (error) {
+        // If storage quota exceeded, remove oldest items and try again
+        console.warn('Storage quota exceeded, cleaning up old history items');
+        const reducedHistory = history.slice(0, Math.max(5, Math.floor(history.length / 2)));
+        setHistory(reducedHistory);
+        try {
+          localStorage.setItem('scanHistory', JSON.stringify(reducedHistory));
+        } catch (secondError) {
+          console.error('Storage still full after cleanup:', secondError);
+          // Clear all history if still having issues
+          setHistory([]);
+          localStorage.removeItem('scanHistory');
+        }
+      }
     }
   }, [history, isLoaded]);
 

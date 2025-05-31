@@ -16,43 +16,53 @@ import AllergensPage from './Allergens';
 import { PageTransition, FadeIn, SlideUp, AnimatedButton } from '@/components/ui/animations';
 import { v4 as uuidv4 } from 'uuid';
 
-// Function to create a thumbnail for storage in history
-function createStorageThumbnail(imageData: string): string {
-  try {
-    // Create an image element
-    const img = new Image();
-    
-    // Handle both formats (with or without data URI prefix)
-    const imgSrc = imageData.includes('data:') 
-      ? imageData 
-      : `data:image/jpeg;base64,${imageData}`;
-    
-    img.src = imgSrc;
-    
-    // Create a tiny canvas for the thumbnail
-    const canvas = document.createElement('canvas');
-    const thumbnailSize = 100; // Very small thumbnail
-    canvas.width = thumbnailSize;
-    canvas.height = thumbnailSize;
-    
-    // Draw the image on the canvas
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      ctx.fillStyle = '#FFFFFF';
-      ctx.fillRect(0, 0, thumbnailSize, thumbnailSize);
+// Function to create a tiny thumbnail for storage in history
+function createStorageThumbnail(imageData: string): Promise<string> {
+  return new Promise((resolve) => {
+    try {
+      const img = new Image();
       
-      // Draw image centered and cropped
-      ctx.drawImage(img, 0, 0, thumbnailSize, thumbnailSize);
+      img.onload = () => {
+        try {
+          // Create a tiny canvas for the thumbnail
+          const canvas = document.createElement('canvas');
+          const thumbnailSize = 20; // Extremely small thumbnail
+          canvas.width = thumbnailSize;
+          canvas.height = thumbnailSize;
+          
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            // Draw image scaled down
+            ctx.drawImage(img, 0, 0, thumbnailSize, thumbnailSize);
+            
+            // Return extremely compressed thumbnail (5% quality)
+            const thumbnail = canvas.toDataURL('image/jpeg', 0.05);
+            resolve(thumbnail);
+          } else {
+            resolve('');
+          }
+        } catch (error) {
+          console.error('Error creating thumbnail:', error);
+          resolve('');
+        }
+      };
       
-      // Return a very low quality thumbnail to save space
-      return canvas.toDataURL('image/jpeg', 0.1);
+      img.onerror = () => {
+        console.error('Error loading image for thumbnail');
+        resolve('');
+      };
+      
+      // Handle both formats (with or without data URI prefix)
+      const imgSrc = imageData.includes('data:') 
+        ? imageData 
+        : `data:image/jpeg;base64,${imageData}`;
+      
+      img.src = imgSrc;
+    } catch (error) {
+      console.error('Error in thumbnail creation:', error);
+      resolve('');
     }
-  } catch (error) {
-    console.error('Error creating thumbnail for storage:', error);
-  }
-  
-  // Return empty string if thumbnail creation fails
-  return '';
+  });
 }
 
 // Function to compress images for API compatibility
@@ -259,7 +269,7 @@ const Home = () => {
   };
   
   // Handle saving result to history
-  const handleSaveToHistory = () => {
+  const handleSaveToHistory = async () => {
     if (scanResult) {
       try {
         // Get the source image (either imageUrl or base64Image)
@@ -270,12 +280,17 @@ const Home = () => {
               `data:image/jpeg;base64,${scanResult.base64Image}`) 
             : '');
         
-        // Create a storage-efficient version with a tiny thumbnail
+        // Create a tiny thumbnail asynchronously
+        const thumbnail = await createStorageThumbnail(imageSource);
+        
+        // Create a storage-efficient version with the tiny thumbnail
         const storageEfficientResult = {
           ...scanResult,
           id: scanResult.id || uuidv4(),
           // Replace large base64Image with tiny thumbnail
-          base64Image: createStorageThumbnail(imageSource)
+          base64Image: thumbnail,
+          // Remove imageUrl to save space
+          imageUrl: ''
         };
         
         console.log('Saving scan result to history with thumbnail');
