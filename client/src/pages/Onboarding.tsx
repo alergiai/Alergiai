@@ -158,8 +158,8 @@ const Onboarding = () => {
                 Your AI-powered food safety companion that scans ingredients and
                 alerts you to allergens in seconds.
               </p>
-              <div className="bg-purple-50 rounded-xl p-4 border border-purple-100">
-                <p className="text-purple-800 font-medium">
+              <div className="bg-primary/5 rounded-xl p-4 border border-primary/20">
+                <p className="text-primary font-medium">
                   🍎 Scan any food product instantly
                   <br />
                   🛡️ Get personalized safety alerts
@@ -168,7 +168,7 @@ const Onboarding = () => {
               </div>
               <Button
                 onClick={() => setCurrentStep(1)}
-                className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white py-4 text-lg font-semibold shadow-lg"
+                className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white py-4 text-lg font-semibold shadow-lg"
               >
                 Start Your Food Safety Journey
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -201,7 +201,7 @@ const Onboarding = () => {
                       delay={reasons.indexOf(reason) * 0.1}
                     >
                       <Card
-                        className="cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] border-2 hover:border-purple-300"
+                        className="cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] border-2 hover:border-primary/30"
                         onClick={() => handleReasonSelect(reason.id)}
                       >
                         <CardContent className="p-4 flex items-center space-x-4">
@@ -387,7 +387,7 @@ const Onboarding = () => {
                 </Button>
                 <Button
                   onClick={completeOnboarding}
-                  className="flex-1 bg-purple-600 hover:bg-purple-700 text-white"
+                  className="flex-1 bg-primary hover:bg-primary/90 text-white"
                 >
                   Complete Setup
                   <ArrowRight className="ml-2 w-4 h-4" />
@@ -441,7 +441,7 @@ const Onboarding = () => {
             <div className="text-center space-y-6">
               <div className="mb-4">
                 <Logo size="md" className="justify-center mb-4" />
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto shadow-lg">
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
               </div>
@@ -510,7 +510,7 @@ const Onboarding = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-primary/10 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <Card className="shadow-xl border-0">
           <CardContent className="p-8">{renderStep()}</CardContent>
@@ -524,7 +524,7 @@ const Onboarding = () => {
                 <div
                   key={i}
                   className={`w-2 h-2 rounded-full transition-colors ${
-                    i < currentStep ? "bg-purple-600" : "bg-gray-300"
+                    i < currentStep ? "bg-primary" : "bg-gray-300"
                   }`}
                 />
               ))}
