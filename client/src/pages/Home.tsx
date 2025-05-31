@@ -9,6 +9,7 @@ import { useAllergens } from '@/hooks/useAllergens';
 import { useHistory } from '@/hooks/useHistory';
 import { ScanResult, CameraStatus, ScanAnalysisResponse, Allergen } from '@/types';
 import Header from '@/components/Header';
+import ResetOnboarding from '@/components/ResetOnboarding';
 import CameraComponent from '@/components/Camera';
 import ResultCard from '@/components/ResultCard';
 import HistoryPage from './History';
@@ -514,6 +515,7 @@ const Home = () => {
   return (
     <PageTransition className="max-w-md mx-auto min-h-screen flex flex-col">
       <Header />
+      <ResetOnboarding />
       
       <Tabs defaultValue="scan" value={activeTab} onValueChange={handleTabChange} className="flex-1 flex flex-col">
         {cameraStatus === 'inactive' && (
