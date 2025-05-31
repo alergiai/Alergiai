@@ -11,16 +11,16 @@ interface HistoryCardProps {
 }
 
 const HistoryCard: React.FC<HistoryCardProps> = ({ scanResult, onClick }) => {
-  const { id, productName, timestamp, isSafe, imageUrl } = scanResult;
+  const { id, productName, timestamp, isSafe, imageUrl, base64Image } = scanResult;
   
   return (
     <Card className="mb-4 hover:shadow-md transition-shadow" onClick={() => onClick(id)}>
       <CardContent className="p-4 flex justify-between items-center cursor-pointer">
         <div className="flex items-start space-x-3">
           <div className="w-16 h-16 bg-gray-100 rounded overflow-hidden">
-            {imageUrl && (
+            {(imageUrl || base64Image) && (
               <img 
-                src={imageUrl} 
+                src={imageUrl || base64Image} 
                 alt={`Thumbnail of ${productName}`} 
                 className="w-full h-full object-cover" 
               />
