@@ -374,10 +374,7 @@ const Home = () => {
                       try {
                         // Show loading state
                         setCameraStatus('loading');
-                        toast({
-                          title: 'Processing image',
-                          description: 'Preparing your image for analysis...'
-                        });
+                        // Removed toast notification
                         
                         // Create a local reference to the file
                         const file = e.target.files[0];
