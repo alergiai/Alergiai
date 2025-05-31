@@ -100,9 +100,9 @@ const ResultCard: React.FC<ResultCardProps> = ({ result, onBack, onSave }) => {
         <div className="bg-white rounded-2xl p-5 mb-5 shadow-lg">
           <div className="flex items-start space-x-4 mb-4">
             <div className="w-20 h-20 bg-gray-100 rounded-xl overflow-hidden shadow-sm">
-              {result.imageUrl && (
+              {(result.imageUrl || result.base64Image) && (
                 <img 
-                  src={result.imageUrl} 
+                  src={result.imageUrl || result.base64Image} 
                   alt={`Thumbnail of ${productName}`} 
                   className="w-full h-full object-cover"
                 />
