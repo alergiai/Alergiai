@@ -3,7 +3,8 @@ import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowLeft, ArrowRight, CheckCircle2, Heart, Shield, Clock, Zap } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, Heart, Shield, Clock, Zap, Utensils, Apple, AlertTriangle, Sparkles } from 'lucide-react';
+import logoPath from '@assets/Alergi,AI-min.png';
 import { useAllergens } from '@/hooks/useAllergens';
 import { Allergen, AllergenCategory } from '@/types';
 import { FadeIn, SlideUp, Pop } from '@/components/ui/animations';
@@ -27,17 +28,17 @@ const Onboarding = () => {
   const { allergenGroups, toggleAllergen, getSelectedAllergens } = useAllergens();
 
   const reasons = [
-    { id: 'health', label: 'I have food allergies or health conditions', icon: Heart },
-    { id: 'family', label: 'I need to keep my family safe', icon: Shield },
-    { id: 'time', label: 'I want to save time while shopping', icon: Clock },
-    { id: 'peace', label: 'I want peace of mind about food safety', icon: CheckCircle2 }
+    { id: 'health', label: 'I have food allergies or health conditions', icon: AlertTriangle, color: 'bg-red-100 text-red-600' },
+    { id: 'family', label: 'I need to keep my family safe', icon: Shield, color: 'bg-blue-100 text-blue-600' },
+    { id: 'time', label: 'I want to save time while shopping', icon: Clock, color: 'bg-green-100 text-green-600' },
+    { id: 'peace', label: 'I want peace of mind about food safety', icon: CheckCircle2, color: 'bg-purple-100 text-purple-600' }
   ];
 
   const features = [
-    { id: 'instant', label: 'Instant ingredient analysis' },
-    { id: 'alerts', label: 'Real-time allergen alerts' },
-    { id: 'history', label: 'Scan history tracking' },
-    { id: 'suggestions', label: 'Alternative product suggestions' }
+    { id: 'instant', label: 'Instant ingredient analysis', icon: Zap, color: 'bg-yellow-100 text-yellow-600' },
+    { id: 'alerts', label: 'Real-time allergen alerts', icon: AlertTriangle, color: 'bg-red-100 text-red-600' },
+    { id: 'history', label: 'Scan history tracking', icon: Clock, color: 'bg-blue-100 text-blue-600' },
+    { id: 'suggestions', label: 'Alternative product suggestions', icon: Sparkles, color: 'bg-purple-100 text-purple-600' }
   ];
 
   const handleReasonSelect = (reason: string) => {
@@ -94,21 +95,32 @@ const Onboarding = () => {
         return (
           <FadeIn>
             <div className="text-center space-y-6">
-              <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Heart className="w-10 h-10 text-purple-600" />
+              <div className="mb-8">
+                <img 
+                  src={logoPath} 
+                  alt="Alergi.AI" 
+                  className="h-16 mx-auto mb-4"
+                />
+                <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                  <Utensils className="w-10 h-10 text-white" />
+                </div>
               </div>
               <h1 className="text-3xl font-bold text-gray-900">Welcome to Alergi.AI</h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                Your personal food safety assistant that helps you make confident choices every time you shop.
+                Your AI-powered food safety companion that scans ingredients and alerts you to allergens in seconds.
               </p>
-              <p className="text-base text-gray-500">
-                Let's get to know you better so we can provide the most helpful experience.
-              </p>
+              <div className="bg-purple-50 rounded-xl p-4 border border-purple-100">
+                <p className="text-purple-800 font-medium">
+                  🍎 Scan any food product instantly<br/>
+                  🛡️ Get personalized safety alerts<br/>
+                  ⚡ Make confident food choices
+                </p>
+              </div>
               <Button 
                 onClick={() => setCurrentStep(1)}
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 text-lg"
+                className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white py-4 text-lg font-semibold shadow-lg"
               >
-                Get Started
+                Start Your Food Safety Journey
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </div>
@@ -120,8 +132,11 @@ const Onboarding = () => {
           <FadeIn>
             <div className="space-y-6">
               <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">What brings you here?</h2>
-                <p className="text-gray-600">Understanding your needs helps us serve you better</p>
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Apple className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">What brings you to food safety?</h2>
+                <p className="text-gray-600">Help us understand your food journey</p>
               </div>
               <div className="space-y-3">
                 {reasons.map((reason) => {
@@ -129,12 +144,12 @@ const Onboarding = () => {
                   return (
                     <SlideUp key={reason.id} delay={reasons.indexOf(reason) * 0.1}>
                       <Card 
-                        className="cursor-pointer transition-all hover:shadow-md hover:scale-[1.02] border-2 hover:border-purple-200"
+                        className="cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] border-2 hover:border-purple-300"
                         onClick={() => handleReasonSelect(reason.id)}
                       >
                         <CardContent className="p-4 flex items-center space-x-4">
-                          <div className="w-12 h-12 bg-purple-50 rounded-lg flex items-center justify-center">
-                            <Icon className="w-6 h-6 text-purple-600" />
+                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${reason.color}`}>
+                            <Icon className="w-6 h-6" />
                           </div>
                           <div className="flex-1">
                             <p className="font-medium text-gray-900">{reason.label}</p>
@@ -154,28 +169,33 @@ const Onboarding = () => {
         return (
           <FadeIn>
             <div className="text-center space-y-8">
-              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto">
-                <Zap className="w-8 h-8 text-orange-600" />
+              <div className="w-16 h-16 bg-gradient-to-br from-red-400 to-red-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                <AlertTriangle className="w-8 h-8 text-white" />
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                  Have you ever felt overwhelmed reading ingredient labels?
+                  Ever struggled reading tiny ingredient labels while shopping?
                 </h2>
-                <p className="text-gray-600">
-                  You're not alone. Many people find it challenging to quickly identify potential allergens in long ingredient lists.
+                <p className="text-gray-600 leading-relaxed">
+                  Many shoppers spend minutes squinting at ingredient lists, trying to spot allergens in complex chemical names and fine print.
+                </p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-4 border">
+                <p className="text-sm text-gray-700 italic">
+                  "Contains: Wheat flour, milk powder, soy lecithin, natural flavors, sodium metabisulfite..."
                 </p>
               </div>
               <div className="space-y-4">
                 <Button 
                   onClick={() => handleStruggleResponse(true)}
-                  className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3"
+                  className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-4 font-semibold"
                 >
-                  Yes, it's been a real challenge
+                  Yes, it's frustrating and time-consuming
                 </Button>
                 <Button 
                   onClick={() => handleStruggleResponse(false)}
                   variant="outline"
-                  className="w-full py-3"
+                  className="w-full py-4 border-2 hover:bg-gray-50"
                 >
                   No, I usually manage fine
                 </Button>
@@ -189,37 +209,46 @@ const Onboarding = () => {
           <FadeIn>
             <div className="space-y-6">
               <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">What matters most to you?</h2>
-                <p className="text-gray-600">Select the features that would help you the most</p>
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Sparkles className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">Which food safety features excite you most?</h2>
+                <p className="text-gray-600">Select what would make your grocery shopping easier</p>
               </div>
               <div className="space-y-3">
-                {features.map((feature, index) => (
-                  <SlideUp key={feature.id} delay={index * 0.1}>
-                    <Card 
-                      className={`cursor-pointer transition-all hover:shadow-md border-2 ${
-                        data.features.includes(feature.id) 
-                          ? 'border-purple-500 bg-purple-50' 
-                          : 'border-gray-200 hover:border-purple-200'
-                      }`}
-                      onClick={() => handleFeatureToggle(feature.id)}
-                    >
-                      <CardContent className="p-4 flex items-center space-x-4">
-                        <Checkbox 
-                          checked={data.features.includes(feature.id)}
-                          className="data-[state=checked]:bg-purple-600 data-[state=checked]:border-purple-600"
-                        />
-                        <p className="flex-1 font-medium text-gray-900">{feature.label}</p>
-                      </CardContent>
-                    </Card>
-                  </SlideUp>
-                ))}
+                {features.map((feature, index) => {
+                  const Icon = feature.icon;
+                  return (
+                    <SlideUp key={feature.id} delay={index * 0.1}>
+                      <Card 
+                        className={`cursor-pointer transition-all hover:shadow-lg border-2 ${
+                          data.features.includes(feature.id) 
+                            ? 'border-purple-500 bg-purple-50 shadow-md' 
+                            : 'border-gray-200 hover:border-purple-300'
+                        }`}
+                        onClick={() => handleFeatureToggle(feature.id)}
+                      >
+                        <CardContent className="p-4 flex items-center space-x-4">
+                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${feature.color}`}>
+                            <Icon className="w-5 h-5" />
+                          </div>
+                          <p className="flex-1 font-medium text-gray-900">{feature.label}</p>
+                          <Checkbox 
+                            checked={data.features.includes(feature.id)}
+                            className="data-[state=checked]:bg-purple-600 data-[state=checked]:border-purple-600"
+                          />
+                        </CardContent>
+                      </Card>
+                    </SlideUp>
+                  );
+                })}
               </div>
               <Button 
                 onClick={() => setCurrentStep(4)}
                 disabled={data.features.length === 0}
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 mt-8"
+                className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white py-4 mt-8 font-semibold"
               >
-                Continue
+                Continue to Safety Setup
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </div>
@@ -231,9 +260,12 @@ const Onboarding = () => {
           <FadeIn>
             <div className="space-y-6">
               <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">Set up your safety profile</h2>
+                <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="w-8 h-8 text-white" />
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">Create your personal food safety profile</h2>
                 <p className="text-gray-600">
-                  Select any allergens or dietary restrictions we should watch for
+                  Tell us what ingredients to watch out for in your scans
                 </p>
               </div>
               
@@ -293,18 +325,25 @@ const Onboarding = () => {
         return (
           <Pop>
             <div className="text-center space-y-6">
-              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                <CheckCircle2 className="w-10 h-10 text-green-600" />
+              <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                <CheckCircle2 className="w-10 h-10 text-white" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900">You're all set!</h2>
+              <h2 className="text-2xl font-bold text-gray-900">Your food safety profile is ready!</h2>
               <p className="text-gray-600 leading-relaxed">
-                Your personalized safety profile is ready. We'll now scan for {data.selectedAllergens.length > 0 ? `your ${data.selectedAllergens.length} selected allergen${data.selectedAllergens.length > 1 ? 's' : ''}` : 'any potential concerns'} and provide instant alerts.
+                Perfect! Alergi.AI will now scan ingredients and instantly alert you to {data.selectedAllergens.length > 0 ? `your ${data.selectedAllergens.length} selected allergen${data.selectedAllergens.length > 1 ? 's' : ''}` : 'any potential food safety concerns'} in every product you scan.
               </p>
+              <div className="bg-green-50 rounded-xl p-4 border border-green-200">
+                <p className="text-green-800 font-medium text-sm">
+                  🎯 Personalized safety alerts<br/>
+                  ⚡ Instant ingredient analysis<br/>
+                  🛡️ Confident food choices
+                </p>
+              </div>
               <Button 
                 onClick={() => setCurrentStep(6)}
-                className="w-full bg-green-600 hover:bg-green-700 text-white py-3"
+                className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-4 font-semibold"
               >
-                Continue
+                Continue to Premium Features
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </div>
@@ -315,43 +354,66 @@ const Onboarding = () => {
         return (
           <FadeIn>
             <div className="text-center space-y-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto">
-                <Zap className="w-8 h-8 text-white" />
+              <div className="mb-4">
+                <img 
+                  src={logoPath} 
+                  alt="Alergi.AI" 
+                  className="h-12 mx-auto mb-4"
+                />
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                  <Sparkles className="w-8 h-8 text-white" />
+                </div>
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                  Ready to experience Alergi.AI?
+                  Unlock the full power of food safety AI
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  Start your free trial to unlock unlimited scans, detailed analysis, and premium safety features.
+                  Your safety profile is ready. Now experience premium AI-powered ingredient analysis with unlimited scans and advanced safety features.
                 </p>
-                <div className="bg-purple-50 rounded-lg p-4 mb-6">
-                  <h3 className="font-semibold text-purple-900 mb-2">Free Trial Includes:</h3>
-                  <ul className="text-sm text-purple-800 space-y-1">
-                    <li>• Unlimited ingredient scans</li>
-                    <li>• Advanced allergen detection</li>
-                    <li>• Detailed safety recommendations</li>
-                    <li>• Product alternative suggestions</li>
-                  </ul>
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 mb-6 border border-purple-200">
+                  <div className="flex items-center justify-center mb-3">
+                    <Utensils className="w-5 h-5 text-purple-600 mr-2" />
+                    <h3 className="font-bold text-purple-900">Premium Food Safety Features</h3>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3 text-sm text-purple-800">
+                    <div className="flex items-center">
+                      <Zap className="w-4 h-4 mr-2" />
+                      Unlimited scans
+                    </div>
+                    <div className="flex items-center">
+                      <AlertTriangle className="w-4 h-4 mr-2" />
+                      Advanced alerts
+                    </div>
+                    <div className="flex items-center">
+                      <Shield className="w-4 h-4 mr-2" />
+                      Detailed analysis
+                    </div>
+                    <div className="flex items-center">
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Smart suggestions
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="space-y-3">
                 <Button 
                   onClick={startFreeTrial}
-                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 text-lg font-semibold"
+                  className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white py-4 text-lg font-bold shadow-lg"
                 >
                   Start Free Trial
+                  <Sparkles className="ml-2 w-5 h-5" />
                 </Button>
                 <Button 
                   onClick={continueFree}
                   variant="outline"
-                  className="w-full py-3"
+                  className="w-full py-3 border-2 hover:bg-gray-50"
                 >
-                  Continue with Free Plan
+                  Continue with Basic Plan
                 </Button>
               </div>
               <p className="text-xs text-gray-500">
-                Free plan includes basic scanning with limited features
+                Basic plan includes limited scans with essential safety features
               </p>
             </div>
           </FadeIn>
