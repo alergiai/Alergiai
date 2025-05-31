@@ -24,9 +24,9 @@ function createStorageThumbnail(imageData: string): Promise<string> {
       
       img.onload = () => {
         try {
-          // Create a tiny canvas for the thumbnail
+          // Create a better quality thumbnail for storage
           const canvas = document.createElement('canvas');
-          const thumbnailSize = 20; // Extremely small thumbnail
+          const thumbnailSize = 80; // Better resolution thumbnail
           canvas.width = thumbnailSize;
           canvas.height = thumbnailSize;
           
@@ -35,8 +35,8 @@ function createStorageThumbnail(imageData: string): Promise<string> {
             // Draw image scaled down
             ctx.drawImage(img, 0, 0, thumbnailSize, thumbnailSize);
             
-            // Return extremely compressed thumbnail (5% quality)
-            const thumbnail = canvas.toDataURL('image/jpeg', 0.05);
+            // Return moderately compressed thumbnail (30% quality for better visibility)
+            const thumbnail = canvas.toDataURL('image/jpeg', 0.3);
             resolve(thumbnail);
           } else {
             resolve('');
