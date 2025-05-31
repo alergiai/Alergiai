@@ -182,7 +182,7 @@ const Onboarding = () => {
           <FadeIn>
             <div className="space-y-6">
               <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Apple className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
@@ -344,7 +344,7 @@ const Onboarding = () => {
               </div>
 
               <div className="space-y-6">
-                {allergenGroups.map((group) => (
+                {allergenGroups.filter(group => group.allergens.length > 0).map((group) => (
                   <div key={group.category}>
                     <h3 className="font-semibold text-gray-900 mb-3">
                       {group.title}
