@@ -15,11 +15,14 @@ import {
   Apple,
   AlertTriangle,
   Sparkles,
+  Plus,
+  X,
 } from "lucide-react";
 import Header from "@/components/Header";
 import { useAllergens } from "@/hooks/useAllergens";
 import { Allergen, AllergenCategory } from "@/types";
 import { FadeIn, SlideUp, Pop } from "@/components/ui/animations";
+import { Input } from "@/components/ui/input";
 
 interface OnboardingData {
   reason: string;
@@ -31,13 +34,14 @@ interface OnboardingData {
 const Onboarding = () => {
   const [, setLocation] = useLocation();
   const [currentStep, setCurrentStep] = useState(0);
+  const [customAllergenInput, setCustomAllergenInput] = useState("");
   const [data, setData] = useState<OnboardingData>({
     reason: "",
     hasStruggles: false,
     features: [],
     selectedAllergens: [],
   });
-  const { allergenGroups, toggleAllergen, getSelectedAllergens } =
+  const { allergenGroups, toggleAllergen, addCustomAllergen, getSelectedAllergens } =
     useAllergens();
 
   const reasons = [
@@ -123,6 +127,19 @@ const Onboarding = () => {
         ? [...prev.selectedAllergens, allergenId]
         : prev.selectedAllergens.filter((id) => id !== allergenId),
     }));
+  };
+
+  const handleAddCustomAllergen = () => {
+    if (customAllergenInput.trim()) {
+      addCustomAllergen(customAllergenInput.trim());
+      setCustomAllergenInput("");
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleAddCustomAllergen();
+    }
   };
 
   const completeOnboarding = () => {
