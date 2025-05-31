@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
-import { useLocation } from 'wouter';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowLeft, ArrowRight, CheckCircle2, Heart, Shield, Clock, Zap, Utensils, Apple, AlertTriangle, Sparkles } from 'lucide-react';
-import logoPath from '@assets/Alergi,AI-min.png';
-import { useAllergens } from '@/hooks/useAllergens';
-import { Allergen, AllergenCategory } from '@/types';
-import { FadeIn, SlideUp, Pop } from '@/components/ui/animations';
+import React, { useState } from "react";
+import { useLocation } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle2,
+  Heart,
+  Shield,
+  Clock,
+  Zap,
+  Utensils,
+  Apple,
+  AlertTriangle,
+  Sparkles,
+} from "lucide-react";
+import Logo from "@/components/Logo";
+import { useAllergens } from "@/hooks/useAllergens";
+import { Allergen, AllergenCategory } from "@/types";
+import { FadeIn, SlideUp, Pop } from "@/components/ui/animations";
 
 interface OnboardingData {
   reason: string;
@@ -20,73 +32,117 @@ const Onboarding = () => {
   const [, setLocation] = useLocation();
   const [currentStep, setCurrentStep] = useState(0);
   const [data, setData] = useState<OnboardingData>({
-    reason: '',
+    reason: "",
     hasStruggles: false,
     features: [],
-    selectedAllergens: []
+    selectedAllergens: [],
   });
-  const { allergenGroups, toggleAllergen, getSelectedAllergens } = useAllergens();
+  const { allergenGroups, toggleAllergen, getSelectedAllergens } =
+    useAllergens();
 
   const reasons = [
-    { id: 'health', label: 'I have food allergies or health conditions', icon: AlertTriangle, color: 'bg-red-100 text-red-600' },
-    { id: 'family', label: 'I need to keep my family safe', icon: Shield, color: 'bg-blue-100 text-blue-600' },
-    { id: 'time', label: 'I want to save time while shopping', icon: Clock, color: 'bg-green-100 text-green-600' },
-    { id: 'peace', label: 'I want peace of mind about food safety', icon: CheckCircle2, color: 'bg-purple-100 text-purple-600' }
+    {
+      id: "health",
+      label: "I have food allergies or health conditions",
+      icon: AlertTriangle,
+      color: "bg-red-100 text-red-600",
+    },
+    {
+      id: "family",
+      label: "I need to track what my family eats",
+      icon: Shield,
+      color: "bg-blue-100 text-blue-600",
+    },
+    {
+      id: "time",
+      label: "I want to save time while shopping",
+      icon: Clock,
+      color: "bg-green-100 text-green-600",
+    },
+    {
+      id: "peace",
+      label: "I want peace of mind about food safety",
+      icon: CheckCircle2,
+      color: "bg-purple-100 text-purple-600",
+    },
   ];
 
   const features = [
-    { id: 'instant', label: 'Instant ingredient analysis', icon: Zap, color: 'bg-yellow-100 text-yellow-600' },
-    { id: 'alerts', label: 'Real-time allergen alerts', icon: AlertTriangle, color: 'bg-red-100 text-red-600' },
-    { id: 'history', label: 'Scan history tracking', icon: Clock, color: 'bg-blue-100 text-blue-600' },
-    { id: 'suggestions', label: 'Alternative product suggestions', icon: Sparkles, color: 'bg-purple-100 text-purple-600' }
+    {
+      id: "instant",
+      label: "Instant ingredient analysis",
+      icon: Zap,
+      color: "bg-yellow-100 text-yellow-600",
+    },
+    {
+      id: "alerts",
+      label: "Real-time allergen alerts",
+      icon: AlertTriangle,
+      color: "bg-red-100 text-red-600",
+    },
+    {
+      id: "history",
+      label: "Scan history tracking",
+      icon: Clock,
+      color: "bg-blue-100 text-blue-600",
+    },
+    {
+      id: "suggestions",
+      label: "Alternative product suggestions",
+      icon: Sparkles,
+      color: "bg-purple-100 text-purple-600",
+    },
   ];
 
   const handleReasonSelect = (reason: string) => {
-    setData(prev => ({ ...prev, reason }));
+    setData((prev) => ({ ...prev, reason }));
     setTimeout(() => setCurrentStep(2), 300);
   };
 
   const handleStruggleResponse = (hasStruggles: boolean) => {
-    setData(prev => ({ ...prev, hasStruggles }));
+    setData((prev) => ({ ...prev, hasStruggles }));
     setTimeout(() => setCurrentStep(3), 300);
   };
 
   const handleFeatureToggle = (feature: string) => {
-    setData(prev => ({
+    setData((prev) => ({
       ...prev,
       features: prev.features.includes(feature)
-        ? prev.features.filter(f => f !== feature)
-        : [...prev.features, feature]
+        ? prev.features.filter((f) => f !== feature)
+        : [...prev.features, feature],
     }));
   };
 
   const handleAllergenToggle = (allergenId: string) => {
     toggleAllergen(allergenId);
     const selectedAllergens = getSelectedAllergens();
-    const isSelected = selectedAllergens.some(a => a.id === allergenId);
-    setData(prev => ({
+    const isSelected = selectedAllergens.some((a) => a.id === allergenId);
+    setData((prev) => ({
       ...prev,
       selectedAllergens: isSelected
         ? [...prev.selectedAllergens, allergenId]
-        : prev.selectedAllergens.filter(id => id !== allergenId)
+        : prev.selectedAllergens.filter((id) => id !== allergenId),
     }));
   };
 
   const completeOnboarding = () => {
     const selectedAllergens = getSelectedAllergens();
-    setData(prev => ({ ...prev, selectedAllergens: selectedAllergens.map(a => a.id) }));
-    localStorage.setItem('onboarding_completed', 'true');
-    localStorage.setItem('onboarding_data', JSON.stringify(data));
+    setData((prev) => ({
+      ...prev,
+      selectedAllergens: selectedAllergens.map((a) => a.id),
+    }));
+    localStorage.setItem("onboarding_completed", "true");
+    localStorage.setItem("onboarding_data", JSON.stringify(data));
     setCurrentStep(5);
   };
 
   const startFreeTrial = () => {
-    localStorage.setItem('free_trial_started', 'true');
-    setLocation('/');
+    localStorage.setItem("free_trial_started", "true");
+    setLocation("/");
   };
 
   const continueFree = () => {
-    setLocation('/');
+    setLocation("/");
   };
 
   const renderStep = () => {
@@ -96,24 +152,21 @@ const Onboarding = () => {
           <FadeIn>
             <div className="text-center space-y-6">
               <div className="mb-8">
-                <img 
-                  src={logoPath} 
-                  alt="Alergi.AI" 
-                  className="h-20 mx-auto"
-                />
+                <Logo size="lg" className="justify-center" />
               </div>
-              <h1 className="text-3xl font-bold text-gray-900">Welcome to Alergi.AI</h1>
               <p className="text-lg text-gray-600 leading-relaxed">
-                Your AI-powered food safety companion that scans ingredients and alerts you to allergens in seconds.
+                Your AI-powered food safety companion that scans ingredients and
+                alerts you to allergens in seconds.
               </p>
               <div className="bg-purple-50 rounded-xl p-4 border border-purple-100">
                 <p className="text-purple-800 font-medium">
-                  🍎 Scan any food product instantly<br/>
-                  🛡️ Get personalized safety alerts<br/>
-                  ⚡ Make confident food choices
+                  🍎 Scan any food product instantly
+                  <br />
+                  🛡️ Get personalized safety alerts
+                  <br />⚡ Make confident food choices
                 </p>
               </div>
-              <Button 
+              <Button
                 onClick={() => setCurrentStep(1)}
                 className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white py-4 text-lg font-semibold shadow-lg"
               >
@@ -132,24 +185,35 @@ const Onboarding = () => {
                 <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Apple className="w-8 h-8 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">What brings you to food safety?</h2>
-                <p className="text-gray-600">Help us understand your food journey</p>
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                  What brings you to  Alergi.AI?
+                </h2>
+                <p className="text-gray-600">
+                  Help us understand your food journey
+                </p>
               </div>
               <div className="space-y-3">
                 {reasons.map((reason) => {
                   const Icon = reason.icon;
                   return (
-                    <SlideUp key={reason.id} delay={reasons.indexOf(reason) * 0.1}>
-                      <Card 
+                    <SlideUp
+                      key={reason.id}
+                      delay={reasons.indexOf(reason) * 0.1}
+                    >
+                      <Card
                         className="cursor-pointer transition-all hover:shadow-lg hover:scale-[1.02] border-2 hover:border-purple-300"
                         onClick={() => handleReasonSelect(reason.id)}
                       >
                         <CardContent className="p-4 flex items-center space-x-4">
-                          <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${reason.color}`}>
+                          <div
+                            className={`w-12 h-12 rounded-xl flex items-center justify-center ${reason.color}`}
+                          >
                             <Icon className="w-6 h-6" />
                           </div>
                           <div className="flex-1">
-                            <p className="font-medium text-gray-900">{reason.label}</p>
+                            <p className="font-medium text-gray-900">
+                              {reason.label}
+                            </p>
                           </div>
                           <ArrowRight className="w-5 h-5 text-gray-400" />
                         </CardContent>
@@ -174,22 +238,25 @@ const Onboarding = () => {
                   Ever struggled reading tiny ingredient labels while shopping?
                 </h2>
                 <p className="text-gray-600 leading-relaxed">
-                  Many shoppers spend minutes squinting at ingredient lists, trying to spot allergens in complex chemical names and fine print.
+                  Many shoppers spend minutes squinting at ingredient lists,
+                  trying to spot allergens in complex chemical names and fine
+                  print.
                 </p>
               </div>
               <div className="bg-gray-50 rounded-xl p-4 border">
                 <p className="text-sm text-gray-700 italic">
-                  "Contains: Wheat flour, milk powder, soy lecithin, natural flavors, sodium metabisulfite..."
+                  "Contains: Wheat flour, milk powder, soy lecithin, natural
+                  flavors, sodium metabisulfite..."
                 </p>
               </div>
               <div className="space-y-4">
-                <Button 
+                <Button
                   onClick={() => handleStruggleResponse(true)}
                   className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white py-4 font-semibold"
                 >
                   Yes, it's frustrating and time-consuming
                 </Button>
-                <Button 
+                <Button
                   onClick={() => handleStruggleResponse(false)}
                   variant="outline"
                   className="w-full py-4 border-2 hover:bg-gray-50"
@@ -209,28 +276,36 @@ const Onboarding = () => {
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">Which food safety features excite you most?</h2>
-                <p className="text-gray-600">Select what would make your grocery shopping easier</p>
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                  Which food safety features excite you most?
+                </h2>
+                <p className="text-gray-600">
+                  Select what would make your grocery shopping easier
+                </p>
               </div>
               <div className="space-y-3">
                 {features.map((feature, index) => {
                   const Icon = feature.icon;
                   return (
                     <SlideUp key={feature.id} delay={index * 0.1}>
-                      <Card 
+                      <Card
                         className={`cursor-pointer transition-all hover:shadow-lg border-2 ${
-                          data.features.includes(feature.id) 
-                            ? 'border-purple-500 bg-purple-50 shadow-md' 
-                            : 'border-gray-200 hover:border-purple-300'
+                          data.features.includes(feature.id)
+                            ? "border-purple-500 bg-purple-50 shadow-md"
+                            : "border-gray-200 hover:border-purple-300"
                         }`}
                         onClick={() => handleFeatureToggle(feature.id)}
                       >
                         <CardContent className="p-4 flex items-center space-x-4">
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${feature.color}`}>
+                          <div
+                            className={`w-10 h-10 rounded-lg flex items-center justify-center ${feature.color}`}
+                          >
                             <Icon className="w-5 h-5" />
                           </div>
-                          <p className="flex-1 font-medium text-gray-900">{feature.label}</p>
-                          <Checkbox 
+                          <p className="flex-1 font-medium text-gray-900">
+                            {feature.label}
+                          </p>
+                          <Checkbox
                             checked={data.features.includes(feature.id)}
                             className="data-[state=checked]:bg-purple-600 data-[state=checked]:border-purple-600"
                           />
@@ -240,7 +315,7 @@ const Onboarding = () => {
                   );
                 })}
               </div>
-              <Button 
+              <Button
                 onClick={() => setCurrentStep(4)}
                 disabled={data.features.length === 0}
                 className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white py-4 mt-8 font-semibold"
@@ -260,12 +335,14 @@ const Onboarding = () => {
                 <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Shield className="w-8 h-8 text-white" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">Create your personal food safety profile</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                  Create your personal food safety profile
+                </h2>
                 <p className="text-gray-600">
                   Tell us what ingredients to watch out for in your scans
                 </p>
               </div>
-              
+
               <div className="space-y-6">
                 {allergenGroups.map((group) => (
                   <div key={group.category}>
@@ -274,21 +351,23 @@ const Onboarding = () => {
                     </h3>
                     <div className="grid grid-cols-2 gap-2">
                       {group.allergens.map((allergen) => (
-                        <Card 
+                        <Card
                           key={allergen.id}
                           className={`cursor-pointer transition-all border-2 ${
-                            allergen.selected 
-                              ? 'border-purple-500 bg-purple-50' 
-                              : 'border-gray-200 hover:border-purple-200'
+                            allergen.selected
+                              ? "border-purple-500 bg-purple-50"
+                              : "border-gray-200 hover:border-purple-200"
                           }`}
                           onClick={() => handleAllergenToggle(allergen.id)}
                         >
                           <CardContent className="p-3 flex items-center space-x-2">
-                            <Checkbox 
+                            <Checkbox
                               checked={allergen.selected}
                               className="data-[state=checked]:bg-purple-600 data-[state=checked]:border-purple-600"
                             />
-                            <span className="text-sm font-medium">{allergen.name}</span>
+                            <span className="text-sm font-medium">
+                              {allergen.name}
+                            </span>
                           </CardContent>
                         </Card>
                       ))}
@@ -298,7 +377,7 @@ const Onboarding = () => {
               </div>
 
               <div className="flex space-x-3 mt-8">
-                <Button 
+                <Button
                   onClick={() => setCurrentStep(3)}
                   variant="outline"
                   className="flex-1"
@@ -306,7 +385,7 @@ const Onboarding = () => {
                   <ArrowLeft className="mr-2 w-4 h-4" />
                   Back
                 </Button>
-                <Button 
+                <Button
                   onClick={completeOnboarding}
                   className="flex-1 bg-purple-600 hover:bg-purple-700 text-white"
                 >
@@ -325,18 +404,27 @@ const Onboarding = () => {
               <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
                 <CheckCircle2 className="w-10 h-10 text-white" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900">Your food safety profile is ready!</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                Your food safety profile is ready!
+              </h2>
               <p className="text-gray-600 leading-relaxed">
-                Perfect! Alergi.AI will now scan ingredients and instantly alert you to {data.selectedAllergens.length > 0 ? `your ${data.selectedAllergens.length} selected allergen${data.selectedAllergens.length > 1 ? 's' : ''}` : 'any potential food safety concerns'} in every product you scan.
+                Perfect! Alergi.AI will now scan ingredients and instantly alert
+                you to{" "}
+                {data.selectedAllergens.length > 0
+                  ? `your ${data.selectedAllergens.length} selected allergen${data.selectedAllergens.length > 1 ? "s" : ""}`
+                  : "any potential food safety concerns"}{" "}
+                in every product you scan.
               </p>
               <div className="bg-green-50 rounded-xl p-4 border border-green-200">
                 <p className="text-green-800 font-medium text-sm">
-                  🎯 Personalized safety alerts<br/>
-                  ⚡ Instant ingredient analysis<br/>
+                  🎯 Personalized safety alerts
+                  <br />
+                  ⚡ Instant ingredient analysis
+                  <br />
                   🛡️ Confident food choices
                 </p>
               </div>
-              <Button 
+              <Button
                 onClick={() => setCurrentStep(6)}
                 className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-4 font-semibold"
               >
@@ -352,11 +440,7 @@ const Onboarding = () => {
           <FadeIn>
             <div className="text-center space-y-6">
               <div className="mb-4">
-                <img 
-                  src={logoPath} 
-                  alt="Alergi.AI" 
-                  className="h-12 mx-auto mb-4"
-                />
+                <Logo size="md" className="justify-center mb-4" />
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto shadow-lg">
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
@@ -366,12 +450,16 @@ const Onboarding = () => {
                   Unlock the full power of food safety AI
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  Your safety profile is ready. Now experience premium AI-powered ingredient analysis with unlimited scans and advanced safety features.
+                  Your safety profile is ready. Now experience premium
+                  AI-powered ingredient analysis with unlimited scans and
+                  advanced safety features.
                 </p>
                 <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 mb-6 border border-purple-200">
                   <div className="flex items-center justify-center mb-3">
                     <Utensils className="w-5 h-5 text-purple-600 mr-2" />
-                    <h3 className="font-bold text-purple-900">Premium Food Safety Features</h3>
+                    <h3 className="font-bold text-purple-900">
+                      Premium Food Safety Features
+                    </h3>
                   </div>
                   <div className="grid grid-cols-2 gap-3 text-sm text-purple-800">
                     <div className="flex items-center">
@@ -394,14 +482,14 @@ const Onboarding = () => {
                 </div>
               </div>
               <div className="space-y-3">
-                <Button 
+                <Button
                   onClick={startFreeTrial}
                   className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white py-4 text-lg font-bold shadow-lg"
                 >
                   Start Free Trial
                   <Sparkles className="ml-2 w-5 h-5" />
                 </Button>
-                <Button 
+                <Button
                   onClick={continueFree}
                   variant="outline"
                   className="w-full py-3 border-2 hover:bg-gray-50"
@@ -425,20 +513,18 @@ const Onboarding = () => {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <Card className="shadow-xl border-0">
-          <CardContent className="p-8">
-            {renderStep()}
-          </CardContent>
+          <CardContent className="p-8">{renderStep()}</CardContent>
         </Card>
-        
+
         {/* Progress indicator */}
         {currentStep > 0 && currentStep < 6 && (
           <div className="mt-6 flex justify-center">
             <div className="flex space-x-2">
               {Array.from({ length: 5 }, (_, i) => (
-                <div 
+                <div
                   key={i}
                   className={`w-2 h-2 rounded-full transition-colors ${
-                    i < currentStep ? 'bg-purple-600' : 'bg-gray-300'
+                    i < currentStep ? "bg-purple-600" : "bg-gray-300"
                   }`}
                 />
               ))}
