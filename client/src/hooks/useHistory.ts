@@ -139,13 +139,13 @@ export function useHistory() {
   // Clear all history
   const clearHistory = () => {
     debugLog('Clearing all history');
-    setHistory([]);
     try {
       localStorage.removeItem('scanHistory');
       debugLog('Cleared localStorage');
     } catch (error) {
       console.error('Error clearing localStorage:', error);
     }
+    setHistory([]);
   };
 
   return {
