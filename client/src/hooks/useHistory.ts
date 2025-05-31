@@ -92,7 +92,9 @@ export function useHistory() {
       setHistory(prev => {
         // Remove duplicates if this item was already in history
         const filteredHistory = prev.filter(item => item.id !== newId);
-        const newHistory = [newScanResult, ...filteredHistory];
+        // Limit to 100 items maximum
+        const limitedHistory = filteredHistory.slice(0, 99); // Keep 99 to make room for new item
+        const newHistory = [newScanResult, ...limitedHistory];
         
         // Calculate total storage size
         const totalSizeBytes = JSON.stringify(newHistory).length * 2; // UTF-16 encoding
@@ -138,6 +140,12 @@ export function useHistory() {
   const clearHistory = () => {
     debugLog('Clearing all history');
     setHistory([]);
+    try {
+      localStorage.removeItem('scanHistory');
+      debugLog('Cleared localStorage');
+    } catch (error) {
+      console.error('Error clearing localStorage:', error);
+    }
   };
 
   return {

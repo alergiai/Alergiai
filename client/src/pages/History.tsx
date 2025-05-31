@@ -2,19 +2,44 @@ import React from 'react';
 import { useLocation } from 'wouter';
 import { useHistory } from '@/hooks/useHistory';
 import HistoryCard from '@/components/HistoryCard';
-import { History as HistoryIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { History as HistoryIcon, Trash2 } from 'lucide-react';
 
 const History = () => {
   const [, setLocation] = useLocation();
-  const { history } = useHistory();
+  const { history, clearHistory } = useHistory();
   
   const handleViewItem = (id: string) => {
     setLocation(`/result/${id}`);
   };
+
+  const handleClearAll = () => {
+    if (window.confirm('Are you sure you want to clear all scan history? This cannot be undone.')) {
+      clearHistory();
+    }
+  };
   
   return (
     <div className="flex-1 p-4">
-      <h2 className="text-xl font-heading font-semibold mb-4">Scan History</h2>
+      <div className="flex justify-between items-center mb-4">
+        <div>
+          <h2 className="text-xl font-heading font-semibold">Scan History</h2>
+          <p className="text-sm text-gray-500 mt-1">
+            {history.length} of 100 scans saved
+          </p>
+        </div>
+        {history.length > 0 && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleClearAll}
+            className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+          >
+            <Trash2 className="w-4 h-4" />
+            Clear All
+          </Button>
+        )}
+      </div>
       
       {history.length > 0 ? (
         history.map(item => (
