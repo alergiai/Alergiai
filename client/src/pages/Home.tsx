@@ -253,11 +253,7 @@ const Home = () => {
       
       setCameraStatus('retry');
       
-      toast({
-        title: 'Analysis Failed',
-        description: 'Could not analyze the image. Please try again with a clearer photo.',
-        variant: 'destructive'
-      });
+      // Removed toast notification
     }
   };
   
@@ -305,10 +301,7 @@ const Home = () => {
           base64Image: scanResult.base64Image
         });
         
-        toast({
-          title: 'Saved to History',
-          description: 'The scan has been saved to your history'
-        });
+        // Removed toast notification
         
         // Navigate to the ScanResult detail page
         setTimeout(() => {
@@ -316,19 +309,11 @@ const Home = () => {
         }, 300);
       } catch (error) {
         console.error('Error saving to history:', error);
-        toast({
-          title: 'Storage Limit Reached',
-          description: 'Could not save to history due to storage limits. Try clearing some old scans.',
-          variant: 'destructive'
-        });
+        // Removed toast notification
       }
     } else {
       console.error('No scan result to save');
-      toast({
-        title: 'Error Saving',
-        description: 'No scan result to save',
-        variant: 'destructive'
-      });
+      // Removed toast notification
     }
   };
   

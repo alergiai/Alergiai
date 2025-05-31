@@ -57,10 +57,7 @@ const Allergens = () => {
   const handleAddCustomAllergen = (values: z.infer<typeof customAllergenSchema>) => {
     addCustomAllergen(values.name);
     form.reset();
-    toast({
-      title: 'Custom restriction added',
-      description: `Added ${values.name} to your custom restrictions`
-    });
+    // Removed toast notification
   };
   
   // Map allergen names to icons
@@ -96,10 +93,7 @@ const Allergens = () => {
             type="button" 
             className="px-6 py-2 bg-primary hover:bg-primary/90 font-medium shadow-md"
             onClick={() => {
-              toast({
-                title: 'Preferences Saved',
-                description: 'Your allergen preferences have been updated'
-              });
+              // Removed toast notification
             }}
           >
             Save Preferences
@@ -183,10 +177,7 @@ const Allergens = () => {
                                 type="button" 
                                 onClick={() => {
                                   removeCustomAllergen(allergen.id);
-                                  toast({
-                                    title: 'Custom restriction removed',
-                                    description: `Removed ${allergen.name} from your restrictions`
-                                  });
+                                  // Removed toast notification
                                 }}
                                 className="text-gray-500 hover:text-gray-700 p-1 rounded-full hover:bg-gray-200"
                               >
@@ -207,10 +198,7 @@ const Allergens = () => {
             type="button" 
             className="w-full mt-6 py-4 bg-primary hover:bg-primary/90 rounded-xl font-medium shadow-md"
             onClick={() => {
-              toast({
-                title: 'Preferences Saved',
-                description: 'Your allergen preferences have been updated'
-              });
+              // Removed toast notification
             }}
           >
             Save Preferences
