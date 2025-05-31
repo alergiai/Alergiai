@@ -72,12 +72,13 @@ export function useHistory() {
     const newId = 'id' in scanResult && scanResult.id ? scanResult.id : uuidv4();
     
     // Create a lightweight version of the scan result to save storage space
-    // by removing the base64 image data which is very large
+    // Keep the thumbnail if it's small, otherwise remove large images
     const newScanResult: ScanResult = {
       ...(scanResult as any),
       id: newId,
-      // Store a placeholder instead of the full base64 image
-      base64Image: '' // Don't store the large base64 image in localStorage
+      // Keep thumbnails (small images) but remove large base64 images
+      base64Image: (scanResult as any).base64Image && (scanResult as any).base64Image.length < 10000 ? 
+        (scanResult as any).base64Image : ''
     };
     
     debugLog('Adding item to history', newScanResult);
