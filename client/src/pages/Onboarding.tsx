@@ -393,6 +393,55 @@ const Onboarding = () => {
                 ))}
               </div>
 
+              {/* Custom allergen input */}
+              <div className="mt-6 p-4 bg-gray-50 rounded-xl border">
+                <h4 className="font-medium text-gray-900 mb-3">Add Custom Restriction</h4>
+                <p className="text-sm text-gray-600 mb-3">
+                  Can't find what you're looking for? Add your own ingredient to avoid.
+                </p>
+                <div className="flex space-x-2">
+                  <Input
+                    type="text"
+                    placeholder="e.g., Artificial sweeteners, MSG, etc."
+                    value={customAllergenInput}
+                    onChange={(e) => setCustomAllergenInput(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className="flex-1"
+                  />
+                  <Button
+                    type="button"
+                    onClick={handleAddCustomAllergen}
+                    disabled={!customAllergenInput.trim()}
+                    className="bg-primary hover:bg-primary/90 text-white px-4"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </Button>
+                </div>
+                
+                {/* Show custom allergens if any exist */}
+                {allergenGroups.find(group => group.category === 'custom')?.allergens.length > 0 && (
+                  <div className="mt-4">
+                    <div className="flex flex-wrap gap-2">
+                      {allergenGroups.find(group => group.category === 'custom')?.allergens.map(allergen => (
+                        <div 
+                          key={allergen.id}
+                          className="flex items-center bg-primary/10 text-primary px-3 py-1 rounded-full text-sm"
+                        >
+                          <span>{allergen.name}</span>
+                          <button
+                            type="button"
+                            onClick={() => toggleAllergen(allergen.id)}
+                            className="ml-2 text-primary/60 hover:text-primary"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div className="flex space-x-3 mt-8">
                 <Button
                   onClick={() => setCurrentStep(3)}
