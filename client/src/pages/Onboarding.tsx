@@ -318,7 +318,7 @@ const Onboarding = () => {
               <Button
                 onClick={() => setCurrentStep(4)}
                 disabled={data.features.length === 0}
-                className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white py-4 mt-8 font-semibold"
+                className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white py-4 mt-8 font-semibold"
               >
                 Continue to Safety Setup
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -332,7 +332,7 @@ const Onboarding = () => {
           <FadeIn>
             <div className="space-y-6">
               <div className="text-center mb-8">
-                <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Shield className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
@@ -355,15 +355,15 @@ const Onboarding = () => {
                           key={allergen.id}
                           className={`cursor-pointer transition-all border-2 ${
                             allergen.selected
-                              ? "border-purple-500 bg-purple-50"
-                              : "border-gray-200 hover:border-purple-200"
+                              ? "border-primary bg-primary/5"
+                              : "border-gray-200 hover:border-primary/20"
                           }`}
                           onClick={() => handleAllergenToggle(allergen.id)}
                         >
                           <CardContent className="p-3 flex items-center space-x-2">
                             <Checkbox
                               checked={allergen.selected}
-                              className="data-[state=checked]:bg-purple-600 data-[state=checked]:border-purple-600"
+                              className="data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                             />
                             <span className="text-sm font-medium">
                               {allergen.name}
@@ -401,7 +401,7 @@ const Onboarding = () => {
         return (
           <Pop>
             <div className="text-center space-y-6">
-              <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
+              <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto shadow-lg">
                 <CheckCircle2 className="w-10 h-10 text-white" />
               </div>
               <h2 className="text-2xl font-bold text-gray-900">
@@ -415,8 +415,8 @@ const Onboarding = () => {
                   : "any potential food safety concerns"}{" "}
                 in every product you scan.
               </p>
-              <div className="bg-green-50 rounded-xl p-4 border border-green-200">
-                <p className="text-green-800 font-medium text-sm">
+              <div className="bg-primary/5 rounded-xl p-4 border border-primary/20">
+                <p className="text-primary font-medium text-sm">
                   🎯 Personalized safety alerts
                   <br />
                   ⚡ Instant ingredient analysis
@@ -426,7 +426,7 @@ const Onboarding = () => {
               </div>
               <Button
                 onClick={() => setCurrentStep(6)}
-                className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white py-4 font-semibold"
+                className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white py-4 font-semibold"
               >
                 Continue to Premium Features
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -454,14 +454,14 @@ const Onboarding = () => {
                   AI-powered ingredient analysis with unlimited scans and
                   advanced safety features.
                 </p>
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 mb-6 border border-purple-200">
+                <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-xl p-6 mb-6 border border-primary/20">
                   <div className="flex items-center justify-center mb-3">
-                    <Utensils className="w-5 h-5 text-purple-600 mr-2" />
-                    <h3 className="font-bold text-purple-900">
+                    <Utensils className="w-5 h-5 text-primary mr-2" />
+                    <h3 className="font-bold text-primary">
                       Premium Food Safety Features
                     </h3>
                   </div>
-                  <div className="grid grid-cols-2 gap-3 text-sm text-purple-800">
+                  <div className="grid grid-cols-2 gap-3 text-sm text-primary/80">
                     <div className="flex items-center">
                       <Zap className="w-4 h-4 mr-2" />
                       Unlimited scans
@@ -484,7 +484,7 @@ const Onboarding = () => {
               <div className="space-y-3">
                 <Button
                   onClick={startFreeTrial}
-                  className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white py-4 text-lg font-bold shadow-lg"
+                  className="w-full bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary text-white py-4 text-lg font-bold shadow-lg"
                 >
                   Start Free Trial
                   <Sparkles className="ml-2 w-5 h-5" />
