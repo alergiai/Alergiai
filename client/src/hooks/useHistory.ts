@@ -81,14 +81,27 @@ export function useHistory() {
         (scanResult as any).base64Image : ''
     };
     
+    // Calculate storage size for debugging
+    const itemSizeBytes = JSON.stringify(newScanResult).length * 2; // UTF-16 encoding
+    const itemSizeKB = Math.round(itemSizeBytes / 1024);
     debugLog('Adding item to history', newScanResult);
+    debugLog('Item size:', `${itemSizeKB}KB (${itemSizeBytes} bytes)`);
     
     try {
       // Update history state with new item at the beginning
       setHistory(prev => {
         // Remove duplicates if this item was already in history
         const filteredHistory = prev.filter(item => item.id !== newId);
-        return [newScanResult, ...filteredHistory];
+        const newHistory = [newScanResult, ...filteredHistory];
+        
+        // Calculate total storage size
+        const totalSizeBytes = JSON.stringify(newHistory).length * 2; // UTF-16 encoding
+        const totalSizeKB = Math.round(totalSizeBytes / 1024);
+        const totalSizeMB = Math.round(totalSizeKB / 1024 * 100) / 100;
+        
+        debugLog('Total storage size:', `${totalSizeMB}MB (${totalSizeKB}KB) for ${newHistory.length} items`);
+        
+        return newHistory;
       });
     } catch (error) {
       console.error('Error saving to history:', error);
