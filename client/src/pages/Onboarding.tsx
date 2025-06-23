@@ -513,7 +513,7 @@ const Onboarding = () => {
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                  Unlock the full power of food safety AI
+                  Unlock the full power of Alergi.AI
                 </h2>
                 <p className="text-gray-600 mb-4">
                   Your safety profile is ready. Now experience premium
